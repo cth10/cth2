@@ -47,11 +47,11 @@
   --lavender:     #6a44a0;
   --cyan:         #007fae;
   --cyan-dim:     rgba(0,127,174,0.07);
-  --yellow:       #c07a00;
+  --yellow:       #8b5a00;
   --green:        #1a9a55;
   --text:         #1a0a38;
   --text-muted:   #5c3d80;
-  --text-dim:     #a882c8;
+  --text-dim:     #7048a8;
   --code-bg:      #f0e8ff;
   --code-color:   #5c2d91;
   --fn-head:      'Space Mono', monospace;
@@ -92,7 +92,7 @@
     --green:        #39ff99;
     --text:         #f0e0ff;
     --text-muted:   #9b7bbf;
-    --text-dim:     #5a3d7a;
+    --text-dim:     #9872c0;
     --code-bg:      #080520;
     --code-color:   #ddc8ff;
     --glow-pink:    0 0 18px rgba(255,110,180,0.45);
@@ -156,11 +156,11 @@ html[data-theme="light"] {
   --lavender:     #6a44a0;
   --cyan:         #007fae;
   --cyan-dim:     rgba(0,127,174,0.07);
-  --yellow:       #c07a00;
+  --yellow:       #8b5a00;
   --green:        #1a9a55;
   --text:         #1a0a38;
   --text-muted:   #5c3d80;
-  --text-dim:     #a882c8;
+  --text-dim:     #7048a8;
   --code-bg:      #f0e8ff;
   --code-color:   #5c2d91;
   --glow-pink:    0 0 14px rgba(204,45,135,0.18);
@@ -299,7 +299,6 @@ body::before {
   margin-top: 6px;
   letter-spacing: 4px;
   text-transform: uppercase;
-  opacity: .8;
 }
 
 /* miku quote */

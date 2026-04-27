@@ -14,7 +14,7 @@
 .hljs-attr { color: #1a7a3c; }
 
 .hljs-comment,
-.hljs-quote { color: #9b7cbf; font-style: italic; }
+.hljs-quote { color: #7555a0; font-style: italic; }
 
 .hljs-number,
 .hljs-literal { color: #007fae; }
@@ -30,12 +30,12 @@
 .hljs-params { color: #5c2d91; }
 
 .hljs-meta,
-.hljs-meta .hljs-keyword { color: #c07a00; }
+.hljs-meta .hljs-keyword { color: #8b5a00; }
 
 .hljs-tag,
 .hljs-name { color: #7c3aab; }
 
-.hljs-attribute { color: #c07a00; }
+.hljs-attribute { color: #8b5a00; }
 
 .hljs-deletion { color: #cc2d87; background: rgba(204,45,135,0.1); }
 .hljs-addition { color: #1a9a55; background: rgba(26,154,85,0.1); }
@@ -51,7 +51,7 @@
   .hljs-attr { color: #50fa7b; }
 
   .hljs-comment,
-  .hljs-quote { color: #6272a4; font-style: italic; }
+  .hljs-quote { color: #7080b4; font-style: italic; }
 
   .hljs-number,
   .hljs-literal { color: #8be9fd; }
@@ -88,7 +88,7 @@
 [data-theme="dark"] .hljs-attr { color: #50fa7b; }
 
 [data-theme="dark"] .hljs-comment,
-[data-theme="dark"] .hljs-quote { color: #6272a4; font-style: italic; }
+[data-theme="dark"] .hljs-quote { color: #7080b4; font-style: italic; }
 
 [data-theme="dark"] .hljs-number,
 [data-theme="dark"] .hljs-literal { color: #8be9fd; }
@@ -124,7 +124,7 @@
 [data-theme="light"] .hljs-attr { color: #1a7a3c; }
 
 [data-theme="light"] .hljs-comment,
-[data-theme="light"] .hljs-quote { color: #9b7cbf; font-style: italic; }
+[data-theme="light"] .hljs-quote { color: #7555a0; font-style: italic; }
 
 [data-theme="light"] .hljs-number,
 [data-theme="light"] .hljs-literal { color: #007fae; }
@@ -140,12 +140,12 @@
 [data-theme="light"] .hljs-params { color: #5c2d91; }
 
 [data-theme="light"] .hljs-meta,
-[data-theme="light"] .hljs-meta .hljs-keyword { color: #c07a00; }
+[data-theme="light"] .hljs-meta .hljs-keyword { color: #8b5a00; }
 
 [data-theme="light"] .hljs-tag,
 [data-theme="light"] .hljs-name { color: #7c3aab; }
 
-[data-theme="light"] .hljs-attribute { color: #c07a00; }
+[data-theme="light"] .hljs-attribute { color: #8b5a00; }
 
 [data-theme="light"] .hljs-deletion { color: #cc2d87; background: rgba(204,45,135,0.1); }
 [data-theme="light"] .hljs-addition { color: #1a9a55; background: rgba(26,154,85,0.1); }
