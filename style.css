@@ -653,9 +653,9 @@ body::before {
 .info-item-value { font-size: 14px; color: var(--text); font-weight: 700; }
 
 .text-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-.text-list li { font-size: 14px; color: var(--text-muted); padding: 4px 0; border-bottom: 1px solid var(--divider); display: flex; align-items: flex-start; gap: 8px; }
+.text-list li { font-size: 14px; color: var(--text-muted); padding: 4px 0; border-bottom: 1px solid var(--divider); }
 .text-list li:last-child { border-bottom: none; }
-.text-list li .emoji { flex-shrink: 0; }
+.text-list li .emoji { margin-right: 6px; }
 
 .skill-tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
 .skill-tbl th { background: var(--surface2); color: var(--lavender); font-weight: 700; padding: 8px 12px; text-align: left; border: 1px solid var(--border); font-size: 11px; }
