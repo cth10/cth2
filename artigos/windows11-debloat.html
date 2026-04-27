@@ -17,6 +17,7 @@
   </script>
   <link rel="stylesheet" href="../style.css">
   <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+  <link rel="stylesheet" href="../highlight-cth.css">
 </head>
 <body>
 <header class="site-header">
@@ -39,7 +40,7 @@
           <div class="profile-role">Dev Java &amp; Cloud ☕</div>
           <div class="profile-status">● disponível pra oportunidades</div>
           <ul class="profile-links">
-            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener noreferrer">💼 LinkedIn</a></li>
           </ul>
         </div>
       </div>
@@ -91,7 +92,7 @@
         <div class="article-body" itemprop="articleBody">
 
           <p>eu instalei o windows 11... e ai?</p>
-          <p>o windows 11 eh pesado e cheio de bloatware. entao, antes de instalar qualquer coisa, eu rodo esse script do <a href="https://github.com/Raphire/Win11Debloat" target="_blank" rel="noopener">Raphire</a>. ele eh open source.</p>
+          <p>o windows 11 eh pesado e cheio de bloatware. entao, antes de instalar qualquer coisa, eu rodo esse script do <a href="https://github.com/Raphire/Win11Debloat" target="_blank" rel="noopener noreferrer">Raphire</a>. ele eh open source.</p>
 
           <div class="info-note">
             <div class="info-label">ℹ O QUE O SCRIPT FAZ</div>
@@ -102,32 +103,44 @@
 
           <h3>Passo 1: Abrir o PowerShell como Administrador</h3>
           <p>abra o menu iniciar, digita <code>powershell</code> e... mto importante: clica com botao direito em <strong>Executar como Administrador</strong> (senao nao funciona!).</p>
-          <img src="../imagens/debloat-powershell-admin.png" alt="Abrindo PowerShell como administrador">
-
+          <picture>
+            <source srcset="../imagens/debloat-powershell-admin.webp" type="image/webp">
+            <img src="../imagens/debloat-powershell-admin.png" alt="Abrindo PowerShell como administrador" loading="lazy" decoding="async" width="1012" height="752">
+          </picture>
           <h3>Passo 2: Rodar o script</h3>
           <p>cola esse comando (olhe a documentação do programa antes, pra ele n desinstalar o que vc quer que fique):</p>
 <pre><code>&amp; ([scriptblock]::Create((irm "https://debloat.raphi.re/")))</code></pre>
-          <img src="../imagens/debloat-comando-raphire.png" alt="Comando script debloat Raphire no PowerShell">
-
+          <picture>
+            <source srcset="../imagens/debloat-comando-raphire.webp" type="image/webp">
+            <img src="../imagens/debloat-comando-raphire.png" alt="Comando script debloat Raphire no PowerShell" loading="lazy" decoding="async" width="783" height="164">
+          </picture>
           <h3>Passo 3: Escolher o modo</h3>
           <p>vai abrir esse menu azul. pra mim, a opção <strong>1 (Default mode)</strong> eh a perfeita. ela tira o lixo mas mantem a loja e coisas essenciais funcionando. digita <code>1</code> e enter.</p>
-          <img src="../imagens/debloat-menu-opcoes.png" alt="Menu de opções do script Windows Debloat">
-
+          <picture>
+            <source srcset="../imagens/debloat-menu-opcoes.webp" type="image/webp">
+            <img src="../imagens/debloat-menu-opcoes.png" alt="Menu de opções do script Windows Debloat" loading="lazy" decoding="async" width="1011" height="348">
+          </picture>
           <h3>Passo 4: Confirmar remoção de bloatware</h3>
           <p>ele vai perguntar se quer remover os apps padrao (bloatware). obvio q sim! aperta <code>1</code> de novo.</p>
-          <img src="../imagens/debloat-remover-bloatware.png" alt="Selecionando remoção de apps padrão bloatware">
-
+          <picture>
+            <source srcset="../imagens/debloat-remover-bloatware.webp" type="image/webp">
+            <img src="../imagens/debloat-remover-bloatware.png" alt="Selecionando remoção de apps padrão bloatware" loading="lazy" decoding="async" width="1010" height="227">
+          </picture>
           <h3>Passo 5: Aguardar a magia</h3>
           <p>agora eh so ver a magia acontecer. ele vai desabilitar telemetria, bing search, copilot, widgets chatos, recall... tudo!</p>
-          <img src="../imagens/debloat-telemetria-widgets.png" alt="Script desativando telemetria e widgets">
-
+          <picture>
+            <source srcset="../imagens/debloat-telemetria-widgets.webp" type="image/webp">
+            <img src="../imagens/debloat-telemetria-widgets.png" alt="Script desativando telemetria e widgets" loading="lazy" decoding="async" width="1006" height="649">
+          </picture>
           <div class="info-tip">
             <div class="info-label">✅ RESULTADO</div>
             <p>qnd terminar, ele reinicia o explorer sozinho e o SO vai estar mais leve!</p>
           </div>
 
-          <img src="../imagens/debloat-explorer-reiniciado.png" alt="Windows Explorer reiniciado e limpo">
-
+          <picture>
+            <source srcset="../imagens/debloat-explorer-reiniciado.webp" type="image/webp">
+            <img src="../imagens/debloat-explorer-reiniciado.png" alt="Windows Explorer reiniciado e limpo" loading="lazy" decoding="async" width="1022" height="720">
+          </picture>
           <div class="info-important">
             <div class="info-label">⚠ AVISO</div>
             <p>leia a documentação do script antes de rodar! tem opções que removem coisas que talvez você precise. o modo Default é seguro pra maioria das pessoas, mas vale checar.</p>
@@ -144,5 +157,7 @@
   <p><a href="../index.html">CTH.JP</a></p>
 
 </footer>
+<script src="../js/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
 </body>
 </html>

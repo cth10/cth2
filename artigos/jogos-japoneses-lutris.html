@@ -17,6 +17,7 @@
   </script>
   <link rel="stylesheet" href="../style.css">
   <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+  <link rel="stylesheet" href="../highlight-cth.css">
 </head>
 <body>
 <header class="site-header">
@@ -39,7 +40,7 @@
           <div class="profile-role">Dev Java &amp; Cloud ☕</div>
           <div class="profile-status">● disponível pra oportunidades</div>
           <ul class="profile-links">
-            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener noreferrer">💼 LinkedIn</a></li>
           </ul>
         </div>
       </div>
@@ -99,25 +100,31 @@
           <ol>
             <li>
               <p>instala o lutris (se vc nao tem ainda).</p>
-              <p><a href="https://lutris.net/downloads" target="_blank" rel="noopener">https://lutris.net/downloads</a></p>
+              <p><a href="https://lutris.net/downloads" target="_blank" rel="noopener noreferrer">https://lutris.net/downloads</a></p>
             </li>
             <li>clica no <code>+</code> (la em cima) e "adicionar jogo instalado localmente".</li>
           </ol>
 
-          <img src="../imagens/lutris-adicionar-jogo.png" alt="Botão adicionar jogo localmente no Lutris">
-
+          <picture>
+            <source srcset="../imagens/lutris-adicionar-jogo.webp" type="image/webp">
+            <img src="../imagens/lutris-adicionar-jogo.png" alt="Botão adicionar jogo localmente no Lutris" loading="lazy" decoding="async" width="804" height="647">
+          </picture>
           <ol start="3">
             <li>preenche o nome e escolhe "wine" como "executor".</li>
           </ol>
 
-          <img src="../imagens/lutris-config-wine.png" alt="Selecionando Wine como executor no Lutris">
-
+          <picture>
+            <source srcset="../imagens/lutris-config-wine.webp" type="image/webp">
+            <img src="../imagens/lutris-config-wine.png" alt="Selecionando Wine como executor no Lutris" loading="lazy" decoding="async" width="832" height="642">
+          </picture>
           <ol start="4">
             <li>na aba "Opções do Jogo", vc aponta pra onde ta o arquivo <code>.exe</code> q vc baixou.</li>
           </ol>
 
-          <img src="../imagens/lutris-opcoes-jogo.png" alt="Selecionando executável do jogo no Lutris">
-
+          <picture>
+            <source srcset="../imagens/lutris-opcoes-jogo.webp" type="image/webp">
+            <img src="../imagens/lutris-opcoes-jogo.png" alt="Selecionando executável do jogo no Lutris" loading="lazy" decoding="async" width="840" height="650">
+          </picture>
           <ol start="5">
             <li><strong>essa eh a parte importante:</strong> vai na aba "<strong>Opções do Sistema</strong>".</li>
             <li>la em baixo, vai ter "Variáveis de Ambiente".</li>
@@ -129,8 +136,10 @@
             </li>
           </ol>
 
-          <img src="../imagens/lutris-lang-ja.png" alt="Configurando variável LANG ja_JP no Lutris">
-
+          <picture>
+            <source srcset="../imagens/lutris-lang-ja.webp" type="image/webp">
+            <img src="../imagens/lutris-lang-ja.png" alt="Configurando variável LANG ja_JP no Lutris" loading="lazy" decoding="async" width="843" height="647">
+          </picture>
           <p>pronto! qnd vc abrir o jogo pelo lutris, ele vai "fingir" q seu pc ta em japones <em>so praquele jogo</em>!</p>
 
           <p>se vc nao for usar o lutris, vc pode fazer isso pelo terminal tbm:</p>
@@ -159,14 +168,18 @@
             <li>uma janelinha vai abrir. escolhe <code>Select the default wineprefix</code> (ja deve ta marcado) &gt; <code>OK</code>.</li>
           </ol>
 
-          <img src="../imagens/winetricks-menu.png" alt="Menu principal do Winetricks">
-
+          <picture>
+            <source srcset="../imagens/winetricks-menu.webp" type="image/webp">
+            <img src="../imagens/winetricks-menu.png" alt="Menu principal do Winetricks" loading="lazy" decoding="async" width="592" height="411">
+          </picture>
           <ol start="4">
             <li>na proxima janela, escolhe <code>Install a Windows DLL or component</code> &gt; <code>OK</code>.</li>
           </ol>
 
-          <img src="../imagens/winetricks-instalar-dll.png" alt="Instalando DLL ou componente Windows">
-
+          <picture>
+            <source srcset="../imagens/winetricks-instalar-dll.webp" type="image/webp">
+            <img src="../imagens/winetricks-instalar-dll.png" alt="Instalando DLL ou componente Windows" loading="lazy" decoding="async" width="597" height="430">
+          </picture>
           <ol start="5">
             <li>agora vai abrir uma lista gigante.</li>
             <li>a gente precisa instalar os codecs de video. procura e marca esses (vc talvez tenha q instalar um de cada vez):
@@ -181,8 +194,10 @@
 
           <p>depois de instalar, fecha tudo e tenta abrir o jogo de novo!</p>
 
-          <img src="../imagens/jogo-japones-lutris.png" alt="Jogo japonês rodando no Linux com Lutris">
-
+          <picture>
+            <source srcset="../imagens/jogo-japones-lutris.webp" type="image/webp">
+            <img src="../imagens/jogo-japones-lutris.png" alt="Jogo japonês rodando no Linux com Lutris" loading="lazy" decoding="async" width="1278" height="750">
+          </picture>
         </div>
       </article>
       <a href="../index.html#blog" class="back-btn" style="margin-top:16px">← ver todos os artigos</a>
@@ -194,5 +209,7 @@
   <p><a href="../index.html">CTH.JP</a></p>
 
 </footer>
+<script src="../js/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
 </body>
 </html>

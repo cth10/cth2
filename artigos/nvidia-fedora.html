@@ -17,6 +17,7 @@
   </script>
   <link rel="stylesheet" href="../style.css">
   <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+  <link rel="stylesheet" href="../highlight-cth.css">
 </head>
 <body>
 <header class="site-header">
@@ -39,7 +40,7 @@
           <div class="profile-role">Dev Java &amp; Cloud ☕</div>
           <div class="profile-status">● disponível pra oportunidades</div>
           <ul class="profile-links">
-            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener noreferrer">💼 LinkedIn</a></li>
           </ul>
         </div>
       </div>
@@ -108,7 +109,7 @@
 
           <p>primeiro, a gente precisa falar pro fedora onde achar os drivers. o rpm fusion eh o lugar <em>safe</em> pra isso. Instale os repos free e o nonfree:</p>
 
-          <p><a href="https://rpmfusion.org/" target="_blank" rel="noopener">https://rpmfusion.org/</a></p>
+          <p><a href="https://rpmfusion.org/" target="_blank" rel="noopener noreferrer">https://rpmfusion.org/</a></p>
 
           <h2>2. Dando um update</h2>
 
@@ -146,8 +147,10 @@
 
           <p>se tudo deu certo, vc vai ver uma tela linda tipo essa:</p>
 
-          <img src="../imagens/nvidia-smi-terminal.png" alt="Saída do comando nvidia-smi no terminal">
-
+          <picture>
+            <source srcset="../imagens/nvidia-smi-terminal.webp" type="image/webp">
+            <img src="../imagens/nvidia-smi-terminal.png" alt="Saída do comando nvidia-smi no terminal" loading="lazy" decoding="async" width="743" height="240">
+          </picture>
         </div>
       </article>
       <a href="../index.html#blog" class="back-btn" style="margin-top:16px">← ver todos os artigos</a>
@@ -159,5 +162,7 @@
   <p><a href="../index.html">CTH.JP</a></p>
 
 </footer>
+<script src="../js/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
 </body>
 </html>

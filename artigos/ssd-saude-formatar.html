@@ -17,6 +17,7 @@
   </script>
   <link rel="stylesheet" href="../style.css">
   <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+  <link rel="stylesheet" href="../highlight-cth.css">
 </head>
 <body>
 <header class="site-header">
@@ -39,7 +40,7 @@
           <div class="profile-role">Dev Java &amp; Cloud ☕</div>
           <div class="profile-status">● disponível pra oportunidades</div>
           <ul class="profile-links">
-            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener noreferrer">💼 LinkedIn</a></li>
           </ul>
         </div>
       </div>
@@ -106,25 +107,33 @@
 
           <p>agora, vc precisa saber o "nome" do seu disco. roda <code>lsblk</code> pra ver. o meu era <code>/dev/sda</code>.</p>
 
-          <img src="../imagens/lsblk-discos.png" alt="Listando discos com comando lsblk">
-
+          <picture>
+            <source srcset="../imagens/lsblk-discos.webp" type="image/webp">
+            <img src="../imagens/lsblk-discos.png" alt="Listando discos com comando lsblk" loading="lazy" decoding="async" width="734" height="310">
+          </picture>
           <p>com o nome, roda o teste de saude:</p>
 
           <pre><code>sudo smartctl -a /dev/sda</code></pre>
 
-          <img src="../imagens/smartctl-scan.png" alt="Rodando teste smartctl no disco">
-
+          <picture>
+            <source srcset="../imagens/smartctl-scan.webp" type="image/webp">
+            <img src="../imagens/smartctl-scan.png" alt="Rodando teste smartctl no disco" loading="lazy" decoding="async" width="1318" height="1281">
+          </picture>
           <p><strong>o q olhar no resultado?</strong>
           o mais importante eh essa linha:</p>
 
           <pre><code>SMART overall-health self-assessment test result: PASSED</code></pre>
 
-          <img src="../imagens/smartctl-passed.png" alt="Resultado PASSED no teste de saúde do disco">
-
+          <picture>
+            <source srcset="../imagens/smartctl-passed.webp" type="image/webp">
+            <img src="../imagens/smartctl-passed.png" alt="Resultado PASSED no teste de saúde do disco" loading="lazy" decoding="async" width="490" height="48">
+          </picture>
           <p>tambem eh legal olhar o <code>Reallocated_Sector_Ct</code> (ID 5). se o <code>RAW_VALUE</code> tiver <strong>0</strong> (zero), ta perfeito!</p>
 
-          <img src="../imagens/setores-realocados.png" alt="Verificando contagem de setores realocados">
-
+          <picture>
+            <source srcset="../imagens/setores-realocados.webp" type="image/webp">
+            <img src="../imagens/setores-realocados.png" alt="Verificando contagem de setores realocados" loading="lazy" decoding="async" width="814" height="72">
+          </picture>
           <h2>Limpando o SSD com blkdiscard</h2>
 
           <p>ok, o meu ssd tava <code>PASSED</code>.
@@ -137,8 +146,10 @@
 
           <pre><code>sudo blkdiscard /dev/sda</code></pre>
 
-          <img src="../imagens/blkdiscard-resultado.png" alt="Resultado do comando blkdiscard">
-
+          <picture>
+            <source srcset="../imagens/blkdiscard-resultado.webp" type="image/webp">
+            <img src="../imagens/blkdiscard-resultado.png" alt="Resultado do comando blkdiscard" loading="lazy" decoding="async" width="533" height="93">
+          </picture>
           <p>se funcionar, ele vai falar tipo:</p>
 
           <pre><code>/dev/sda: Discarded 512110190592 bytes from the offset 0</code></pre>
@@ -164,6 +175,8 @@
 
           <p>agora o ssd ta limpo, mas ele nao tem "gavetas" (partições) pra guardar coisas.</p>
 
+          <h3>Criando a partição (fdisk)</h3>
+
           <p>pra criar a partição, a gente usa o <code>fdisk</code>:</p>
 
           <pre><code>sudo fdisk /dev/sda</code></pre>
@@ -179,7 +192,9 @@
             <li><code>w</code> (pra salvar e sair)</li>
           </ul>
 
-          <p><strong>formatar a partição</strong>: vamos usar o ext4 que é perfeito pra linux, eh o padrão e super estável.</p>
+          <h3>Formatando a partição (mkfs.ext4)</h3>
+
+          <p>vamos usar o ext4 que é perfeito pra linux, eh o padrão e super estável.</p>
 
           <div class="info-important">
             <div class="info-label">ATENÇÃO</div>
@@ -188,8 +203,10 @@
 
           <pre><code>sudo mkfs.ext4 /dev/sda1</code></pre>
 
-          <img src="../imagens/mkfs-ext4.png" alt="Formatando partição em ext4">
-
+          <picture>
+            <source srcset="../imagens/mkfs-ext4.webp" type="image/webp">
+            <img src="../imagens/mkfs-ext4.png" alt="Formatando partição em ext4" loading="lazy" decoding="async" width="707" height="695">
+          </picture>
           <p>pronto!</p>
 
         </div>
@@ -203,5 +220,7 @@
   <p><a href="../index.html">CTH.JP</a></p>
 
 </footer>
+<script src="../js/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
 </body>
 </html>

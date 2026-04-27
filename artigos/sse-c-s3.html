@@ -39,7 +39,7 @@
           <div class="profile-role">Dev Java &amp; Cloud ☕</div>
           <div class="profile-status">● disponível pra oportunidades</div>
           <ul class="profile-links">
-            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener noreferrer">💼 LinkedIn</a></li>
           </ul>
         </div>
       </div>
@@ -97,8 +97,10 @@
 
           <p>basicamente o aviso dizia: <code>[Action may be Required] Amazon S3 to automatically disable SSE-C encryption for new buckets</code>.</p>
 
-          <img src="../imagens/Amazon%20S3%20to%20automatically%20disable%20SSE-C.png" alt="Email de aviso da AWS sobre SSE-C">
-
+          <picture>
+            <source srcset="../imagens/aws-sse-c-aviso-email.webp" type="image/webp">
+            <img src="../imagens/aws-sse-c-aviso-email.png" alt="Email de aviso da AWS sobre SSE-C" loading="lazy" decoding="async" width="624" height="800">
+          </picture>
           <p>minha primeira reacao foi: "pronto, querem roubar minhas chaves e forcar o uso do KMS pra eles terem acesso a tudo".</p>
 
           <p>eu sempre usei <strong>SSE-C</strong> (Server-Side Encryption with Customer-Provided Keys) pq eu me preocupo com seguranca. eu pensava: "eu guardo a chave, eu mando o arquivo, a aws so armazena".</p>

@@ -17,6 +17,7 @@
   </script>
   <link rel="stylesheet" href="../style.css">
   <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+  <link rel="stylesheet" href="../highlight-cth.css">
 </head>
 <body>
 <header class="site-header">
@@ -39,7 +40,7 @@
           <div class="profile-role">Dev Java &amp; Cloud ☕</div>
           <div class="profile-status">● disponível pra oportunidades</div>
           <ul class="profile-links">
-            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener noreferrer">💼 LinkedIn</a></li>
           </ul>
         </div>
       </div>
@@ -98,8 +99,10 @@
 
           <p>sabe como eh, ne? vc tenta subir aquele backup e o upload fica uma tartaruga... ou entao o seu rclone mount faz o dolphin ou o nautilus engasgarem so pra listar os arquivos? e pra piorar, vc descobre q o google tem um limite de operacoes de api q so deixa subir uns 2 ou 3 arquivos por segundo?</p>
 
-          <img src="../imagens/Pasted%20image%2020251120100015.png" alt="Gerenciador de arquivos travando com Google Drive">
-
+          <picture>
+            <source srcset="../imagens/gerenciador-arquivos-google-drive.webp" type="image/webp">
+            <img src="../imagens/gerenciador-arquivos-google-drive.png" alt="Gerenciador de arquivos travando com Google Drive" loading="lazy" decoding="async" width="1360" height="482">
+          </picture>
           <p>eh mto chato! sem falar no limite de upload de 750gb por dia! se vc tem 2tb pra subir, tem q ficar uns 3 dias controlando tudo.</p>
 
           <p>mas... tem um jeito mto mais rapido, sem limite diario e q pode sair de graca pra baixar seus arquivos dnovo! apresentando os nossos herois: <strong>backblaze b2</strong> e <strong>cloudflare</strong>!</p>
@@ -189,7 +192,7 @@
 
           <div class="info-note">
             <div class="info-label">NOTA</div>
-            <p>veja se a parceria ainda ta ativa antes de implementar: <a href="https://www.cloudflare.com/pt-br/partners/technology-partners/backblaze/" target="_blank" rel="noopener">cloudflare.com/partners/technology-partners/backblaze</a></p>
+            <p>veja se a parceria ainda ta ativa antes de implementar: <a href="https://www.cloudflare.com/pt-br/partners/technology-partners/backblaze/" target="_blank" rel="noopener noreferrer">cloudflare.com/partners/technology-partners/backblaze</a></p>
           </div>
 
           <h2>Parte 5: Guia (Como fazer o truque!)</h2>
@@ -239,8 +242,10 @@
 
           <p>No seu terminal, digita: <code>rclone config</code></p>
 
-          <img src="../imagens/rclone-config-b2.png" alt="Configuração de remote B2 no Rclone terminal">
-
+          <picture>
+            <source srcset="../imagens/rclone-config-b2.webp" type="image/webp">
+            <img src="../imagens/rclone-config-b2.png" alt="Configuração de remote B2 no Rclone terminal" loading="lazy" decoding="async" width="882" height="139">
+          </picture>
           <ul>
             <li>Cria um "New remote" (tipo <code>b2-free</code>).</li>
             <li>Escolhe a opção "Backblaze B2".</li>
@@ -282,5 +287,7 @@
   <p><a href="../index.html">CTH.JP</a></p>
 
 </footer>
+<script src="../js/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
 </body>
 </html>

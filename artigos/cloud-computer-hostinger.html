@@ -17,6 +17,7 @@
   </script>
   <link rel="stylesheet" href="../style.css">
   <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+  <link rel="stylesheet" href="../highlight-cth.css">
 </head>
 <body>
 <header class="site-header">
@@ -39,7 +40,7 @@
           <div class="profile-role">Dev Java &amp; Cloud ☕</div>
           <div class="profile-status">● disponível pra oportunidades</div>
           <ul class="profile-links">
-            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener noreferrer">💼 LinkedIn</a></li>
           </ul>
         </div>
       </div>
@@ -100,12 +101,14 @@
           <p>eu to usando a Hostinger. o ping pro brasil eh decente e o preço eh excelente.</p>
           <p>sou parceiro da hostinger e meu link de indicação da desconto!</p>
 
-          <img src="../imagens/hostinger.png" alt="Banner promocional Hostinger VPS">
-
+          <picture>
+            <source srcset="../imagens/hostinger.webp" type="image/webp">
+            <img src="../imagens/hostinger.png" alt="Banner promocional Hostinger VPS" loading="lazy" decoding="async" width="1110" height="415">
+          </picture>
           <div class="info-tip">
             <div class="info-label">🔗 LINKS AFILIADOS HOSTINGER</div>
-            <p>👉 <a href="https://hostinger.com.br?REFERRALCODE=BCOMIUNAHEUT" target="_blank" rel="noopener">Hostinger: hostinger.com.br?REFERRALCODE=BCOMIUNAHEUT</a></p>
-            <p>👉 <a href="https://www.hostinger.com.br/cart?product=vps%3Avps_kvm_8&period=12&referral_type=cart_link&REFERRALCODE=BCOMIUNAHEUT&referral_id=019b829e-065e-70f1-847c-3f3f06a48575" target="_blank" rel="noopener">KVM 8 (link direto pro carrinho)</a></p>
+            <p>👉 <a href="https://hostinger.com.br?REFERRALCODE=BCOMIUNAHEUT" target="_blank" rel="noopener noreferrer">Hostinger: hostinger.com.br?REFERRALCODE=BCOMIUNAHEUT</a></p>
+            <p>👉 <a href="https://www.hostinger.com.br/cart?product=vps%3Avps_kvm_8&period=12&referral_type=cart_link&REFERRALCODE=BCOMIUNAHEUT&referral_id=019b829e-065e-70f1-847c-3f3f06a48575" target="_blank" rel="noopener noreferrer">KVM 8 (link direto pro carrinho)</a></p>
           </div>
 
           <div class="info-warning">
@@ -169,10 +172,18 @@
           <p>agora eh so baixar o cliente do NoMachine no seu pc (windows/linux/mac), clicar em "Add", colocar o IP da sua VPS e usar seu usuario e senha do linux (geralmente root ou o usuario q vc criou).</p>
           <p>pronto! agora vc tem um pc na nuvem pra deixar farmando jogo, baixando coisas ou codando de qualquer lugar!</p>
 
-          <img src="../imagens/NOMACHINE.png" alt="Interface de conexão do NoMachine">
-          <img src="../imagens/vps-2.png" alt="Terminal Linux rodando na VPS Hostinger">
-          <img src="../imagens/vps-3.png" alt="Htop rodando na VPS">
-
+          <picture>
+            <source srcset="../imagens/NOMACHINE.webp" type="image/webp">
+            <img src="../imagens/NOMACHINE.png" alt="Interface de conexão do NoMachine" loading="lazy" decoding="async" width="2028" height="1120">
+          </picture>
+          <picture>
+            <source srcset="../imagens/vps-2.webp" type="image/webp">
+            <img src="../imagens/vps-2.png" alt="Terminal Linux rodando na VPS Hostinger" loading="lazy" decoding="async" width="1262" height="373">
+          </picture>
+          <picture>
+            <source srcset="../imagens/vps-3.webp" type="image/webp">
+            <img src="../imagens/vps-3.png" alt="Htop rodando na VPS" loading="lazy" decoding="async" width="1289" height="1109">
+          </picture>
           <div class="info-tip">
             <div class="info-label">💡 DICA FINAL</div>
             <p>instala o <code>tmux</code> ou <code>screen</code> pra deixar processos rodando mesmo depois de fechar a sessão NoMachine. seu "pc na nuvem" vai continuar trabalhando sem vc!</p>
@@ -189,5 +200,7 @@
   <p><a href="../index.html">CTH.JP</a></p>
 
 </footer>
+<script src="../js/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
 </body>
 </html>

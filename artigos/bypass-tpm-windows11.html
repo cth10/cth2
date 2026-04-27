@@ -39,7 +39,7 @@
           <div class="profile-role">Dev Java &amp; Cloud ☕</div>
           <div class="profile-status">● disponível pra oportunidades</div>
           <ul class="profile-links">
-            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener noreferrer">💼 LinkedIn</a></li>
           </ul>
         </div>
       </div>
@@ -96,18 +96,26 @@
 
           <p>o instalador reclama de falta de TPM 2.0 e Secure Boot. esses requisitos fazem sentido em máquinas físicas, mas uma VM simplesmente não tem. a Microsoft disponibiliza chaves de registro específicas pro cenário de instalação em ambiente virtualizado, que é exatamente o que vamos usar.</p>
 
-          <img src="../imagens/Pasted%20image%2020251130222709.png" alt="Erro este computador não atende aos requisitos do Windows 11">
-
+          <picture>
+            <source srcset="../imagens/bypass-tpm-erro-requisitos.webp" type="image/webp">
+            <img src="../imagens/bypass-tpm-erro-requisitos.png" alt="Erro este computador não atende aos requisitos do Windows 11" loading="lazy" decoding="async" width="1134" height="808">
+          </picture>
           <h2>Configurando o Regedit para ambiente virtualizado</h2>
 
           <p>quando chegar nessa tela de erro (ou logo no começo da instalação):</p>
+
+          <h3>Abrindo o Regedit</h3>
 
           <ol>
             <li>aperta <strong>Shift + F10</strong> pra abrir o terminal (cmd).</li>
             <li>digita <code>regedit</code> e da enter.</li>
           </ol>
 
-          <img src="../imagens/bypass-tpm-regedit.png" alt="Editor de Registro Regedit na instalação">
+          <picture>
+            <source srcset="../imagens/bypass-tpm-regedit.webp" type="image/webp">
+            <img src="../imagens/bypass-tpm-regedit.png" alt="Editor de Registro Regedit na instalação" loading="lazy" decoding="async" width="453" height="588">
+          </picture>
+          <h3>Adicionando as chaves de bypass</h3>
 
           <ol start="3">
             <li>navega até: <code>HKEY_LOCAL_MACHINE</code> &gt; <code>SYSTEM</code> &gt; <code>Setup</code>.</li>
@@ -115,8 +123,10 @@
             <li>dentro da <code>LabConfig</code>, clica com botão direito &gt; New &gt; <strong>DWORD (32-bit) Value</strong>.</li>
           </ol>
 
-          <img src="../imagens/bypass-tpm-labconfig.png" alt="Criando chave LabConfig no registro">
-
+          <picture>
+            <source srcset="../imagens/bypass-tpm-labconfig.webp" type="image/webp">
+            <img src="../imagens/bypass-tpm-labconfig.png" alt="Criando chave LabConfig no registro" loading="lazy" decoding="async" width="585" height="693">
+          </picture>
           <ol start="6">
             <li>cria esses dois valores:
               <ul>
@@ -127,9 +137,14 @@
             <li>clica duas vezes neles e muda o valor de <strong>0</strong> para <strong>1</strong>.</li>
           </ol>
 
-          <img src="../imagens/bypass-tpm-bypasstpmcheck.png" alt="Editando valor BypassTPMCheck para 1">
-          <img src="../imagens/bypass-tpm-chaves-configuradas.png" alt="Chaves de bypass configuradas no regedit">
-
+          <picture>
+            <source srcset="../imagens/bypass-tpm-bypasstpmcheck.webp" type="image/webp">
+            <img src="../imagens/bypass-tpm-bypasstpmcheck.png" alt="Editando valor BypassTPMCheck para 1" loading="lazy" decoding="async" width="822" height="562">
+          </picture>
+          <picture>
+            <source srcset="../imagens/bypass-tpm-chaves-configuradas.webp" type="image/webp">
+            <img src="../imagens/bypass-tpm-chaves-configuradas.png" alt="Chaves de bypass configuradas no regedit" loading="lazy" decoding="async" width="768" height="545">
+          </picture>
           <p>depois é só fechar o regedit e o cmd, voltar uma tela na instalação e avançar de novo. o instalador reconhece as chaves e libera a instalação no ambiente virtualizado.</p>
 
           <div class="info-note">
@@ -137,8 +152,10 @@
             <p>essas chaves (<code>LabConfig</code>, <code>BypassTPMCheck</code>, <code>BypassSecureBootCheck</code>) são documentadas pela própria Microsoft pra uso em ambientes de lab e virtualização. nao é nada obscuro, é o caminho oficial pra quem precisa rodar Windows 11 em VM sem hardware compatível.</p>
           </div>
 
-          <img src="../imagens/bypass-tpm-instalacao-avancando.png" alt="Instalação do Windows 11 avançando sem erro">
-
+          <picture>
+            <source srcset="../imagens/bypass-tpm-instalacao-avancando.webp" type="image/webp">
+            <img src="../imagens/bypass-tpm-instalacao-avancando.png" alt="Instalação do Windows 11 avançando sem erro" loading="lazy" decoding="async" width="1124" height="813">
+          </picture>
         </div>
       </article>
       <a href="../index.html#blog" class="back-btn" style="margin-top:16px">← ver todos os artigos</a>
