@@ -163,7 +163,7 @@
 
           <p><strong>3.</strong> ~40 linhas de JS inline no final do HTML. Lanyard com polling de 60s, status.json fetch único no load:</p>
 
-          <pre><code>// Lanyard — polling a cada 60s
+          <pre><code>// Lanyard: polling a cada 60s
 (function () {
   var LANYARD = 'https://api.lanyard.rest/v1/users/SEU_ID';
 
@@ -191,7 +191,7 @@
   setInterval(fetchGame, 60000);
 })();
 
-// status.json — fetch único no load
+// status.json: fetch único no load
 (function () {
   fetch('/status.json')
     .then(function (r) { return r.json(); })
