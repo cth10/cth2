@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Celso Takeshi Hamasaki | Dev Java &amp; Cloud | CTH.JP</title>
+  <meta name="description" content="Desenvolvedor Backend Java apaixonado por Linux e Cloud. Blog sobre programação, segurança digital, Linux, Cloud, geopolítica e tecnologia. AWS CCP certificado.">
+  <meta name="keywords" content="java backend, linux, cloud, aws, devops, segurança digital, programação, celso hamasaki">
+  <meta name="author" content="Celso Takeshi Hamasaki">
+  <link rel="canonical" href="https://cth.jp/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Celso Takeshi Hamasaki | Dev Java &amp; Cloud">
+  <meta property="og:description" content="Desenvolvedor Backend Java apaixonado por Linux e Cloud. Blog sobre programação, segurança digital e tecnologia.">
+  <meta property="og:url" content="https://cth.jp/">
+  <meta property="og:site_name" content="CTH.JP">
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Celso Takeshi Hamasaki",
+    "url": "https://cth.jp",
+    "email": "i@cth.jp",
+    "jobTitle": "Desenvolvedor Backend Java",
+    "sameAs": ["https://www.linkedin.com/in/celso-hamasaki"]
+  }
+  </script>
+
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function(){var t=localStorage.getItem('cth-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-title">✦ CTH.JP ✦</div>
+  <div class="site-subtitle">Celso Takeshi Hamasaki · Dev Java &amp; Cloud</div>
+  <div class="miku-quote" aria-live="polite">
+    <span class="miku-quote-text" id="mikuQuote"></span>
+  </div>
+  <script>
+    (function(){
+      var q=[
+        ["'Mil cerejeiras, em meio à noite. Uma jaula de aço.'","Senbonzakura"],
+        ["'Laços de sentimentos formam um mundo.'","Tell Your World"],
+        ["'Eu quero cantar... ainda... eu quero cantar...'","The Disappearance of Hatsune Miku"],
+        ["'Eu sou a princesa número 1 do mundo.'","World is Mine"],
+        ["'Um amor fervoroso, isso é um pecado.'","Koi wa Sensou"],
+        ["'Mais uma vez, mais uma vez.'","Rolling Girl"],
+        ["'Vamos plantar uma macieira no deserto.'","Suna no Wakusei"],
+        ["'Mesmo que você perceba que sou eu, não precisa mais me abraçar.'","Ghost Rule"]
+      ];
+      var el=document.getElementById('mikuQuote');
+      var last=-1;
+      function pick(){var i;do{i=Math.floor(Math.random()*q.length)}while(i===last);last=i;return q[i];}
+      function cycle(){
+        el.style.opacity='0';
+        setTimeout(function(){
+          var r=pick();
+          el.textContent=r[0]+' — '+r[1];
+          el.style.opacity='';
+        },600);
+      }
+      var r=pick();
+      el.textContent=r[0]+' — '+r[1];
+      setInterval(cycle,6000);
+    })();
+  </script>
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="index.html" class="active">🏠 início</a>
+    <a href="#blog">📝 blog</a>
+    <a href="#sobre">👤 sobre</a>
+    <a href="#linkedin">💼 linkedin</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema escuro/claro"></button>
+  </nav>
+</header>
+
+<div class="page-wrapper">
+  <div class="layout">
+
+    <!-- ═══ SIDEBAR ESQUERDA ═══ -->
+    <aside class="sidebar-left" aria-label="Perfil e navegação">
+
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">♡</i> perfil</div>
+        <div class="widget-body">
+          <div class="profile-name">CELSO TAKESHI</div>
+          <div class="profile-role">Dev Java &amp; Cloud ☕</div>
+          <div class="profile-status">● disponível pra oportunidades</div>
+          <ul class="profile-links">
+<li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+            <li><a href="https://celsohamasaki.notion.site/aws" target="_blank" rel="noopener">☁️ Notas AWS</a></li>
+            <li><a href="https://nobaraproject.org/download-nobara/" target="_blank" rel="noopener">🐧 Nobara Linux</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">★</i> navegação</div>
+        <div class="widget-body">
+          <ul class="nav-list">
+            <li><a href="#blog"><span class="ni">📝</span> artigos</a></li>
+            <li><a href="#sobre"><span class="ni">👤</span> sobre mim</a></li>
+            <li><a href="#formacao"><span class="ni">🎓</span> formação</a></li>
+            <li><a href="#experiencia"><span class="ni">💼</span> experiência</a></li>
+            <li><a href="#stack"><span class="ni">🛠️</span> stack</a></li>
+            <li><a href="#linkedin"><span class="ni">🔗</span> posts linkedin</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">✦</i> tags do blog</div>
+        <div class="widget-body">
+          <div class="tags-cloud">
+            <a href="#blog" class="tag">#java</a>
+            <a href="#blog" class="tag">#linux</a>
+            <a href="#blog" class="tag">#cloud</a>
+            <a href="#blog" class="tag">#aws</a>
+            <a href="#blog" class="tag">#segurança</a>
+            <a href="#blog" class="tag">#flutter</a>
+            <a href="#blog" class="tag">#windows</a>
+            <a href="#blog" class="tag">#privacidade</a>
+            <a href="#blog" class="tag">#geopolitica</a>
+            <a href="#blog" class="tag">#debug</a>
+            <a href="#blog" class="tag">#fedora</a>
+            <a href="#blog" class="tag">#rclone</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">🎮</i> agora jogando</div>
+        <div class="widget-body">
+          <div class="now-playing">
+            <div class="np-label">jogando agora:</div>
+            <div class="track" id="game-track">—</div>
+            <div class="music-bars" id="game-bars" style="display:none">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <a href="artigos/lanyard-agora-jogando.html" class="np-label" style="margin-top:8px;display:inline-block;text-decoration:none;opacity:0.7;">como funciona →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">📚</i> now studying</div>
+        <div class="widget-body">
+          <div class="now-playing">
+            <div class="np-label">estudando:</div>
+            <div class="track" id="study-track">—</div>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ═══ CONTEÚDO PRINCIPAL ═══ -->
+    <main class="main-content" id="main">
+
+      <!-- HERO -->
+      <section class="hero" id="sobre" aria-label="Apresentação">
+        <div class="hero-inner">
+          <div class="hero-avatar-wrap" role="img" aria-label="Avatar"><img src="imagens/HFxhilNbIAAJyib.jpeg" alt="Celso"></div>
+          <div>
+            <h1 class="hero-name">Olá! Eu sou o <span class="hl">Celso</span>.<br>Desenvolvedor apaixonado por <span class="hl">Linux</span> e <span class="hl">Cloud</span>.</h1>
+            <p class="hero-desc">
+              Desenvolvedor desde a curiosidade de <strong>2009</strong> até a prática profissional de hoje.
+              Quando criança, programava em <strong>AutoIt</strong> e descobri o prazer de experiências digitais.
+              Vários sites publicados desde 2008, começando com pequenos blogs de jogos, e esse aqui tá na lista! ٩(◕‿◕)۶
+            </p>
+            <div class="hero-badges">
+              <span class="badge">☕ Java Backend</span>
+              <span class="badge">🐧 Linux Enjoyer</span>
+              <span class="badge">☁️ AWS CCP</span>
+              <span class="badge">💰 ANBIMA CEA</span>
+              <span class="badge">📍 Brasil</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FORMAÇÃO -->
+      <section class="section-card" id="formacao">
+        <h2><span class="sh">🎓</span> formação acadêmica</h2>
+        <ul class="text-list">
+          <li><span class="emoji">📚</span> <strong>Relações Internacionais</strong> · Bacharelado · UNIVALI</li>
+          <li><span class="emoji">🌍</span> <strong>Comércio Exterior</strong> · Tecnólogo · UNINTER</li>
+          <li><span class="emoji">💻</span> <strong>Análise e Desenvolvimento de Sistemas</strong> · Tecnólogo · PUC-PR</li>
+          <li><span class="emoji">📊</span> <strong>MBA Macroeconomia &amp; Portfolio Management</strong>: 391h de estudo</li>
+          <li><span class="emoji">📊</span> <strong>MBA na área de Economia</strong></li>
+          <li><span class="emoji">☁️</span> <strong>AWS Certified Cloud Practitioner (CCP)</strong>: <a href="https://celsohamasaki.notion.site/aws" target="_blank" rel="noopener" style="color:var(--cyan)">meus estudos compartilhados</a></li>
+          <li><span class="emoji">💰</span> <strong>Certificado ANBIMA CEA</strong></li>
+          <li><span class="emoji">🔧</span> <strong>Montagem e Manutenção de Computadores</strong></li>
+        </ul>
+      </section>
+
+      <!-- EXPERIÊNCIA -->
+      <section class="section-card" id="experiencia">
+        <h2><span class="sh">💼</span> experiência profissional</h2>
+        <div class="callout-box" style="margin-bottom:10px">
+          <div class="callout-title">🏢 COMPASS UOL</div>
+          <p>Atuação em projeto com o <strong>Banco Itaú</strong>.</p>
+        </div>
+        <div class="callout-box">
+          <div class="callout-title">🏢 PORTFEL CONSULTORIA FINANCEIRA</div>
+          <p>Consultor de Investimentos</p>
+        </div>
+      </section>
+
+      <!-- STACK -->
+      <section class="section-card" id="stack">
+        <h2><span class="sh">🛠</span> stack técnico</h2>
+        <div class="info-grid" style="margin-bottom:16px">
+          <div class="info-item"><div class="info-item-label">principal</div><div class="info-item-value">☕ Java</div></div>
+          <div class="info-item"><div class="info-item-label">frontend</div><div class="info-item-value">🌐 Vue.js</div></div>
+          <div class="info-item"><div class="info-item-label">fullstack</div><div class="info-item-value">💎 Rails</div></div>
+          <div class="info-item"><div class="info-item-label">cloud</div><div class="info-item-value">☁️ AWS</div></div>
+          <div class="info-item"><div class="info-item-label">sistema</div><div class="info-item-value">🐧 Linux</div></div>
+          <div class="info-item"><div class="info-item-label">aprendendo</div><div class="info-item-value">🔵 C / C++ / Lua</div></div>
+        </div>
+        <div style="overflow-x:auto;border-radius:8px;border:1px solid var(--border)">
+          <table class="skill-tbl">
+            <thead><tr><th>Categoria</th><th>Conhecimentos</th></tr></thead>
+            <tbody>
+              <tr><td>Backend</td><td>Java, APIs REST, boas práticas</td></tr>
+              <tr><td>Frontend</td><td>Vue.js, componentes, estado</td></tr>
+              <tr><td>DevOps</td><td>Linux, automações, pipelines básicos</td></tr>
+              <tr><td>Cloud</td><td>AWS fundamentos, certificação CCP</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PREFERÊNCIAS -->
+      <section class="section-card">
+        <h2><span class="sh">💜</span> preferências</h2>
+        <div class="info-grid">
+          <div class="info-item"><div class="info-item-label">sistema</div><div class="info-item-value">Fedora / Nobara</div></div>
+          <div class="info-item"><div class="info-item-label">e-mail</div><div class="info-item-value">Proton Mail</div></div>
+          <div class="info-item"><div class="info-item-label">browser</div><div class="info-item-value">Firefox / Zen</div></div>
+          <div class="info-item"><div class="info-item-label">git</div><div class="info-item-value">GitLab &gt; GitHub</div></div>
+          <div class="info-item"><div class="info-item-label">office</div><div class="info-item-value">LibreOffice</div></div>
+          <div class="info-item"><div class="info-item-label">leitura</div><div class="info-item-value">Kindle &gt; físico</div></div>
+        </div>
+      </section>
+
+      <!-- HOBBIES -->
+      <section class="section-card">
+        <h2><span class="sh">🎮</span> hobbies &amp; interesses</h2>
+        <ul class="text-list">
+          <li><span class="emoji">🎮</span> <strong>Games</strong> que marcaram: Holy Beast Online, GetAmped</li>
+          <li><span class="emoji">📖</span> Leitura atual: <em>O Triste Fim de Policarpo Quaresma</em>, <em>O Guia do Mochileiro das Galáxias</em></li>
+          <li><span class="emoji">✨</span> Favorito: <strong>E Não Sobrou Nenhum</strong></li>
+          <li><span class="emoji">🔧</span> <strong>Hardware</strong>: Montagem de PCs</li>
+          <li><span class="emoji">🎥</span> <strong>Animes preferidos</strong>: Clannad, Steins;Gate, Gakkou no Kaidan</li>
+          <li><span class="emoji">☁️</span> Entusiasta do Shadow PC e GeForce NOW</li>
+        </ul>
+        <div class="divider-cute">· · ·</div>
+        <div class="video-wrap">
+          <iframe class="video-embed" src="https://www.youtube.com/embed/ESx_hy1n7HA" title="Mili - world.execute(me);" frameborder="0" allow="autoplay; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </section>
+
+      <!-- FILOSOFIA -->
+      <section class="section-card">
+        <h2><span class="sh">💭</span> filosofia de trabalho</h2>
+        <div class="callout-box">
+          <div class="callout-title">💭 PRINCÍPIO</div>
+          <p>Planejamento e preparo precedem a ação.</p>
+        </div>
+        <div class="callout-box" style="border-left-color:var(--cyan);background:var(--cyan-dim);">
+          <div class="callout-title" style="color:var(--cyan)">🔐 PREOCUPAÇÃO</div>
+          <p style="font-style:italic">"Dados se tornaram a principal moeda da economia digital, e seu valor é bem conhecido por empresas e governos. A mesma informação que impulsiona a inovação pode ser usada para influenciar o comportamento das pessoas. Para mim, defender plataformas abertas, exigir transparência e agir com cautela são os pilares para construirmos um ambiente digital mais justo e equilibrado."</p>
+        </div>
+      </section>
+
+      <!-- BLOG -->
+      <section id="blog">
+        <h2 style="font-family:var(--fn-head);font-size:11px;color:var(--text);margin:24px 0 16px;letter-spacing:2px;display:flex;align-items:center;gap:10px;">
+          <span style="color:var(--pink)"><span style="color:var(--pink)">📝</span> BLOG: artigos técnicos
+          <span style="flex:1;height:1px;background:linear-gradient(to right,var(--border),transparent)"></span>
+        </h2>
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">Rascunhos rápidos e sem formalidades. (⌐■_■)</p>
+
+        <div class="articles-grid">
+
+          <a href="artigos/icloud-nao-cofre.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#privacidade</span><span class="card-tag">#icloud</span><span class="card-tag">#opiniao</span></div>
+            <div class="card-title">iCloud não é cofre: o que a prisão dos MCs Ryan SP e Poze do Rodo ensina sobre privacidade</div>
+            <div class="card-excerpt">o backup do contador virou um mapa do esquema de R$ 1,6 bilhão. o iCloud não foi invadido — ele funcionou exatamente como projetado.</div>
+            <div class="card-meta"><span class="card-date">27/04/2026</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/lanyard-agora-jogando.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#javascript</span><span class="card-tag">#frontend</span><span class="card-tag">#debug</span><span class="card-tag">#dns</span></div>
+            <div class="card-title">widget 'agora jogando' com Lanyard: o DNS brasileiro quase arruinou tudo</div>
+            <div class="card-excerpt">como integrei Discord Rich Presence no site estático e descobri que meu DNS local simplesmente não sabia quem era api.lanyard.rest.</div>
+            <div class="card-meta"><span class="card-date">16/04/2026</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/apocalipse-quantico-sndl.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#ciberseguranca</span><span class="card-tag">#quantico</span><span class="card-tag">#privacidade</span></div>
+            <div class="card-title">O Apocalipse Quântico e a tática SNDL</div>
+            <div class="card-excerpt">Computadores quânticos, grampeamento de cabos submarinos e por que AES-256 ainda é sua melhor aposta contra a espionagem do futuro.</div>
+            <div class="card-meta"><span class="card-date">16/04/2026</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/expo-web-tela-branca.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#react-native</span><span class="card-tag">#expo</span><span class="card-tag">#debug</span></div>
+            <div class="card-title">Tela branca no Expo Web: o bundle inteiro morria antes de executar</div>
+            <div class="card-excerpt">feliz valentine days 💀 passei ele brigando com uma tela branca. zustand v5 + Metro = desastre silencioso no Expo SDK 54.</div>
+            <div class="card-meta"><span class="card-date">14/02/2026</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/mayinab-freeze.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#flutter</span><span class="card-tag">#debug</span><span class="card-tag">#mobile</span></div>
+            <div class="card-title">Mayinab travava do nada ao navegar entre subtopics (7 tentativas até achar)</div>
+            <div class="card-excerpt">o bug mais teimoso que já enfrentei. freeze intermitente, impossível de reproduzir, 6 falhas antes de achar a causa raiz no ChatScrollObserver.</div>
+            <div class="card-meta"><span class="card-date">12/02/2026</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/flutter-latex-flutter338.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#flutter</span><span class="card-tag">#latex</span><span class="card-tag">#debug</span></div>
+            <div class="card-title">Flutter 3.38 quebrou meu app por causa de LaTeX (733 erros por frame!)</div>
+            <div class="card-excerpt">gente. eu quase chorei. 733 erros por frame, app inutilizável, e a causa raiz era um pacote de LaTeX abandonado incompatível com Flutter 3.38.</div>
+            <div class="card-meta"><span class="card-date">09/02/2026</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/sse-c-s3.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#aws</span><span class="card-tag">#s3</span><span class="card-tag">#criptografia</span></div>
+            <div class="card-title">O Fim do SSE-C no S3 (e a ilusão da segurança)</div>
+            <div class="card-excerpt">recebi um email da aws que quase me matou do coração. o SSE-C é teatro de segurança. a solução real é Client-Side Encryption.</div>
+            <div class="card-meta"><span class="card-date">03/02/2026</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/como-chip-feito.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#hardware</span><span class="card-tag">#geopolitica</span><span class="card-tag">#curiosidades</span></div>
+            <div class="card-title">Como raios um chip é feito? (e pq Taiwan é o protagonista)</div>
+            <div class="card-excerpt">3 nanômetros. menor que um vírus. fotolitografia, EUV, TSMC e por que o mundo todo depende de uma ilha minúscula.</div>
+            <div class="card-meta"><span class="card-date">02/02/2026</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/lei-benford.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#matematica</span><span class="card-tag">#java</span><span class="card-tag">#fraude</span></div>
+            <div class="card-title">Lei de Benford</div>
+            <div class="card-excerpt">como a Receita Federal usa matemática pra pegar quem adultera nota fiscal. o dígito 1 aparece 30% das vezes em dados reais. código Java incluso.</div>
+            <div class="card-meta"><span class="card-date">–</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/responsividade-inferno.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#css</span><span class="card-tag">#mobile</span><span class="card-tag">#obsidian</span></div>
+            <div class="card-title">Responsividade é um inferno</div>
+            <div class="card-excerpt">resolvi abrir o site no celular... e meus olhos sangraram. 🩸 o super escudo anti-quebra mobile v3.0 em CSS.</div>
+            <div class="card-meta"><span class="card-date">–</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/cellebrite-devassa-digital.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#seguranca</span><span class="card-tag">#cellebrite</span><span class="card-tag">#privacidade</span></div>
+            <div class="card-title">A Devassa Digital em Brasília, Banco Master e Cellebrite</div>
+            <div class="card-excerpt">o que o Cellebrite realmente faz, por que biometria é insegura, cache forense, cold boot attack, e meu Crypto-Wiper em C.</div>
+            <div class="card-meta"><span class="card-date">15/06/2025</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/previsoes-geopolitica.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#geopolitica</span><span class="card-tag">#opiniao</span></div>
+            <div class="card-title">Minhas previsões pro futuro do mundo (Geopolítica)</div>
+            <div class="card-excerpt">Taiwan, Japão, Américas, África, e o mundo dividido em 4 blocos. o que minha intuição diz sobre os próximos anos.</div>
+            <div class="card-meta"><span class="card-date">–</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/cloud-computer-hostinger.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#vps</span><span class="card-tag">#linux</span><span class="card-tag">#nomachine</span></div>
+            <div class="card-title">Como criar seu próprio Cloud Computer com Hostinger + NoMachine</div>
+            <div class="card-excerpt">VPS com interface gráfica XFCE acessada via NoMachine. 1Gbps+ de internet, custo baixo, parece que o PC tá na sua frente.</div>
+            <div class="card-meta"><span class="card-date">–</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/dumping-cash-burn.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#economia</span><span class="card-tag">#startups</span></div>
+            <div class="card-title">Dumping e Cash Burn</div>
+            <div class="card-excerpt">por que corridas de app custavam centavos? iFood, Uber, Amazon, OpenAI. quem aguenta sangrar dinheiro por mais tempo leva o mercado.</div>
+            <div class="card-meta"><span class="card-date">–</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/segredo-fabricas.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#economia</span><span class="card-tag">#curiosidades</span></div>
+            <div class="card-title">O segredo das fábricas</div>
+            <div class="card-excerpt">Bauducco e Visconti são da mesma fábrica. Unilever faz OMO, Brilhante e Surf. segmentação de preço explicada com chocotone.</div>
+            <div class="card-meta"><span class="card-date">–</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/ia-bolha.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#ia</span><span class="card-tag">#opiniao</span></div>
+            <div class="card-title">IA eh bolha?</div>
+            <div class="card-excerpt">minha opinião no final de 2025: não é bolha, é revolucionário. mas tem muito FOMO de investidor e AI slop cansando todo mundo.</div>
+            <div class="card-meta"><span class="card-date">–</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/windows11-debloat.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#windows</span><span class="card-tag">#debloat</span><span class="card-tag">#tutorial</span></div>
+            <div class="card-title">A primeira coisa que eu faço ao instalar o Windows 11</div>
+            <div class="card-excerpt">o ritual de limpeza com o script Win11Debloat do Raphire. desativa telemetria, Copilot, widgets, Bing e remove bloatware.</div>
+            <div class="card-meta"><span class="card-date">–</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/bypass-login-windows11.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#windows</span><span class="card-tag">#tutorial</span></div>
+            <div class="card-title">Bypass Login Microsoft no Windows 11</div>
+            <div class="card-excerpt">o oobe\bypassnro não funciona mais. o novo método: Shift + F10, comando start ms-cxh:localonly, conta local criada.</div>
+            <div class="card-meta"><span class="card-date">–</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/bypass-tpm-windows11.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#windows</span><span class="card-tag">#vm</span><span class="card-tag">#tutorial</span></div>
+            <div class="card-title">Bypass Requisitos Windows 11 (TPM/Secure Boot) em VM</div>
+            <div class="card-excerpt">instalando Windows 11 no GNOME Boxes sem TPM. o hack do Regedit com LabConfig, BypassTPMCheck e BypassSecureBootCheck.</div>
+            <div class="card-meta"><span class="card-date">–</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/backblaze-b2-cloudflare.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#rclone</span><span class="card-tag">#backup</span><span class="card-tag">#linux</span></div>
+            <div class="card-title">Backup turbo com rclone + Backblaze B2 + Cloudflare</div>
+            <div class="card-excerpt">500 operações por segundo, sem limite diário de 750GB, e download de graça pelo Bandwidth Alliance. tchau Google Drive!</div>
+            <div class="card-meta"><span class="card-date">–</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/jogos-japoneses-lutris.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#linux</span><span class="card-tag">#wine</span><span class="card-tag">#games</span></div>
+            <div class="card-title">Rodando jogo japonês com fontes japonesas no Linux (Lutris)</div>
+            <div class="card-excerpt">comprei 魔棒少女みらくるくるん e precisava rodar no Linux. LANG=ja_JP.UTF-8, Wine, Winetricks, codecs. funciona!</div>
+            <div class="card-meta"><span class="card-date">–</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/nvidia-fedora.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#fedora</span><span class="card-tag">#nvidia</span><span class="card-tag">#linux</span></div>
+            <div class="card-title">Instalar drivers Nvidia no Fedora é muito fácil e posso provar</div>
+            <div class="card-excerpt">calma! o driver nouveau não é o fim. RPM Fusion + akmod-nvidia + esperar 5 minutos = nvidia-smi funcionando.</div>
+            <div class="card-meta"><span class="card-date">–</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/corrigindo-sacani.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#5g</span><span class="card-tag">#rede</span><span class="card-tag">#latencia</span></div>
+            <div class="card-title">Corrigindo Sérgio Sacani</div>
+            <div class="card-excerpt">5G não vai possibilitar cirurgias remotas do Japão ao Brasil. latência existe por causa da distância e da velocidade da luz. período.</div>
+            <div class="card-meta"><span class="card-date">–</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/nobara-gaming-linux.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#linux</span><span class="card-tag">#gaming</span><span class="card-tag">#nobara</span></div>
+            <div class="card-title">Nobara é melhor que Ruimdowns 11 para gaming</div>
+            <div class="card-excerpt">o lado chato do Windows 11 vs o Nobara do Glorious Eggroll. codecs prontos, controles funcionando, drivers Nvidia no instalador.</div>
+            <div class="card-meta"><span class="card-date">–</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/ssd-saude-formatar.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#linux</span><span class="card-tag">#hardware</span><span class="card-tag">#ssd</span></div>
+            <div class="card-title">Verificando saúde de SSD antigo e formatando no Linux</div>
+            <div class="card-excerpt">smartmontools, SMART PASSED, setores realocados, blkdiscard, fdisk GPT e mkfs.ext4. o full check-up e reset do SSD.</div>
+            <div class="card-meta"><span class="card-date">–</span><span class="card-read">ler →</span></div>
+          </a>
+
+          <a href="artigos/videos-antigos.html" class="article-card">
+            <div class="card-tags"><span class="card-tag">#ia</span><span class="card-tag">#projetos</span><span class="card-tag">#video</span></div>
+            <div class="card-title">Alguns vídeos antigos que gravei…</div>
+            <div class="card-excerpt">IA local com Kobold, Stable Diffusion, IA para reuniões ao vivo, e o desafio 3 do PB Full Stack da Compass UOL (nota máxima!).</div>
+            <div class="card-meta"><span class="card-date">–</span><span class="card-read">ler →</span></div>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- LINKEDIN -->
+      <section id="linkedin">
+        <h2 style="font-family:var(--fn-head);font-size:11px;color:var(--text);margin:24px 0 16px;letter-spacing:2px;display:flex;align-items:center;gap:10px;">
+          <span style="color:var(--pink)"><span style="color:var(--pink)">💼</span> LINKEDIN: posts &amp; artigos
+          <span style="flex:1;height:1px;background:linear-gradient(to right,var(--border),transparent)"></span>
+        </h2>
+        <div class="linkedin-posts">
+          <div class="linkedin-card"><div class="linkedin-card-year">2025</div><div class="linkedin-card-title"><a href="https://www.linkedin.com/posts/activity-7368318932874575874-hFoj" target="_blank" rel="noopener">Conclusão MBA em Macroeconomia &amp; Portfolio Management!</a></div><div class="linkedin-card-excerpt">391 horas de estudo. rentabilidade de +82,97% na competição simulada. NVDC34 com +244,73%. 🎉</div></div>
+          <div class="linkedin-card"><div class="linkedin-card-year">2025</div><div class="linkedin-card-title"><a href="https://www.linkedin.com/posts/activity-7316396736376135681-GuLh" target="_blank" rel="noopener">Aprovado na AWS Certified Cloud Practitioner!</a></div><div class="linkedin-card-excerpt">consegui a certificação AWS CCP.</div></div>
+          <div class="linkedin-card"><div class="linkedin-card-year">2025</div><div class="linkedin-card-title"><a href="https://www.linkedin.com/posts/activity-7320927918442921984-Ui0p" target="_blank" rel="noopener">Ubuntu rodando inteiramente na RAM</a></div><div class="linkedin-card-excerpt">I/O mais rápido que SSDs NVMe. configuração via GRUB e initramfs. dados não persistem após desligamento.</div></div>
+          <div class="linkedin-card"><div class="linkedin-card-year">2024</div><div class="linkedin-card-title"><a href="https://www.linkedin.com/posts/activity-7260649577869889536-Nqzq" target="_blank" rel="noopener">O governo errou o RG</a></div><div class="linkedin-card-excerpt">'Nacionality' ao invés de 'Nationality'. documento oficial de identificação escrito errado.</div></div>
+          <div class="linkedin-card"><div class="linkedin-card-year">2024</div><div class="linkedin-card-title"><a href="https://www.linkedin.com/posts/activity-7239262691909918720-Ao4R" target="_blank" rel="noopener">Python é 72x mais lento e usa 76x mais energia que C</a></div><div class="linkedin-card-excerpt">estudo comparando 27 linguagens. C ganha em velocidade e energia. Rust é logo atrás.</div></div>
+          <div class="linkedin-card"><div class="linkedin-card-year">2024</div><div class="linkedin-card-title"><a href="https://www.linkedin.com/posts/activity-7223601076850065409-sW_d" target="_blank" rel="noopener">Japão como país soberano?</a></div><div class="linkedin-card-excerpt">artigo 9° da Constituição, dependência dos EUA, e por que Taiwan é chave para o futuro do Japão.</div></div>
+          <div class="linkedin-card"><div class="linkedin-card-year">2024</div><div class="linkedin-card-title"><a href="https://www.linkedin.com/posts/activity-7218384054285443072-fD3Z" target="_blank" rel="noopener">Curva de Yerkes-Dodson e produtividade</a></div><div class="linkedin-card-excerpt">pouco estresse = procrastinação. estresse adequado = performance. excesso = burnout.</div></div>
+          <div class="linkedin-card"><div class="linkedin-card-year">2024</div><div class="linkedin-card-title"><a href="https://www.linkedin.com/posts/activity-7165425917610209281-syXS" target="_blank" rel="noopener">Recomendação: Aiming High — Masayoshi Son e SoftBank</a></div><div class="linkedin-card-excerpt">o livro de Atsuo Inoue sobre o fundador do SoftBank. história incrível que poucos brasileiros conhecem.</div></div>
+          <div class="linkedin-card"><div class="linkedin-card-year">2024</div><div class="linkedin-card-title"><a href="https://www.linkedin.com/posts/activity-7157111382935580672-4zXX" target="_blank" rel="noopener">Estudo britânico associa aumento dos juros com saúde mental</a></div><div class="linkedin-card-excerpt">cada 1% na taxa de juros aumenta o risco de doenças psiquiátricas em 2,6% para altamente endividados.</div></div>
+          <div class="linkedin-card"><div class="linkedin-card-year">2023</div><div class="linkedin-card-title"><a href="https://www.linkedin.com/pulse/vtubers-e-neuro-sama-na-bloomberg-celso-takeshi-hamasaki/" target="_blank" rel="noopener">VTubers e Neuro-sama na Bloomberg</a></div><div class="linkedin-card-excerpt">Kizuna AI, Hololive, Cover Corp e a IA VTuber Neuro-sama do Vedal.</div></div>
+          <div class="linkedin-card"><div class="linkedin-card-year">2023</div><div class="linkedin-card-title"><a href="https://www.linkedin.com/posts/activity-7094835749094596608-N-P2" target="_blank" rel="noopener">Evite falar "gringo"</a></div><div class="linkedin-card-excerpt">a palavra pode ser interpretada como pejorativa em vários países. aprendi isso no Módulo Internacional na graduação.</div></div>
+          <div class="linkedin-card"><div class="linkedin-card-year">2022</div><div class="linkedin-card-title"><a href="https://www.linkedin.com/pulse/jogos-online-e-criptomoedas-celso-takeshi-hamasaki/" target="_blank" rel="noopener">Jogos online e Criptomoedas</a></div><div class="linkedin-card-excerpt">Holy Beast Online, RMT, Bitcoin em 2012, mineração em 2013 e Digibyte via League of Legends.</div></div>
+          <div class="linkedin-card"><div class="linkedin-card-year">2022</div><div class="linkedin-card-title"><a href="https://www.linkedin.com/posts/activity-6989197351521267713-Gs_R" target="_blank" rel="noopener">Aprovado ANBIMA CEA de primeira!</a></div><div class="linkedin-card-excerpt">prova tranquila. estudei pelo T2 Educação e TopInvest.</div></div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ═══ SIDEBAR DIREITA ═══ -->
+    <aside class="sidebar-right" aria-label="Widgets">
+
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">♪</i> now playing</div>
+        <div class="widget-body">
+          <div class="now-playing">
+            <div class="np-label">♫ ouvindo agora:</div>
+            <div class="track">world.execute(me); — Mili</div>
+            <div class="music-bars">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">📋</i> posts recentes</div>
+        <div class="widget-body">
+          <ul class="latest-list">
+            <li class="latest-item"><a href="artigos/lanyard-agora-jogando.html">Widget 'agora jogando' com Lanyard</a><div class="latest-item-date">16/04/2026</div></li>
+            <li class="latest-item"><a href="artigos/apocalipse-quantico-sndl.html">O Apocalipse Quântico e a tática SNDL</a><div class="latest-item-date">16/04/2026</div></li>
+            <li class="latest-item"><a href="artigos/expo-web-tela-branca.html">Tela branca no Expo Web</a><div class="latest-item-date">14/02/2026</div></li>
+            <li class="latest-item"><a href="artigos/mayinab-freeze.html">Mayinab travava do nada</a><div class="latest-item-date">12/02/2026</div></li>
+            <li class="latest-item"><a href="artigos/flutter-latex-flutter338.html">Flutter 3.38 quebrou meu app</a><div class="latest-item-date">09/02/2026</div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">📊</i> stats</div>
+        <div class="widget-body">
+          <div class="stat-row"><span>artigos publicados</span><span class="stat-val">25</span></div>
+          <div class="stat-row"><span>certificações</span><span class="stat-val">4</span></div>
+          <div class="stat-row"><span>anos codando</span><span class="stat-val">15+</span></div>
+          <div class="stat-row"><span>animes favoritos</span><span class="stat-val">3</span></div>
+        </div>
+      </div>
+
+      <div class="widget" id="contato">
+        <div class="widget-title"><i class="wt-icon">☕</i> contato</div>
+        <div class="widget-body" style="font-size:12px;color:var(--text-muted);">
+          <p style="margin-bottom:6px">📧 i@cth.jp</p>
+          <p style="margin-bottom:6px">📍 Brasil</p>
+          <p style="color:var(--green)">● disponível pra oportunidades em TI</p>
+        </div>
+      </div>
+
+    </aside>
+
+  </div><!-- .layout -->
+</div><!-- .page-wrapper -->
+
+<footer class="site-footer">
+  <span class="footer-kawaii">✦ ♡ ✦</span>
+  <p>
+    <a href="index.html">CTH.JP</a>
+    <span class="footer-sep">·</span>
+    i@cth.jp
+    <span class="footer-sep">·</span>
+    <a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">LinkedIn</a>
+  </p>
+</footer>
+
+<script>
+(function () {
+  var btn = document.getElementById('themeToggle');
+
+  function isDark() {
+    var t = document.documentElement.getAttribute('data-theme');
+    if (t === 'dark') return true;
+    if (t === 'light') return false;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  function updateBtn() {
+    btn.textContent = isDark() ? '☀ claro' : '🌙 escuro';
+  }
+
+  updateBtn();
+
+  btn.addEventListener('click', function () {
+    var next = isDark() ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('cth-theme', next);
+    updateBtn();
+  });
+})();
+</script>
+
+<script>
+(function () {
+  var LANYARD = 'https://api.lanyard.rest/v1/users/1368778707334070343';
+
+  function fetchGame() {
+    fetch(LANYARD)
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        var track = document.getElementById('game-track');
+        var bars  = document.getElementById('game-bars');
+        if (!track) return;
+        var acts = d.data && d.data.activities;
+        var game = acts && acts.find(function (a) { return a.type === 0; });
+        if (game) {
+          track.textContent = game.name;
+          if (bars) bars.style.display = '';
+        } else {
+          track.textContent = 'nada no momento';
+          if (bars) bars.style.display = 'none';
+        }
+      })
+      .catch(function () {});
+  }
+
+  fetchGame();
+  setInterval(fetchGame, 60000);
+})();
+
+(function () {
+  fetch('/status.json')
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      var el = document.getElementById('study-track');
+      if (el && d.studying) el.textContent = d.studying;
+    })
+    .catch(function () {});
+})();
+</script>
+
+</body>
+</html>

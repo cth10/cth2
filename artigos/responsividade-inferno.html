@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsividade é um inferno (e como resolvi no Quartz/Obsidian) | CTH.JP</title>
+  <meta name="description" content="Como corrigir vídeos YouTube, tabelas e imagens quebrando no mobile no Quartz v4 e Obsidian. CSS inline para iframes, overflow-x em tabelas, e pre-wrap em blocos de código.">
+  <meta name="keywords" content="responsividade, mobile, CSS, Quartz v4, Obsidian, iframe YouTube, tabelas, overflow-x, aspect-ratio, pre-wrap">
+  <meta name="author" content="Celso Takeshi Hamasaki">
+  <link rel="canonical" href="https://cth.jp/artigos/responsividade-inferno.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Responsividade é um inferno (e como resolvi no Quartz/Obsidian) | CTH.JP">
+  <meta property="og:description" content="Como corrigir vídeos YouTube, tabelas e imagens quebrando no mobile no Quartz v4 e Obsidian. CSS inline para iframes, overflow-x em tabelas, e pre-wrap em blocos de código.">
+  <meta property="og:url" content="https://cth.jp/artigos/responsividade-inferno.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BlogPosting","headline":"Responsividade é um inferno (e como resolvi no Quartz/Obsidian)","author":{"@type":"Person","name":"Celso Takeshi Hamasaki"},"url":"https://cth.jp/artigos/responsividade-inferno.html"}
+  </script>
+  <link rel="stylesheet" href="../style.css">
+  <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-title">✦ CTH.JP ✦</div>
+  <div class="site-subtitle">Celso Takeshi Hamasaki · Dev Java &amp; Cloud</div>
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="../index.html">🏠 início</a>
+    <a href="../index.html#blog">📝 blog</a>
+    <a href="../index.html#sobre">👤 sobre</a>
+  </nav>
+</header>
+<div class="page-wrapper">
+  <div class="layout">
+    <aside class="sidebar-left" aria-label="Navegação do artigo">
+      <a href="../index.html#blog" class="back-btn">← voltar ao blog</a>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">♡</i> sobre o autor</div>
+        <div class="widget-body">
+          <div class="profile-name">CELSO TAKESHI</div>
+          <div class="profile-role">Dev Java &amp; Cloud ☕</div>
+          <div class="profile-status">● disponível pra oportunidades</div>
+          <ul class="profile-links">
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">✦</i> tags</div>
+        <div class="widget-body">
+          <div class="tags-cloud">
+            <span class="tag">#css</span>
+            <span class="tag">#mobile</span>
+            <span class="tag">#obsidian</span>
+            <span class="tag">#quartz</span>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">📋</i> outros artigos</div>
+        <div class="widget-body">
+          <ul class="latest-list">
+            <li class="latest-item"><a href="apocalipse-quantico-sndl.html">O Apocalipse Quântico e SNDL</a></li>
+            <li class="latest-item"><a href="expo-web-tela-branca.html">Tela branca no Expo Web</a></li>
+            <li class="latest-item"><a href="cellebrite-devassa-digital.html">Devassa Digital + Cellebrite</a></li>
+            <li class="latest-item"><a href="backblaze-b2-cloudflare.html">Backup com Backblaze B2</a></li>
+            <li class="latest-item"><a href="nobara-gaming-linux.html">Nobara vs Windows 11</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <nav class="breadcrumb" aria-label="Localização">
+        <a href="../index.html">CTH.JP</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="../index.html#blog">Blog</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Responsividade é um inferno</span>
+      </nav>
+      <article itemscope itemtype="https://schema.org/BlogPosting">
+        <header class="article-header">
+          <div class="article-header-tags">
+            <span class="card-tag">#css</span>
+            <span class="card-tag">#mobile</span>
+            <span class="card-tag">#obsidian</span>
+            <span class="card-tag">#quartz</span>
+          </div>
+          <h1 class="article-header-title" itemprop="headline">Responsividade é um inferno (e como resolvi no Quartz/Obsidian)</h1>
+          <div class="article-header-meta">
+            <span>✍️ Celso Takeshi Hamasaki</span>
+          </div>
+        </header>
+        <div class="article-body" itemprop="articleBody">
+
+          <p>quem acessa meu site pelo pc (monitor ultrawide, linux, terminal aberto) vê tudo lindo. o <strong>Quartz v4</strong> faz um trabalho incrivel gerando o site estático direto do meu cofre do <strong>Obsidian</strong>.</p>
+
+          <p>mas ai resolvi abrir o site no celular... e meus olhos sangraram. 🩸</p>
+
+          <h2>O Caos</h2>
+
+          <p>basicamente, o layout tava todo quebrado no mobile (iPhone e Android).</p>
+
+          <ol>
+            <li><strong>Vídeos do YouTube:</strong> eu usava iframes com tamanho fixo (<code>width="700"</code>), entao o video estourava a tela e criava um scroll horizontal infinito.</li>
+            <li><strong>Tabelas:</strong> cortadas pela metade. não dava pra ler as colunas da direita.</li>
+            <li><strong>Imagens:</strong> algumas ficavam gigantes e empurravam o texto pro limbo.</li>
+          </ol>
+
+          <p>como o css do quartz eh gerado automaticamente no build (e eu tava com preguiça de mexer no sass global e esperar o deploy do github actions), apelei pra solução mais <em>roots</em> possivel: <strong>injetar CSS direto no Markdown.</strong></p>
+
+          <h2>A Solução (A tal da "Gambiarra Técnica")</h2>
+
+          <p>o quartz aceita tags html dentro do <code>.md</code>. entao, se vc colocar um bloco <code>&lt;style&gt;</code> logo depois do frontmatter (aquelas configs do topo), ele aplica o estilo só naquela página.</p>
+
+          <p>foi assim que eu dominei a fera:</p>
+
+          <h3>Vídeos e Imagens Comportados</h3>
+
+          <p>pro video parar de estourar, a gente usa <code>aspect-ratio: 16/9</code>. isso faz ele calcular a altura sozinho baseado na largura da tela. magia pura.</p>
+
+          <pre><code>iframe, video {
+    max-width: 100%;
+    width: 100% !important; /* força bruta pra obedecer */
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px; /* pra ficar bonitinho */
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}</code></pre>
+
+          <h3>O Boss Final: Tabelas</h3>
+
+          <p>tabela em html eh chata. por padrao, ela nao aceita scroll. se a tabela eh larga, ela alarga o site todo. o truque foi transformar a tabela em bloco (<code>display: block</code>) pra liberar o scroll horizontal (<code>overflow-x: auto</code>).</p>
+
+          <pre><code>table {
+    display: block !important; /* o pulo do gato */
+    width: 100% !important;
+    overflow-x: auto !important;
+    white-space: nowrap; /* opcional, pra n quebrar linha dentro da celula */
+}</code></pre>
+
+          <h3>O Código Final (Copy &amp; Paste)</h3>
+
+          <p>se vc usa Quartz ou Obsidian e ta sofrendo com isso, cola isso aqui no topo do seu arquivo (depois dos <code>---</code>):</p>
+
+          <pre><code>&lt;style&gt;
+  /* 🛡️ SUPER ESCUDO ANTI-QUEBRA MOBILE v3.0 */
+
+  /* 1. Mídia (Vídeos e Imagens) */
+  iframe, video {
+    max-width: 100%;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    object-fit: contain;
+  }
+
+  /* 2. Tabelas com Scroll */
+  table {
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* 3. Códigos e Blocos Longos */
+  pre, code {
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    max-width: 100%;
+    overflow-x: auto !important;
+  }
+
+  /* 4. Callouts */
+  .callout, blockquote {
+    max-width: 100%;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+  }
+&lt;/style&gt;</code></pre>
+
+          <div class="info-tip">
+            <div class="info-label">✅ RESULTADO</div>
+            <p>agora meu site carrega liso no mobile, meus videos nao quebram o layout e eu posso voltar a programar em Java em paz.</p>
+          </div>
+
+          <p>frontend is my passion (sqn).</p>
+
+        </div>
+      </article>
+      <a href="../index.html#blog" class="back-btn" style="margin-top:16px">← ver todos os artigos</a>
+    </main>
+  </div>
+</div>
+<footer class="site-footer">
+  <span class="footer-kawaii">✦ ♡ ✦</span>
+  <p><a href="../index.html">CTH.JP</a></p>
+
+</footer>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instalando Windows 11 em VM sem TPM e Secure Boot (GNOME Boxes) | CTH.JP</title>
+  <meta name="description" content="Como instalar Windows 11 em máquina virtual (GNOME Boxes) sem TPM 2.0 e Secure Boot. Configuração via Regedit com chave LabConfig, BypassTPMCheck e BypassSecureBootCheck.">
+  <meta name="keywords" content="windows 11, tpm, secure boot, gnome boxes, máquina virtual, vm, regedit, labconfig, BypassTPMCheck, BypassSecureBootCheck, tutorial">
+  <meta name="author" content="Celso Takeshi Hamasaki">
+  <link rel="canonical" href="https://cth.jp/artigos/bypass-tpm-windows11.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Instalando Windows 11 em VM sem TPM e Secure Boot (GNOME Boxes) | CTH.JP">
+  <meta property="og:description" content="Como instalar Windows 11 em máquina virtual (GNOME Boxes) sem TPM 2.0 e Secure Boot. Configuração via Regedit com chave LabConfig, BypassTPMCheck e BypassSecureBootCheck.">
+  <meta property="og:url" content="https://cth.jp/artigos/bypass-tpm-windows11.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BlogPosting","headline":"Instalando Windows 11 em VM sem TPM e Secure Boot (GNOME Boxes)","author":{"@type":"Person","name":"Celso Takeshi Hamasaki"},"datePublished":"2026-04-16","url":"https://cth.jp/artigos/bypass-tpm-windows11.html"}
+  </script>
+  <link rel="stylesheet" href="../style.css">
+  <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-title">✦ CTH.JP ✦</div>
+  <div class="site-subtitle">Celso Takeshi Hamasaki · Dev Java &amp; Cloud</div>
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="../index.html">🏠 início</a>
+    <a href="../index.html#blog">📝 blog</a>
+    <a href="../index.html#sobre">👤 sobre</a>
+  </nav>
+</header>
+<div class="page-wrapper">
+  <div class="layout">
+    <aside class="sidebar-left" aria-label="Navegação do artigo">
+      <a href="../index.html#blog" class="back-btn">← voltar ao blog</a>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">♡</i> sobre o autor</div>
+        <div class="widget-body">
+          <div class="profile-name">CELSO TAKESHI</div>
+          <div class="profile-role">Dev Java &amp; Cloud ☕</div>
+          <div class="profile-status">● disponível pra oportunidades</div>
+          <ul class="profile-links">
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">✦</i> tags</div>
+        <div class="widget-body">
+          <div class="tags-cloud">
+            <span class="tag">#windows</span>
+            <span class="tag">#vm</span>
+            <span class="tag">#gnome-boxes</span>
+            <span class="tag">#tutorial</span>
+            <span class="tag">#tpm</span>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">📋</i> outros artigos</div>
+        <div class="widget-body">
+          <ul class="latest-list">
+            <li class="latest-item"><a href="apocalipse-quantico-sndl.html">O Apocalipse Quântico e SNDL</a></li>
+            <li class="latest-item"><a href="cellebrite-devassa-digital.html">Devassa Digital + Cellebrite</a></li>
+            <li class="latest-item"><a href="backblaze-b2-cloudflare.html">Backup com Backblaze B2</a></li>
+            <li class="latest-item"><a href="nobara-gaming-linux.html">Nobara vs Windows 11</a></li>
+            <li class="latest-item"><a href="windows11-debloat.html">Windows 11 Debloat</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <nav class="breadcrumb" aria-label="Localização">
+        <a href="../index.html">CTH.JP</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="../index.html#blog">Blog</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Bypass TPM/Secure Boot em VM</span>
+      </nav>
+      <article itemscope itemtype="https://schema.org/BlogPosting">
+        <header class="article-header">
+          <div class="article-header-tags">
+            <span class="card-tag">#windows</span>
+            <span class="card-tag">#vm</span>
+            <span class="card-tag">#gnome-boxes</span>
+            <span class="card-tag">#tutorial</span>
+            <span class="card-tag">#tpm</span>
+          </div>
+          <h1 class="article-header-title" itemprop="headline">Instalando Windows 11 em VM sem TPM e Secure Boot (GNOME Boxes)</h1>
+          <div class="article-header-meta">
+            <span>✍️ Celso Takeshi Hamasaki</span>
+          </div>
+        </header>
+        <div class="article-body" itemprop="articleBody">
+
+          <p>fui instalar o Windows 11 no GNOME Boxes pra ter um ambiente de testes Windows no Linux. recebi aquele erro: <em>"This PC doesn't currently meet Windows 11 system requirements"</em>.</p>
+
+          <p>o instalador reclama de falta de TPM 2.0 e Secure Boot. esses requisitos fazem sentido em máquinas físicas, mas uma VM simplesmente não tem. a Microsoft disponibiliza chaves de registro específicas pro cenário de instalação em ambiente virtualizado, que é exatamente o que vamos usar.</p>
+
+          <img src="../imagens/Pasted%20image%2020251130222709.png" alt="Erro este computador não atende aos requisitos do Windows 11">
+
+          <h2>Configurando o Regedit para ambiente virtualizado</h2>
+
+          <p>quando chegar nessa tela de erro (ou logo no começo da instalação):</p>
+
+          <ol>
+            <li>aperta <strong>Shift + F10</strong> pra abrir o terminal (cmd).</li>
+            <li>digita <code>regedit</code> e da enter.</li>
+          </ol>
+
+          <img src="../imagens/bypass-tpm-regedit.png" alt="Editor de Registro Regedit na instalação">
+
+          <ol start="3">
+            <li>navega até: <code>HKEY_LOCAL_MACHINE</code> &gt; <code>SYSTEM</code> &gt; <code>Setup</code>.</li>
+            <li>clica com botão direito na pasta <strong>Setup</strong> &gt; New &gt; <strong>Key</strong> e nomeia como <code>LabConfig</code>.</li>
+            <li>dentro da <code>LabConfig</code>, clica com botão direito &gt; New &gt; <strong>DWORD (32-bit) Value</strong>.</li>
+          </ol>
+
+          <img src="../imagens/bypass-tpm-labconfig.png" alt="Criando chave LabConfig no registro">
+
+          <ol start="6">
+            <li>cria esses dois valores:
+              <ul>
+                <li><code>BypassTPMCheck</code></li>
+                <li><code>BypassSecureBootCheck</code></li>
+              </ul>
+            </li>
+            <li>clica duas vezes neles e muda o valor de <strong>0</strong> para <strong>1</strong>.</li>
+          </ol>
+
+          <img src="../imagens/bypass-tpm-bypasstpmcheck.png" alt="Editando valor BypassTPMCheck para 1">
+          <img src="../imagens/bypass-tpm-chaves-configuradas.png" alt="Chaves de bypass configuradas no regedit">
+
+          <p>depois é só fechar o regedit e o cmd, voltar uma tela na instalação e avançar de novo. o instalador reconhece as chaves e libera a instalação no ambiente virtualizado.</p>
+
+          <div class="info-note">
+            <div class="info-label">ℹ CONTEXTO</div>
+            <p>essas chaves (<code>LabConfig</code>, <code>BypassTPMCheck</code>, <code>BypassSecureBootCheck</code>) são documentadas pela própria Microsoft pra uso em ambientes de lab e virtualização. nao é nada obscuro, é o caminho oficial pra quem precisa rodar Windows 11 em VM sem hardware compatível.</p>
+          </div>
+
+          <img src="../imagens/bypass-tpm-instalacao-avancando.png" alt="Instalação do Windows 11 avançando sem erro">
+
+        </div>
+      </article>
+      <a href="../index.html#blog" class="back-btn" style="margin-top:16px">← ver todos os artigos</a>
+    </main>
+  </div>
+</div>
+<footer class="site-footer">
+  <span class="footer-kawaii">✦ ♡ ✦</span>
+  <p><a href="../index.html">CTH.JP</a></p>
+
+</footer>
+</body>
+</html>

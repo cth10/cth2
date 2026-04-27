@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>widget 'agora jogando' com Lanyard: o DNS brasileiro quase arruinou tudo | CTH.JP</title>
+  <meta name="description" content="Como implementei o widget 'agora jogando' real no cth.jp usando Discord Rich Presence via Lanyard, e como o DNS local me travou por uns bons minutos.">
+  <meta name="keywords" content="Lanyard, Discord Rich Presence, DNS, site estático, JavaScript, frontend, Linux, Nobara, /etc/hosts, agora jogando">
+  <meta name="author" content="Celso Takeshi Hamasaki">
+  <link rel="canonical" href="https://cth.jp/artigos/lanyard-agora-jogando.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="widget 'agora jogando' com Lanyard: o DNS brasileiro quase arruinou tudo | CTH.JP">
+  <meta property="og:description" content="Como implementei o widget 'agora jogando' real no cth.jp usando Discord Rich Presence via Lanyard, e como o DNS local me travou por uns bons minutos.">
+  <meta property="og:url" content="https://cth.jp/artigos/lanyard-agora-jogando.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BlogPosting","headline":"widget 'agora jogando' com Lanyard: o DNS brasileiro quase arruinou tudo","author":{"@type":"Person","name":"Celso Takeshi Hamasaki"},"datePublished":"2026-04-16","url":"https://cth.jp/artigos/lanyard-agora-jogando.html"}
+  </script>
+  <link rel="stylesheet" href="../style.css">
+  <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-title">✦ CTH.JP ✦</div>
+  <div class="site-subtitle">Celso Takeshi Hamasaki · Dev Java &amp; Cloud</div>
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="../index.html">🏠 início</a>
+    <a href="../index.html#blog">📝 blog</a>
+    <a href="../index.html#sobre">👤 sobre</a>
+  </nav>
+</header>
+<div class="page-wrapper">
+  <div class="layout">
+    <aside class="sidebar-left" aria-label="Navegação do artigo">
+      <a href="../index.html#blog" class="back-btn">← voltar ao blog</a>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">♡</i> sobre o autor</div>
+        <div class="widget-body">
+          <div class="profile-name">CELSO TAKESHI</div>
+          <div class="profile-role">Dev Java &amp; Cloud ☕</div>
+          <div class="profile-status">● disponível pra oportunidades</div>
+          <ul class="profile-links">
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">✦</i> tags</div>
+        <div class="widget-body">
+          <div class="tags-cloud">
+            <span class="tag">#javascript</span>
+            <span class="tag">#frontend</span>
+            <span class="tag">#linux</span>
+            <span class="tag">#debug</span>
+            <span class="tag">#dns</span>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">📋</i> outros artigos</div>
+        <div class="widget-body">
+          <ul class="latest-list">
+            <li class="latest-item"><a href="apocalipse-quantico-sndl.html">O Apocalipse Quântico e SNDL</a></li>
+            <li class="latest-item"><a href="expo-web-tela-branca.html">Tela branca no Expo Web</a></li>
+            <li class="latest-item"><a href="mayinab-freeze.html">Mayinab travava do nada</a></li>
+            <li class="latest-item"><a href="nobara-gaming-linux.html">Nobara vs Windows 11</a></li>
+            <li class="latest-item"><a href="nvidia-fedora.html">NVIDIA no Fedora</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <nav class="breadcrumb" aria-label="Localização">
+        <a href="../index.html">CTH.JP</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="../index.html#blog">Blog</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>widget agora jogando com Lanyard</span>
+      </nav>
+      <article itemscope itemtype="https://schema.org/BlogPosting">
+        <header class="article-header">
+          <div class="article-header-tags">
+            <span class="card-tag">#javascript</span>
+            <span class="card-tag">#frontend</span>
+            <span class="card-tag">#linux</span>
+            <span class="card-tag">#debug</span>
+            <span class="card-tag">#dns</span>
+          </div>
+          <h1 class="article-header-title" itemprop="headline">widget 'agora jogando' com Lanyard: o DNS brasileiro quase arruinou tudo</h1>
+          <div class="article-header-meta">
+            <span>📅 <time datetime="2026-04-16" itemprop="datePublished">16 de abril de 2026</time></span>
+            <span>✍️ Celso Takeshi Hamasaki</span>
+          </div>
+        </header>
+        <div class="article-body" itemprop="articleBody">
+
+          <p>o site tinha "world.execute(me); — Mili" hardcoded no widget de música. literalmente hardcoded. sempre essa música, independente do q eu tivesse ouvindo. dava até vergonha. (╥_╥)</p>
+
+          <p>ai decidi arrumar isso pra valer: queria q os widgets refletissem o q eu <strong>realmente</strong> estou jogando e estudando em tempo real. simples de explicar, menos simples de fazer num <strong>site 100% estático no GitHub Pages</strong> sem backend nenhum.</p>
+
+          <h2>Analisando as Opções</h2>
+
+          <p>cada widget tem uma fonte de dados diferente, e num site estático vc não pode fazer nada server-side. as opções viáveis eram:</p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Widget</th>
+                  <th>Melhor opção</th>
+                  <th>Como funciona</th>
+                  <th>Dificuldade</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>🎵 ouvindo agora</td>
+                  <td>Last.fm + Web Scrobbler</td>
+                  <td>extensão scrobble pro Last.fm, site faz fetch na API deles</td>
+                  <td>média (deixei pra depois)</td>
+                </tr>
+                <tr>
+                  <td>🎮 agora jogando</td>
+                  <td><strong>Lanyard</strong></td>
+                  <td>Discord detecta o jogo via Rich Presence, Lanyard expõe como API pública</td>
+                  <td>baixa ✅</td>
+                </tr>
+                <tr>
+                  <td>📚 now studying</td>
+                  <td>status.json manual</td>
+                  <td>arquivo JSON no repo, site faz fetch, atualizo via git push</td>
+                  <td>baixíssima ✅</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>Steam API seria outra opção pra gaming, mas tem CORS bloqueado e precisaria de um proxy. o <strong>Lanyard</strong> tem CORS liberado, é gratuito, open source, e o Discord já detecta os jogos automaticamente. escolha óbvia.</p>
+
+          <div class="info-note">
+            <div class="info-label">⚠️ LIMITAÇÃO NO LINUX</div>
+            <p>Discord Rich Presence só funciona com o <strong>app desktop</strong>, não o web. e no Linux a detecção de jogos é irregular: jogos Steam nativos geralmente funcionam, mas jogos via Proton/Wine são sorte, o Discord as vezes vê o processo <code>wine</code> em vez do jogo em si. no meu Nobara Linux tem funcionado razoavelmente bem.</p>
+          </div>
+
+          <h2>A Implementação</h2>
+
+          <p>a parte do código foi tranquila. três mudanças:</p>
+
+          <p><strong>1.</strong> criei o <code>status.json</code> na raiz do site:</p>
+
+          <pre><code>{
+  "studying": "Lua &amp; C &amp; C++"
+}</code></pre>
+
+          <p><strong>2.</strong> adicionei IDs nos elementos HTML dos widgets e separei gaming de studying (antes tava tudo misturado num widget só com label errado):</p>
+
+          <pre><code>&lt;!-- widget gaming --&gt;
+&lt;div class="track" id="game-track"&gt;—&lt;/div&gt;
+&lt;div class="music-bars" id="game-bars" style="display:none"&gt;...&lt;/div&gt;
+
+&lt;!-- widget studying (novo) --&gt;
+&lt;div class="track" id="study-track"&gt;—&lt;/div&gt;</code></pre>
+
+          <p><strong>3.</strong> ~40 linhas de JS inline no final do HTML. Lanyard com polling de 60s, status.json fetch único no load:</p>
+
+          <pre><code>// Lanyard — polling a cada 60s
+(function () {
+  var LANYARD = 'https://api.lanyard.rest/v1/users/SEU_ID';
+
+  function fetchGame() {
+    fetch(LANYARD)
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        var track = document.getElementById('game-track');
+        var bars  = document.getElementById('game-bars');
+        if (!track) return;
+        var acts = d.data &amp;&amp; d.data.activities;
+        var game = acts &amp;&amp; acts.find(function (a) { return a.type === 0; });
+        if (game) {
+          track.textContent = game.name;
+          if (bars) bars.style.display = '';   // mostra as barrinhas
+        } else {
+          track.textContent = 'nada no momento';
+          if (bars) bars.style.display = 'none';
+        }
+      })
+      .catch(function () {});
+  }
+
+  fetchGame();
+  setInterval(fetchGame, 60000);
+})();
+
+// status.json — fetch único no load
+(function () {
+  fetch('/status.json')
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      var el = document.getElementById('study-track');
+      if (el &amp;&amp; d.studying) el.textContent = d.studying;
+    })
+    .catch(function () {});
+})();</code></pre>
+
+          <p>o studying funciona na primeira tacada. o gaming... não. (ꐦ°᷄д°᷅)</p>
+
+          <h2>O Widget Não Atualizava</h2>
+
+          <p>abri o <code>localhost:8080</code> e o widget de gaming ficou mostrando "—". o de studying funcionou beleza (apareceu "Lua &amp; C &amp; C++"), mas o gaming nada.</p>
+
+          <p>abri o console do browser e rodei o fetch manualmente:</p>
+
+          <pre><code>fetch('https://api.lanyard.rest/v1/users/1368778707334070343')
+  .then(r=&gt;r.json()).then(d=&gt;console.log(d))</code></pre>
+
+          <p>o retorno foi:</p>
+
+          <pre><code>Cross-Origin Request Blocked: The Same Origin Policy disallows reading
+the remote resource at https://api.lanyard.rest/v1/users/...
+(Reason: CORS request did not succeed). Status code: (null).</code></pre>
+
+          <p>status <code>(null)</code>. isso não é erro de CORS header, é falha de rede. o browser não chegou nem a receber resposta. fui pro terminal:</p>
+
+          <pre><code>curl -s https://api.lanyard.rest/v1/users/1368778707334070343</code></pre>
+
+          <p>output: absolutamente nada. nenhum JSON, nenhum erro visível. ¯\_(ツ)_/¯</p>
+
+          <p>ai rodei com verbose:</p>
+
+          <pre><code>curl -v https://api.lanyard.rest/v1/users/1368778707334070343 2&gt;&amp;1 | head -30</code></pre>
+
+          <pre><code>* Could not resolve host: api.lanyard.rest
+* Closing connection
+curl: (6) Could not resolve host: api.lanyard.rest</code></pre>
+
+          <p>DNS não resolvia o domínio. o servidor existe, o site existe, mas o meu DNS local simplesmente não sabia quem era <code>api.lanyard.rest</code>.</p>
+
+          <h2>Diagnóstico: DNS do ISP Não Tem o Registro</h2>
+
+          <p>testei com o DNS do Google pra confirmar:</p>
+
+          <pre><code>nslookup api.lanyard.rest 8.8.8.8</code></pre>
+
+          <pre><code>Server:    8.8.8.8
+Address:   8.8.8.8#53
+
+Non-authoritative answer:
+api.lanyard.rest  canonical name = lanyard.gateway.railway.app.
+Name:  lanyard.gateway.railway.app
+Address: 151.101.2.15</code></pre>
+
+          <p>com o 8.8.8.8 resolveu na hora. o problema é claro: o DNS padrão que eu tava usando não tinha o registro pro domínio <code>.rest</code>. o Lanyard fica hospedado no Railway (<code>lanyard.gateway.railway.app</code>) com IP <code>151.101.2.15</code>.</p>
+
+          <h2>Fix Rápido: /etc/hosts</h2>
+
+          <p>com o IP em mãos, botei direto no <code>/etc/hosts</code> pra não depender de resolução DNS:</p>
+
+          <pre><code>echo "151.101.2.15 api.lanyard.rest" | sudo tee -a /etc/hosts</code></pre>
+
+          <p>testei:</p>
+
+          <pre><code>curl -s https://api.lanyard.rest/v1/users/1368778707334070343</code></pre>
+
+          <pre><code>{"data":{"activities":[{"name":"Sixtar Gate STARTRAIL","type":0,...}],
+"discord_status":"online",...},"success":true}</code></pre>
+
+          <p>JSON lindo na tela. recarreguei o <code>localhost:8080</code> e o widget apareceu: <strong>Sixtar Gate STARTRAIL</strong>. (✿◡‿◡)</p>
+
+          <div class="info-warning">
+            <div class="info-label">⚠️ /etc/hosts É PALIATIVO</div>
+            <p>o IP do Railway pode mudar. a solução permanente é trocar o DNS do sistema pra <strong>1.1.1.1</strong> (Cloudflare) ou <strong>8.8.8.8</strong> (Google) nas configurações de rede. no Nobara/Fedora: Settings → Network → sua conexão → aba IPv4 → DNS.</p>
+          </div>
+
+          <h2>Resultado Final</h2>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Widget</th>
+                  <th>Antes</th>
+                  <th>Depois</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>🎮 agora jogando</td>
+                  <td>hardcoded, label errado ("now studying:")</td>
+                  <td><strong>Discord Rich Presence via Lanyard, polling 60s</strong></td>
+                </tr>
+                <tr>
+                  <td>📚 now studying</td>
+                  <td>hardcoded junto com o widget de gaming</td>
+                  <td><strong>widget separado, lê /status.json do repo</strong></td>
+                </tr>
+                <tr>
+                  <td>🎵 ouvindo agora</td>
+                  <td>hardcoded "world.execute(me); — Mili"</td>
+                  <td>ainda hardcoded (Last.fm fica pra depois)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>pra atualizar o studying é só editar o <code>status.json</code> e dar git push. simples. nao tem motivo pra complicar o q é manual por natureza.</p>
+
+          <h2>Lição</h2>
+
+          <div class="info-important">
+            <div class="info-label">💡 TROQUE SEU DNS</div>
+            <p>se vc usa o DNS padrão do seu ISP no Brasil, tem chance real de domínios com TLDs menos comuns (<code>.rest</code>, <code>.dev</code>, etc.) simplesmente não resolverem. o ISP não é obrigado a ter todos os registros atualizados.</p>
+            <p>troca pra <strong>1.1.1.1</strong> ou <strong>8.8.8.8</strong> e esquece o problema. é uma mudança de 30 segundos que salva dor de cabeça futura. (⌐■_■)</p>
+          </div>
+
+          <p>e se vc tiver um erro de CORS com status <code>(null)</code> no browser, não é CORS, é rede. o browser reporta qualquer falha de fetch cross-origin como "CORS error". vai direto pro terminal e testa com <code>curl -v</code>.</p>
+
+        </div>
+      </article>
+      <a href="../index.html#blog" class="back-btn" style="margin-top:16px">← ver todos os artigos</a>
+    </main>
+  </div>
+</div>
+<footer class="site-footer">
+  <span class="footer-kawaii">✦ ♡ ✦</span>
+  <p><a href="../index.html">CTH.JP</a></p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cth.jp/sitemap.xml

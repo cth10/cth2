@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A primeira coisa que eu faço ao instalar o Windows 11 | CTH.JP</title>
+  <meta name="description" content="Como remover bloatware do Windows 11 com o script Win11Debloat do Raphire. Desativa telemetria, Copilot, widgets, Bing Search e remove apps indesejados via PowerShell.">
+  <meta name="keywords" content="windows 11, debloat, bloatware, win11debloat, raphire, powershell, telemetria, copilot, privacidade, tutorial">
+  <meta name="author" content="Celso Takeshi Hamasaki">
+  <link rel="canonical" href="https://cth.jp/artigos/windows11-debloat.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="A primeira coisa que eu faço ao instalar o Windows 11 | CTH.JP">
+  <meta property="og:description" content="Como remover bloatware do Windows 11 com o script Win11Debloat do Raphire. Desativa telemetria, Copilot, widgets, Bing Search e remove apps indesejados via PowerShell.">
+  <meta property="og:url" content="https://cth.jp/artigos/windows11-debloat.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BlogPosting","headline":"A primeira coisa que eu faço ao instalar o Windows 11","author":{"@type":"Person","name":"Celso Takeshi Hamasaki"},"datePublished":"2025-01-01","url":"https://cth.jp/artigos/windows11-debloat.html"}
+  </script>
+  <link rel="stylesheet" href="../style.css">
+  <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-title">✦ CTH.JP ✦</div>
+  <div class="site-subtitle">Celso Takeshi Hamasaki · Dev Java &amp; Cloud</div>
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="../index.html">🏠 início</a>
+    <a href="../index.html#blog">📝 blog</a>
+    <a href="../index.html#sobre">👤 sobre</a>
+  </nav>
+</header>
+<div class="page-wrapper">
+  <div class="layout">
+    <aside class="sidebar-left" aria-label="Navegação do artigo">
+      <a href="../index.html#blog" class="back-btn">← voltar ao blog</a>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">♡</i> sobre o autor</div>
+        <div class="widget-body">
+          <div class="profile-name">CELSO TAKESHI</div>
+          <div class="profile-role">Dev Java &amp; Cloud ☕</div>
+          <div class="profile-status">● disponível pra oportunidades</div>
+          <ul class="profile-links">
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">✦</i> tags</div>
+        <div class="widget-body">
+          <div class="tags-cloud">
+            <span class="tag">#windows</span>
+            <span class="tag">#debloat</span>
+            <span class="tag">#privacidade</span>
+            <span class="tag">#tutorial</span>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">📋</i> outros artigos</div>
+        <div class="widget-body">
+          <ul class="latest-list">
+            <li class="latest-item"><a href="apocalipse-quantico-sndl.html">O Apocalipse Quântico e SNDL</a></li>
+            <li class="latest-item"><a href="cellebrite-devassa-digital.html">Devassa Digital + Cellebrite</a></li>
+            <li class="latest-item"><a href="backblaze-b2-cloudflare.html">Backup com Backblaze B2</a></li>
+            <li class="latest-item"><a href="nobara-gaming-linux.html">Nobara vs Windows 11</a></li>
+            <li class="latest-item"><a href="windows11-debloat.html">Windows 11 Debloat</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <nav class="breadcrumb" aria-label="Localização">
+        <a href="../index.html">CTH.JP</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="../index.html#blog">Blog</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Windows 11 Debloat</span>
+      </nav>
+      <article itemscope itemtype="https://schema.org/BlogPosting">
+        <header class="article-header">
+          <div class="article-header-tags">
+            <span class="card-tag">#windows</span>
+            <span class="card-tag">#debloat</span>
+            <span class="card-tag">#privacidade</span>
+            <span class="card-tag">#tutorial</span>
+          </div>
+          <h1 class="article-header-title" itemprop="headline">A primeira coisa que eu faço ao instalar o Windows 11</h1>
+          <div class="article-header-meta">
+            <span>✍️ Celso Takeshi Hamasaki</span>
+          </div>
+        </header>
+        <div class="article-body" itemprop="articleBody">
+
+          <p>eu instalei o windows 11... e ai?</p>
+          <p>o windows 11 eh pesado e cheio de bloatware. entao, antes de instalar qualquer coisa, eu rodo esse script do <a href="https://github.com/Raphire/Win11Debloat" target="_blank" rel="noopener">Raphire</a>. ele eh open source.</p>
+
+          <div class="info-note">
+            <div class="info-label">ℹ O QUE O SCRIPT FAZ</div>
+            <p>remove apps desnecessários, desabilita telemetria, Bing Search no menu iniciar, Copilot, widgets, Recall e outras "features" indesejadas. tudo de forma segura e reversível.</p>
+          </div>
+
+          <h2>O Ritual de Limpeza</h2>
+
+          <h3>Passo 1: Abrir o PowerShell como Administrador</h3>
+          <p>abra o menu iniciar, digita <code>powershell</code> e... mto importante: clica com botao direito em <strong>Executar como Administrador</strong> (senao nao funciona!).</p>
+          <img src="../imagens/debloat-powershell-admin.png" alt="Abrindo PowerShell como administrador">
+
+          <h3>Passo 2: Rodar o script</h3>
+          <p>cola esse comando (olhe a documentação do programa antes, pra ele n desinstalar o que vc quer que fique):</p>
+<pre><code>&amp; ([scriptblock]::Create((irm "https://debloat.raphi.re/")))</code></pre>
+          <img src="../imagens/debloat-comando-raphire.png" alt="Comando script debloat Raphire no PowerShell">
+
+          <h3>Passo 3: Escolher o modo</h3>
+          <p>vai abrir esse menu azul. pra mim, a opção <strong>1 (Default mode)</strong> eh a perfeita. ela tira o lixo mas mantem a loja e coisas essenciais funcionando. digita <code>1</code> e enter.</p>
+          <img src="../imagens/debloat-menu-opcoes.png" alt="Menu de opções do script Windows Debloat">
+
+          <h3>Passo 4: Confirmar remoção de bloatware</h3>
+          <p>ele vai perguntar se quer remover os apps padrao (bloatware). obvio q sim! aperta <code>1</code> de novo.</p>
+          <img src="../imagens/debloat-remover-bloatware.png" alt="Selecionando remoção de apps padrão bloatware">
+
+          <h3>Passo 5: Aguardar a magia</h3>
+          <p>agora eh so ver a magia acontecer. ele vai desabilitar telemetria, bing search, copilot, widgets chatos, recall... tudo!</p>
+          <img src="../imagens/debloat-telemetria-widgets.png" alt="Script desativando telemetria e widgets">
+
+          <div class="info-tip">
+            <div class="info-label">✅ RESULTADO</div>
+            <p>qnd terminar, ele reinicia o explorer sozinho e o SO vai estar mais leve!</p>
+          </div>
+
+          <img src="../imagens/debloat-explorer-reiniciado.png" alt="Windows Explorer reiniciado e limpo">
+
+          <div class="info-important">
+            <div class="info-label">⚠ AVISO</div>
+            <p>leia a documentação do script antes de rodar! tem opções que removem coisas que talvez você precise. o modo Default é seguro pra maioria das pessoas, mas vale checar.</p>
+          </div>
+
+        </div>
+      </article>
+      <a href="../index.html#blog" class="back-btn" style="margin-top:16px">← ver todos os artigos</a>
+    </main>
+  </div>
+</div>
+<footer class="site-footer">
+  <span class="footer-kawaii">✦ ♡ ✦</span>
+  <p><a href="../index.html">CTH.JP</a></p>
+
+</footer>
+</body>
+</html>

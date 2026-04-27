@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Como criar seu próprio Cloud Computer com Hostinger + NoMachine | CTH.JP</title>
+  <meta name="description" content="Tutorial completo para criar um Cloud Computer: VPS Hostinger com Ubuntu + XFCE + NoMachine usando protocolo NX. Baixa latência, 1Gbps+, acesso remoto de qualquer lugar.">
+  <meta name="keywords" content="vps, cloud computer, hostinger, nomachine, xfce, linux, ubuntu, acesso remoto, protocolo NX">
+  <meta name="author" content="Celso Takeshi Hamasaki">
+  <link rel="canonical" href="https://cth.jp/artigos/cloud-computer-hostinger.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Como criar seu próprio Cloud Computer com Hostinger + NoMachine | CTH.JP">
+  <meta property="og:description" content="Tutorial completo para criar um Cloud Computer: VPS Hostinger com Ubuntu + XFCE + NoMachine usando protocolo NX. Baixa latência, 1Gbps+, acesso remoto de qualquer lugar.">
+  <meta property="og:url" content="https://cth.jp/artigos/cloud-computer-hostinger.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BlogPosting","headline":"Como criar seu próprio Cloud Computer com Hostinger + NoMachine","author":{"@type":"Person","name":"Celso Takeshi Hamasaki"},"datePublished":"2025-01-01","url":"https://cth.jp/artigos/cloud-computer-hostinger.html"}
+  </script>
+  <link rel="stylesheet" href="../style.css">
+  <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-title">✦ CTH.JP ✦</div>
+  <div class="site-subtitle">Celso Takeshi Hamasaki · Dev Java &amp; Cloud</div>
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="../index.html">🏠 início</a>
+    <a href="../index.html#blog">📝 blog</a>
+    <a href="../index.html#sobre">👤 sobre</a>
+  </nav>
+</header>
+<div class="page-wrapper">
+  <div class="layout">
+    <aside class="sidebar-left" aria-label="Navegação do artigo">
+      <a href="../index.html#blog" class="back-btn">← voltar ao blog</a>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">♡</i> sobre o autor</div>
+        <div class="widget-body">
+          <div class="profile-name">CELSO TAKESHI</div>
+          <div class="profile-role">Dev Java &amp; Cloud ☕</div>
+          <div class="profile-status">● disponível pra oportunidades</div>
+          <ul class="profile-links">
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">✦</i> tags</div>
+        <div class="widget-body">
+          <div class="tags-cloud">
+            <span class="tag">#vps</span>
+            <span class="tag">#linux</span>
+            <span class="tag">#nomachine</span>
+            <span class="tag">#xfce</span>
+            <span class="tag">#cloud</span>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">📋</i> outros artigos</div>
+        <div class="widget-body">
+          <ul class="latest-list">
+            <li class="latest-item"><a href="apocalipse-quantico-sndl.html">O Apocalipse Quântico e SNDL</a></li>
+            <li class="latest-item"><a href="cellebrite-devassa-digital.html">Devassa Digital + Cellebrite</a></li>
+            <li class="latest-item"><a href="backblaze-b2-cloudflare.html">Backup com Backblaze B2</a></li>
+            <li class="latest-item"><a href="nobara-gaming-linux.html">Nobara vs Windows 11</a></li>
+            <li class="latest-item"><a href="windows11-debloat.html">Windows 11 Debloat</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <nav class="breadcrumb" aria-label="Localização">
+        <a href="../index.html">CTH.JP</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="../index.html#blog">Blog</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Cloud Computer com Hostinger</span>
+      </nav>
+      <article itemscope itemtype="https://schema.org/BlogPosting">
+        <header class="article-header">
+          <div class="article-header-tags">
+            <span class="card-tag">#vps</span>
+            <span class="card-tag">#linux</span>
+            <span class="card-tag">#nomachine</span>
+            <span class="card-tag">#xfce</span>
+            <span class="card-tag">#cloud</span>
+          </div>
+          <h1 class="article-header-title" itemprop="headline">Como criar seu próprio Cloud Computer com Hostinger + NoMachine</h1>
+          <div class="article-header-meta">
+            <span>✍️ Celso Takeshi Hamasaki</span>
+          </div>
+        </header>
+        <div class="article-body" itemprop="articleBody">
+
+          <p>sabe quando vc quer rodar algo pesado, ou precisa de uma internet super rapida (tipo 1gbps+), mas seu pc ou sua net de casa nao tankam?</p>
+          <p>a soluçao eh ter um <strong>Cloud Computer</strong>! ou seja, uma vps com interface grafica.</p>
+          <p>eu testei varias opçoes e a combi mais barata que achei foi usar uma VPS da Hostinger com o ambiente grafico XFCE (que eh super leve) e acessar via NoMachine.</p>
+
+          <h2>1. O Hardware (VPS)</h2>
+          <p>eu to usando a Hostinger. o ping pro brasil eh decente e o preço eh excelente.</p>
+          <p>sou parceiro da hostinger e meu link de indicação da desconto!</p>
+
+          <img src="../imagens/hostinger.png" alt="Banner promocional Hostinger VPS">
+
+          <div class="info-tip">
+            <div class="info-label">🔗 LINKS AFILIADOS HOSTINGER</div>
+            <p>👉 <a href="https://hostinger.com.br?REFERRALCODE=BCOMIUNAHEUT" target="_blank" rel="noopener">Hostinger: hostinger.com.br?REFERRALCODE=BCOMIUNAHEUT</a></p>
+            <p>👉 <a href="https://www.hostinger.com.br/cart?product=vps%3Avps_kvm_8&period=12&referral_type=cart_link&REFERRALCODE=BCOMIUNAHEUT&referral_id=019b829e-065e-70f1-847c-3f3f06a48575" target="_blank" rel="noopener">KVM 8 (link direto pro carrinho)</a></p>
+          </div>
+
+          <div class="info-warning">
+            <div class="info-label">⚠ ATENÇÃO AO PLANO</div>
+            <p>escolha o plano <strong>KVM 2</strong> ou superior pra ter pelo menos 4gb de ram, senao o navegador vai crashar, ok?</p>
+          </div>
+
+          <h2>2. O Segredo: NoMachine (NX Protocol)</h2>
+          <p>"ah, mas pq nao usar VNC ou RDP?"</p>
+          <p>pq eles sao lentos demais! o NoMachine usa um protocolo proprio (NX) que comprime o video super bem. a latencia eh tao baixa que parece que o pc ta na sua frente. da ate pra ver video no youtube remoto sem travar!</p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Protocolo</th>
+                  <th>Latência</th>
+                  <th>Qualidade</th>
+                  <th>Recomendado?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>VNC</td>
+                  <td>Alta</td>
+                  <td>Fraca</td>
+                  <td>❌ não</td>
+                </tr>
+                <tr>
+                  <td>RDP</td>
+                  <td>Média</td>
+                  <td>OK</td>
+                  <td>⚠ depende</td>
+                </tr>
+                <tr>
+                  <td><strong>NX (NoMachine)</strong></td>
+                  <td><strong>Baixíssima</strong></td>
+                  <td><strong>Excelente</strong></td>
+                  <td>✅ sim!</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2>3. Como configurar (Tutorial Rápido)</h2>
+          <p>eu escolhi o ubuntu lts pela maior compatibilidade e menos chances de dar bugs (espero q ngm aqui precise passar pela experiencia de desbugar o driver de audio de uma vm), e depois instalei o xfce. o linux ja ta pronto. so falta instalar o servidor do NoMachine.</p>
+          <p>acessa sua vps via SSH e roda isso aqui:</p>
+
+          <h3>Baixar o NoMachine</h3>
+          <p><em>(o link pode mudar, entao pega o link do .deb mais atual no site deles se esse falhar)</em></p>
+<pre><code>wget https://download.nomachine.com/download/8.11/Linux/nomachine_8.11.3_4_amd64.deb</code></pre>
+
+          <h3>Instalar</h3>
+<pre><code>sudo dpkg -i nomachine_*.deb</code></pre>
+
+          <h3>Liberar a porta (Importante!)</h3>
+          <p>o NoMachine usa a porta <code>4000</code>. se o firewall tiver ligado, vc nao conecta.</p>
+<pre><code>sudo ufw allow 4000/tcp</code></pre>
+
+          <h2>4. Conectando</h2>
+          <p>agora eh so baixar o cliente do NoMachine no seu pc (windows/linux/mac), clicar em "Add", colocar o IP da sua VPS e usar seu usuario e senha do linux (geralmente root ou o usuario q vc criou).</p>
+          <p>pronto! agora vc tem um pc na nuvem pra deixar farmando jogo, baixando coisas ou codando de qualquer lugar!</p>
+
+          <img src="../imagens/NOMACHINE.png" alt="Interface de conexão do NoMachine">
+          <img src="../imagens/vps-2.png" alt="Terminal Linux rodando na VPS Hostinger">
+          <img src="../imagens/vps-3.png" alt="Htop rodando na VPS">
+
+          <div class="info-tip">
+            <div class="info-label">💡 DICA FINAL</div>
+            <p>instala o <code>tmux</code> ou <code>screen</code> pra deixar processos rodando mesmo depois de fechar a sessão NoMachine. seu "pc na nuvem" vai continuar trabalhando sem vc!</p>
+          </div>
+
+        </div>
+      </article>
+      <a href="../index.html#blog" class="back-btn" style="margin-top:16px">← ver todos os artigos</a>
+    </main>
+  </div>
+</div>
+<footer class="site-footer">
+  <span class="footer-kawaii">✦ ♡ ✦</span>
+  <p><a href="../index.html">CTH.JP</a></p>
+
+</footer>
+</body>
+</html>

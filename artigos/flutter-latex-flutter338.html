@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flutter 3.38 quebrou meu app por causa de LaTeX (733 erros por frame!) | CTH.JP</title>
+  <meta name="description" content="Flutter 3.38 tornou computeDryBaseline obrigatório. flutter_math_fork v0.7.4 não implementa o método, causando 733 erros por frame. Solução com safeLatexBuilder.">
+  <meta name="keywords" content="Flutter 3.38, LaTeX, flutter_math_fork, computeDryBaseline, gpt_markdown, safeLatexBuilder, debug, RenderBox, parentDataDirty">
+  <meta name="author" content="Celso Takeshi Hamasaki">
+  <link rel="canonical" href="https://cth.jp/artigos/flutter-latex-flutter338.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Flutter 3.38 quebrou meu app por causa de LaTeX (733 erros por frame!) | CTH.JP">
+  <meta property="og:description" content="Flutter 3.38 tornou computeDryBaseline obrigatório. flutter_math_fork v0.7.4 não implementa o método, causando 733 erros por frame. Solução com safeLatexBuilder.">
+  <meta property="og:url" content="https://cth.jp/artigos/flutter-latex-flutter338.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BlogPosting","headline":"Flutter 3.38 quebrou meu app por causa de LaTeX (733 erros por frame!)","author":{"@type":"Person","name":"Celso Takeshi Hamasaki"},"datePublished":"2026-02-09","url":"https://cth.jp/artigos/flutter-latex-flutter338.html"}
+  </script>
+  <link rel="stylesheet" href="../style.css">
+  <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-title">✦ CTH.JP ✦</div>
+  <div class="site-subtitle">Celso Takeshi Hamasaki · Dev Java &amp; Cloud</div>
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="../index.html">🏠 início</a>
+    <a href="../index.html#blog">📝 blog</a>
+    <a href="../index.html#sobre">👤 sobre</a>
+  </nav>
+</header>
+<div class="page-wrapper">
+  <div class="layout">
+    <aside class="sidebar-left" aria-label="Navegação do artigo">
+      <a href="../index.html#blog" class="back-btn">← voltar ao blog</a>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">♡</i> sobre o autor</div>
+        <div class="widget-body">
+          <div class="profile-name">CELSO TAKESHI</div>
+          <div class="profile-role">Dev Java &amp; Cloud ☕</div>
+          <div class="profile-status">● disponível pra oportunidades</div>
+          <ul class="profile-links">
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">✦</i> tags</div>
+        <div class="widget-body">
+          <div class="tags-cloud">
+            <span class="tag">#flutter</span>
+            <span class="tag">#latex</span>
+            <span class="tag">#debug</span>
+            <span class="tag">#mobile</span>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">📋</i> outros artigos</div>
+        <div class="widget-body">
+          <ul class="latest-list">
+            <li class="latest-item"><a href="apocalipse-quantico-sndl.html">O Apocalipse Quântico e SNDL</a></li>
+            <li class="latest-item"><a href="expo-web-tela-branca.html">Tela branca no Expo Web</a></li>
+            <li class="latest-item"><a href="cellebrite-devassa-digital.html">Devassa Digital + Cellebrite</a></li>
+            <li class="latest-item"><a href="backblaze-b2-cloudflare.html">Backup com Backblaze B2</a></li>
+            <li class="latest-item"><a href="nobara-gaming-linux.html">Nobara vs Windows 11</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <nav class="breadcrumb" aria-label="Localização">
+        <a href="../index.html">CTH.JP</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="../index.html#blog">Blog</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Flutter 3.38 quebrou meu LaTeX</span>
+      </nav>
+      <article itemscope itemtype="https://schema.org/BlogPosting">
+        <header class="article-header">
+          <div class="article-header-tags">
+            <span class="card-tag">#flutter</span>
+            <span class="card-tag">#latex</span>
+            <span class="card-tag">#debug</span>
+            <span class="card-tag">#mobile</span>
+          </div>
+          <h1 class="article-header-title" itemprop="headline">Flutter 3.38 quebrou meu app por causa de LaTeX (733 erros por frame!)</h1>
+          <div class="article-header-meta">
+            <span>📅 <time datetime="2026-02-09" itemprop="datePublished">09 de fevereiro de 2026</time></span>
+            <span>✍️ Celso Takeshi Hamasaki</span>
+          </div>
+        </header>
+        <div class="article-body" itemprop="articleBody">
+
+          <p>gente. eu quase chorei.</p>
+
+          <p>abri meu app no topico "Tips &amp; Tricks" e o terminal EXPLODIU. tipo, 733 erros por frame. o app ficou inutilizavel, travando, tudo quebrado. achei q era bug no meu checklist (pq ja tinha dado problema antes), mas nao era.</p>
+
+          <h2>A Investigação (spoiler: foi o LaTeX)</h2>
+
+          <p>passei um tempao arrumando o checklist (<code>NoteChecklistContent</code>). achei bugs reais la:</p>
+          <ul>
+            <li><code>IntrinsicWidth</code> brigando com <code>Flexible</code> (conflito de constraints)</li>
+            <li><code>Checkbox</code> com sizing zuado dentro de <code>Row</code></li>
+            <li><code>mainAxisSize: MainAxisSize.min</code> num <code>Row</code> com filhos <code>Flexible</code></li>
+          </ul>
+
+          <p>corrigi tudo: troquei <code>Checkbox</code> por <code>Icon</code> + <code>GestureDetector</code>, <code>Flexible</code> → <code>Expanded</code>, etc. eram correções validas, mas... <strong>nao resolveram o problema principal</strong>. (╥_╥)</p>
+
+          <p>ai redirecionei a saida do <code>flutter run</code> pra um arquivo de log e finalmente vi a cascata real:</p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Erro</th>
+                  <th>Quantidade</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Invalid argument(s): string is not well-formed UTF-16</td>
+                  <td>3</td>
+                </tr>
+                <tr>
+                  <td>RenderLine does not implement "computeDryBaseline"</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>RenderBox was not laid out: RenderIntrinsicWidth</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>RenderBox was not laid out: RenderIndexedSemantics</td>
+                  <td>288</td>
+                </tr>
+                <tr>
+                  <td>'parentDataDirty' assertion failures</td>
+                  <td>440</td>
+                </tr>
+                <tr>
+                  <td><strong>TOTAL</strong></td>
+                  <td><strong>~733/frame</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2>A Causa Raiz</h2>
+
+          <p>o topico tinha uma nota com LaTeX inline: <code>$E = mc^2$</code>. o <code>GptMarkdown</code> converte <code>$...$</code> pra <code>\(...\)</code> e manda pro <code>flutter_math_fork</code> renderizar via <code>Math.tex()</code>.</p>
+
+          <p>acontece q o <code>flutter_math_fork</code> v0.7.4 usa uma classe <code>RenderLine</code> (custom <code>RenderBox</code>) que <strong>nao implementa <code>computeDryBaseline</code>,</strong> um metodo que virou <strong>obrigatorio</strong> no Flutter 3.38.</p>
+
+          <div class="info-warning">
+            <div class="info-label">⚠️ A CASCATA DO INFERNO</div>
+            <p>resultado: o <code>RenderLine</code> falha → o <code>RenderIntrinsicWidth</code> pai nao consegue fazer layout → o <code>RenderIndexedSemantics</code> (acessibilidade) falha em cascata → o framework detecta <code>parentDataDirty</code> em centenas de render objects → repete a cada frame. loop infinito de dor e sofrimento.</p>
+          </div>
+
+          <p>e o pior: <strong>nao tem versao nova</strong> de nenhum dos dois pacotes (<code>gpt_markdown</code> 1.1.5 e <code>flutter_math_fork</code> 0.7.4). os dois tao abandonados e incompativeis com Flutter 3.38. (ꐦ°᷄д°᷅)</p>
+
+          <h2>O Workaround (sim, gambiarra)</h2>
+
+          <p>ja q nao da pra usar o <code>Math.tex()</code> sem crashar, criei um builder seguro q renderiza LaTeX como <strong>texto estilizado</strong> (monospace + italico) em vez de formula bonitinha:</p>
+
+          <pre><code>static Widget safeLatexBuilder(
+  BuildContext context,
+  String tex,
+  TextStyle textStyle,
+  bool inline,
+) {
+  final theme = Theme.of(context);
+  return Text(
+    tex,
+    style: textStyle.copyWith(
+      fontFamily: 'monospace',
+      fontStyle: FontStyle.italic,
+      color: theme.colorScheme.onSurface.withValues(alpha: 0.85),
+    ),
+  );
+}</code></pre>
+
+          <p>tambem fiz um pre-processamento proprio pra converter <code>$...$</code> → <code>\(...\)</code> <strong>fora</strong> do <code>GptMarkdown</code>, pq o regex interno dele tava gerando strings UTF-16 malformadas:</p>
+
+          <pre><code>static String _convertDollarLatex(String text) {
+  var result = text.replaceAllMapped(
+    RegExp(r'(?&lt;!\\)\$\$(.*?)(?&lt;!\\)\$\$', dotAll: true),
+    (match) =&gt; '\\[${match[1] ?? ""}\\]',
+  );
+  if (!result.contains(r'\(')) {
+    result = result.replaceAllMapped(
+      RegExp(r'(?&lt;!\\)\$(.*?)(?&lt;!\\)\$'),
+      (match) =&gt; '\\(${match[1] ?? ""}\\)',
+    );
+  }
+  return result;
+}</code></pre>
+
+          <p>ai chamei o <code>GptMarkdown</code> com <code>useDollarSignsForLatex: false</code> (ja q a conversao foi feita na mao) e apliquei o <code>latexBuilder</code> seguro em <strong>todos</strong> os lugares q usam <code>GptMarkdown</code> diretamente:</p>
+          <ul>
+            <li><code>study_session_screen.dart</code> (3 usos)</li>
+            <li><code>edit_note_dialog.dart</code> (1 uso)</li>
+            <li><code>flashcard_bubble_content.dart</code> (1 uso)</li>
+          </ul>
+
+          <h2>Resultado</h2>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Metrica</th>
+                  <th>Antes</th>
+                  <th>Depois</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>parentDataDirty assertions</td>
+                  <td>440/frame</td>
+                  <td><strong>0</strong></td>
+                </tr>
+                <tr>
+                  <td>RenderBox was not laid out</td>
+                  <td>289/frame</td>
+                  <td><strong>0</strong></td>
+                </tr>
+                <tr>
+                  <td>computeDryBaseline errors</td>
+                  <td>1/frame</td>
+                  <td><strong>0</strong></td>
+                </tr>
+                <tr>
+                  <td>App usavel</td>
+                  <td>nao</td>
+                  <td><strong>sim</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>o trade-off eh q o LaTeX nao renderiza como formula bonita (aparece <code>E = mc^2</code> em monospace em vez da formula formatada). mas pelo menos o app <strong>funciona</strong>. quando os mantenedores dos pacotes acordarem e lançarem update, eu reverto tudo.</p>
+
+          <div class="info-tip">
+            <div class="info-label">💡 MORAL DA HISTÓRIA</div>
+            <p><strong>sempre redirecione o log pra um arquivo.</strong> se eu tivesse ficado olhando o terminal scrollando 733 erros por frame eu nunca ia achar a causa raiz. e desconfie dos seus proprios palpites, eu perdi tempo no checklist sendo q o problema era o LaTeX o tempo todo. ¯\_(ツ)_/¯</p>
+          </div>
+
+        </div>
+      </article>
+      <a href="../index.html#blog" class="back-btn" style="margin-top:16px">← ver todos os artigos</a>
+    </main>
+  </div>
+</div>
+<footer class="site-footer">
+  <span class="footer-kawaii">✦ ♡ ✦</span>
+  <p><a href="../index.html">CTH.JP</a></p>
+
+</footer>
+</body>
+</html>

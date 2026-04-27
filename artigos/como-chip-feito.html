@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Como raios um chip é feito? (e pq Taiwan é o protagonista) | CTH.JP</title>
+  <meta name="description" content="Como funciona a fotolitografia EUV, por que TSMC em Taiwan fabrica 90% dos chips avançados do mundo, e o papel de ASML, EUA e China na geopolítica dos semicondutores.">
+  <meta name="keywords" content="chip, semicondutor, fotolitografia, EUV, TSMC, Taiwan, ASML, transistor, nanômetro, geopolítica, Nvidia, Apple, China">
+  <meta name="author" content="Celso Takeshi Hamasaki">
+  <link rel="canonical" href="https://cth.jp/artigos/como-chip-feito.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Como raios um chip é feito? (e pq Taiwan é o protagonista) | CTH.JP">
+  <meta property="og:description" content="Como funciona a fotolitografia EUV, por que TSMC em Taiwan fabrica 90% dos chips avançados do mundo, e o papel de ASML, EUA e China na geopolítica dos semicondutores.">
+  <meta property="og:url" content="https://cth.jp/artigos/como-chip-feito.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BlogPosting","headline":"Como raios um chip é feito? (e pq Taiwan é o protagonista)","author":{"@type":"Person","name":"Celso Takeshi Hamasaki"},"datePublished":"2026-02-02","url":"https://cth.jp/artigos/como-chip-feito.html"}
+  </script>
+  <link rel="stylesheet" href="../style.css">
+  <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-title">✦ CTH.JP ✦</div>
+  <div class="site-subtitle">Celso Takeshi Hamasaki · Dev Java &amp; Cloud</div>
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="../index.html">🏠 início</a>
+    <a href="../index.html#blog">📝 blog</a>
+    <a href="../index.html#sobre">👤 sobre</a>
+  </nav>
+</header>
+<div class="page-wrapper">
+  <div class="layout">
+    <aside class="sidebar-left" aria-label="Navegação do artigo">
+      <a href="../index.html#blog" class="back-btn">← voltar ao blog</a>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">♡</i> sobre o autor</div>
+        <div class="widget-body">
+          <div class="profile-name">CELSO TAKESHI</div>
+          <div class="profile-role">Dev Java &amp; Cloud ☕</div>
+          <div class="profile-status">● disponível pra oportunidades</div>
+          <ul class="profile-links">
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">✦</i> tags</div>
+        <div class="widget-body">
+          <div class="tags-cloud">
+            <span class="tag">#hardware</span>
+            <span class="tag">#curiosidades</span>
+            <span class="tag">#geopolitica</span>
+            <span class="tag">#tech</span>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">📋</i> outros artigos</div>
+        <div class="widget-body">
+          <ul class="latest-list">
+            <li class="latest-item"><a href="apocalipse-quantico-sndl.html">O Apocalipse Quântico e SNDL</a></li>
+            <li class="latest-item"><a href="expo-web-tela-branca.html">Tela branca no Expo Web</a></li>
+            <li class="latest-item"><a href="cellebrite-devassa-digital.html">Devassa Digital + Cellebrite</a></li>
+            <li class="latest-item"><a href="backblaze-b2-cloudflare.html">Backup com Backblaze B2</a></li>
+            <li class="latest-item"><a href="nobara-gaming-linux.html">Nobara vs Windows 11</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <nav class="breadcrumb" aria-label="Localização">
+        <a href="../index.html">CTH.JP</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="../index.html#blog">Blog</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Como raios um chip é feito?</span>
+      </nav>
+      <article itemscope itemtype="https://schema.org/BlogPosting">
+        <header class="article-header">
+          <div class="article-header-tags">
+            <span class="card-tag">#hardware</span>
+            <span class="card-tag">#curiosidades</span>
+            <span class="card-tag">#geopolitica</span>
+            <span class="card-tag">#tech</span>
+          </div>
+          <h1 class="article-header-title" itemprop="headline">Como raios um chip é feito? (e pq Taiwan é o protagonista)</h1>
+          <div class="article-header-meta">
+            <span>📅 <time datetime="2026-02-02" itemprop="datePublished">02 de fevereiro de 2026</time></span>
+            <span>✍️ Celso Takeshi Hamasaki</span>
+          </div>
+        </header>
+        <div class="article-body" itemprop="articleBody">
+
+          <p>oi oi!</p>
+
+          <p>hj eu vi um video mostrando o tamanho de um transistor e fiquei me perguntando como q cabe tanta coisa num pedacinho de silicio?</p>
+
+          <iframe class="video-embed" src="https://www.youtube.com/embed/k4mM8X2LCI0" title="Quão ridiculamente pequeno é um transistor?" frameborder="0" allow="autoplay; picture-in-picture" allowfullscreen></iframe>
+
+          <p>entao resolvi explicar pra vcs como funciona essa magia (vulgo engenharia) por tras do pc/celular q vc ta usando agr, e pq o mundo todo depende de uma ilha minuscula.</p>
+
+          <h2>1. O Tamanho do Absurdo</h2>
+
+          <p>um processador moderno tem <strong>bilhões</strong> de transistores. bilhoes! (o_O)<br>
+          eles sao interruptores q ligam e desligam (0 e 1) bilhoes de vezes por segundo.</p>
+
+          <p>e o tamanho eh de <strong>3 nanometros</strong>. isso eh menor q um virus, comparavel ao diametro de uma fita de DNA. eh ridiculamente pequeno!</p>
+
+          <h2>2. Fotolitografia: Desenhando com Luz</h2>
+
+          <p>como q fabrica isso? com pinça? claro q nao! kkkk<br>
+          o processo chama <strong>fotolitografia</strong>.</p>
+
+          <ol>
+            <li><strong>O Wafer:</strong> tudo começa com uma fatia de silicio super pura.</li>
+            <li><strong>A Luz:</strong> uma maquina gigante (que custa centenas de milhoes) dispara luz ultravioleta extrema (EUV).</li>
+            <li><strong>A Escultura:</strong> a luz passa por uma mascara e "queima" o desenho do circuito no silicio, camada por camada.</li>
+          </ol>
+
+          <div class="info-note">
+            <div class="info-label">🔬 SALA LIMPA</div>
+            <p>eh feito em salas mais limpas q hospital, pq um grao de poeira destruiria o chip todo.</p>
+          </div>
+
+          <h2>3. O "Torneio Shounen" dos Chips</h2>
+
+          <p>aqui q a geopolitica fica tensa. cada pais tem um papel nesse arco:</p>
+
+          <ul>
+            <li><strong>Taiwan (TSMC):</strong> o prof supremo. eles fabricam 90% dos chips avançados do mundo (Apple, Nvidia, AMD). se taiwan parar, a economia global colapsa.</li>
+            <li><strong>EUA (Designers):</strong> os cerebros. empresas como Nvidia e Apple desenham os chips, mas mandam a TSMC fabricar.</li>
+            <li><strong>Europa (ASML):</strong> o "ferreiro lendario". fica na Holanda e é a UNICA empresa do mundo q sabe fazer a maquina de litografia EUV. eles sao intocaveis. (⌐■_■)</li>
+            <li><strong>China:</strong> o rival bloqueado. eles querem fabricar chips de ponta, mas sofrem sanções dos EUA e nao conseguem comprar as maquinas da ASML. tao tentando fazer na marra.</li>
+            <li><strong>Brasil:</strong> a gente foca no "backend" (encapsulamento e teste). tamo algumas decadas atras na fabricação do wafer em si... (T_T)</li>
+          </ul>
+
+          <h2>4. O Futuro (Angstroms?)</h2>
+
+          <p>nos proximos 5 anos, a tecnologia vai evoluir de nanometros (nm) para <strong>angstroms</strong> (A). vai ser mto potente pra rodar IAs pesadas!</p>
+
+          <div class="info-warning">
+            <div class="info-label">⚠️ AVISO</div>
+            <p>mas com as guerras e a divisão do mundo em blocos, acho q os eletronicos vao ficar mais caros e escassos. entao cuidem bem das suas gpus!</p>
+          </div>
+
+          <p>ᕙ( •̀ ᗜ •́ )ᕗ</p>
+
+        </div>
+      </article>
+      <a href="../index.html#blog" class="back-btn" style="margin-top:16px">← ver todos os artigos</a>
+    </main>
+  </div>
+</div>
+<footer class="site-footer">
+  <span class="footer-kawaii">✦ ♡ ✦</span>
+  <p><a href="../index.html">CTH.JP</a></p>
+
+</footer>
+</body>
+</html>

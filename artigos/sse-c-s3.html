@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O Fim do SSE-C no S3 (e a ilusão da segurança) | CTH.JP</title>
+  <meta name="description" content="AWS desativando SSE-C por padrão em abril 2026. Por que SSE-C é teatro de segurança e como usar Client-Side Encryption com Rclone Crypt no Backblaze B2.">
+  <meta name="keywords" content="AWS S3, SSE-C, Client-Side Encryption, Rclone Crypt, Backblaze B2, KMS, criptografia, segurança, cloud storage">
+  <meta name="author" content="Celso Takeshi Hamasaki">
+  <link rel="canonical" href="https://cth.jp/artigos/sse-c-s3.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="O Fim do SSE-C no S3 (e a ilusão da segurança) | CTH.JP">
+  <meta property="og:description" content="AWS desativando SSE-C por padrão em abril 2026. Por que SSE-C é teatro de segurança e como usar Client-Side Encryption com Rclone Crypt no Backblaze B2.">
+  <meta property="og:url" content="https://cth.jp/artigos/sse-c-s3.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BlogPosting","headline":"O Fim do SSE-C no S3 (e a ilusão da segurança)","author":{"@type":"Person","name":"Celso Takeshi Hamasaki"},"datePublished":"2026-02-03","url":"https://cth.jp/artigos/sse-c-s3.html"}
+  </script>
+  <link rel="stylesheet" href="../style.css">
+  <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-title">✦ CTH.JP ✦</div>
+  <div class="site-subtitle">Celso Takeshi Hamasaki · Dev Java &amp; Cloud</div>
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="../index.html">🏠 início</a>
+    <a href="../index.html#blog">📝 blog</a>
+    <a href="../index.html#sobre">👤 sobre</a>
+  </nav>
+</header>
+<div class="page-wrapper">
+  <div class="layout">
+    <aside class="sidebar-left" aria-label="Navegação do artigo">
+      <a href="../index.html#blog" class="back-btn">← voltar ao blog</a>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">♡</i> sobre o autor</div>
+        <div class="widget-body">
+          <div class="profile-name">CELSO TAKESHI</div>
+          <div class="profile-role">Dev Java &amp; Cloud ☕</div>
+          <div class="profile-status">● disponível pra oportunidades</div>
+          <ul class="profile-links">
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">✦</i> tags</div>
+        <div class="widget-body">
+          <div class="tags-cloud">
+            <span class="tag">#aws</span>
+            <span class="tag">#s3</span>
+            <span class="tag">#seguranca</span>
+            <span class="tag">#criptografia</span>
+            <span class="tag">#cloud</span>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">📋</i> outros artigos</div>
+        <div class="widget-body">
+          <ul class="latest-list">
+            <li class="latest-item"><a href="apocalipse-quantico-sndl.html">O Apocalipse Quântico e SNDL</a></li>
+            <li class="latest-item"><a href="expo-web-tela-branca.html">Tela branca no Expo Web</a></li>
+            <li class="latest-item"><a href="cellebrite-devassa-digital.html">Devassa Digital + Cellebrite</a></li>
+            <li class="latest-item"><a href="backblaze-b2-cloudflare.html">Backup com Backblaze B2</a></li>
+            <li class="latest-item"><a href="nobara-gaming-linux.html">Nobara vs Windows 11</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <nav class="breadcrumb" aria-label="Localização">
+        <a href="../index.html">CTH.JP</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="../index.html#blog">Blog</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>O Fim do SSE-C no S3</span>
+      </nav>
+      <article itemscope itemtype="https://schema.org/BlogPosting">
+        <header class="article-header">
+          <div class="article-header-tags">
+            <span class="card-tag">#aws</span>
+            <span class="card-tag">#s3</span>
+            <span class="card-tag">#seguranca</span>
+            <span class="card-tag">#criptografia</span>
+            <span class="card-tag">#cloud</span>
+          </div>
+          <h1 class="article-header-title" itemprop="headline">O Fim do SSE-C no S3 (e a ilusão da segurança)</h1>
+          <div class="article-header-meta">
+            <span>📅 <time datetime="2026-02-03" itemprop="datePublished">03 de fevereiro de 2026</time></span>
+            <span>✍️ Celso Takeshi Hamasaki</span>
+          </div>
+        </header>
+        <div class="article-body" itemprop="articleBody">
+
+          <p>recebi um email da aws q quase me matou do coracao...</p>
+
+          <p>basicamente o aviso dizia: <code>[Action may be Required] Amazon S3 to automatically disable SSE-C encryption for new buckets</code>.</p>
+
+          <img src="../imagens/Amazon%20S3%20to%20automatically%20disable%20SSE-C.png" alt="Email de aviso da AWS sobre SSE-C">
+
+          <p>minha primeira reacao foi: "pronto, querem roubar minhas chaves e forcar o uso do KMS pra eles terem acesso a tudo".</p>
+
+          <p>eu sempre usei <strong>SSE-C</strong> (Server-Side Encryption with Customer-Provided Keys) pq eu me preocupo com seguranca. eu pensava: "eu guardo a chave, eu mando o arquivo, a aws so armazena".</p>
+
+          <p>mas dps de analisar a fundo, percebi q eu tava vivendo uma ilusao de seguranca. (¬_¬)</p>
+
+          <h2>O Teatro de Segurança</h2>
+
+          <p>a real eh q o SSE-C eh meio "teatro" pra quem nao confia na nuvem.</p>
+
+          <p>pensa cmg: pra aws criptografar seu arquivo usando sua chave... vc tem q enviar a chave pra eles no momento do upload (via HTTPS).</p>
+
+          <div class="info-warning">
+            <div class="info-label">⚠️ O PROBLEMA REAL</div>
+            <p>ou seja, a chave <strong>entra no servidor deles</strong>, vai pra memoria RAM, eles usam pra embaralhar os dados e dps "prometem" que deletam a chave da memoria.</p>
+            <p>se vc nao confia na amazon, vc nao devia confiar neles nem por esse milissegundo q a chave ta na mao deles.</p>
+          </div>
+
+          <h2>Lixo Digital</h2>
+
+          <p>alem disso, tem o risco operacional: se vc perder a chave, ja era. a aws nao tem backup. o arquivo vira lixo digital. 🗑️</p>
+
+          <p>eles devem receber mto ticket de suporte de gente chorando pq perdeu a chave, entao resolveram desativar isso por padrao a partir de <strong>abril de 2026</strong> (ainda da pra usar, mas vai ter q ativar via API, o q eh chato).</p>
+
+          <h2>A Solução Real: Client-Side Encryption</h2>
+
+          <p>se vc eh paranoico q nem eu, a solucao nao eh dar a chave pra aws brincar. eh nunca deixar a chave sair do seu pc. chama-se <strong>Client-Side Encryption</strong>.</p>
+
+          <ol>
+            <li>Vc criptografa o arquivo no seu pc (usando GPG, OpenSSL, ou o SDK da linguagem).</li>
+            <li>O arquivo vira uma "sopa de letrinhas" ilegivel.</li>
+            <li>Vc sobe essa sopa pro S3.</li>
+          </ol>
+
+          <div class="info-tip">
+            <div class="info-label">✅ A DIFERENÇA</div>
+            <p>pra AWS, aquilo eh so um amontoado de bytes aleatorios. eles nunca viram a chave, nunca viram o conteudo.</p>
+          </div>
+
+          <h2>Como fazer isso sem dor de cabeça? (Rclone Crypt)</h2>
+
+          <p>lembra do meu post sobre o <strong>Rclone + Backblaze</strong>? entao, o rclone tem uma feature nativa chamada <strong>Crypt</strong>.</p>
+
+          <p>em vez de mandar o arquivo cru, vc configura um "remote" criptografado que aponta pro S3. eh super seguro!</p>
+
+          <div class="info-note">
+            <div class="info-label">📌 NOTA CORPORATIVA</div>
+            <p>ps: pra uso corporativo, o <strong>KMS</strong> (Key Management Service) eh melhor, pq a chave fica num <strong>HSM</strong> (hardware blindado) q nem os funcionarios da AWS conseguem extrair. entao ta tudo bem!</p>
+          </div>
+
+        </div>
+      </article>
+      <a href="../index.html#blog" class="back-btn" style="margin-top:16px">← ver todos os artigos</a>
+    </main>
+  </div>
+</div>
+<footer class="site-footer">
+  <span class="footer-kawaii">✦ ♡ ✦</span>
+  <p><a href="../index.html">CTH.JP</a></p>
+
+</footer>
+</body>
+</html>

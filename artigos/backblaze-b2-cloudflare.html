@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backup turbo com rclone + Backblaze B2 + Cloudflare (sem egress!) | CTH.JP</title>
+  <meta name="description" content="Como configurar rclone com Backblaze B2 e Cloudflare para backup sem limite diário, 500 operações por segundo, e download gratuito via Bandwidth Alliance. Tchau Google Drive!">
+  <meta name="keywords" content="rclone, backup, linux, backblaze b2, cloudflare, cloud storage, egress, bandwidth alliance, object storage">
+  <meta name="author" content="Celso Takeshi Hamasaki">
+  <link rel="canonical" href="https://cth.jp/artigos/backblaze-b2-cloudflare.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Backup turbo com rclone + Backblaze B2 + Cloudflare (sem egress!) | CTH.JP">
+  <meta property="og:description" content="Como configurar rclone com Backblaze B2 e Cloudflare para backup sem limite diário, 500 operações por segundo, e download gratuito via Bandwidth Alliance. Tchau Google Drive!">
+  <meta property="og:url" content="https://cth.jp/artigos/backblaze-b2-cloudflare.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BlogPosting","headline":"Backup turbo com rclone + Backblaze B2 + Cloudflare (sem egress!)","author":{"@type":"Person","name":"Celso Takeshi Hamasaki"},"datePublished":"2026-04-16","url":"https://cth.jp/artigos/backblaze-b2-cloudflare.html"}
+  </script>
+  <link rel="stylesheet" href="../style.css">
+  <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-title">✦ CTH.JP ✦</div>
+  <div class="site-subtitle">Celso Takeshi Hamasaki · Dev Java &amp; Cloud</div>
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="../index.html">🏠 início</a>
+    <a href="../index.html#blog">📝 blog</a>
+    <a href="../index.html#sobre">👤 sobre</a>
+  </nav>
+</header>
+<div class="page-wrapper">
+  <div class="layout">
+    <aside class="sidebar-left" aria-label="Navegação do artigo">
+      <a href="../index.html#blog" class="back-btn">← voltar ao blog</a>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">♡</i> sobre o autor</div>
+        <div class="widget-body">
+          <div class="profile-name">CELSO TAKESHI</div>
+          <div class="profile-role">Dev Java &amp; Cloud ☕</div>
+          <div class="profile-status">● disponível pra oportunidades</div>
+          <ul class="profile-links">
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">✦</i> tags</div>
+        <div class="widget-body">
+          <div class="tags-cloud">
+            <span class="tag">#rclone</span>
+            <span class="tag">#backup</span>
+            <span class="tag">#linux</span>
+            <span class="tag">#backblaze</span>
+            <span class="tag">#cloudflare</span>
+            <span class="tag">#cloud</span>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">📋</i> outros artigos</div>
+        <div class="widget-body">
+          <ul class="latest-list">
+            <li class="latest-item"><a href="apocalipse-quantico-sndl.html">O Apocalipse Quântico e SNDL</a></li>
+            <li class="latest-item"><a href="cellebrite-devassa-digital.html">Devassa Digital + Cellebrite</a></li>
+            <li class="latest-item"><a href="nobara-gaming-linux.html">Nobara vs Windows 11</a></li>
+            <li class="latest-item"><a href="windows11-debloat.html">Windows 11 Debloat</a></li>
+            <li class="latest-item"><a href="bypass-tpm-windows11.html">Bypass TPM Windows 11</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <nav class="breadcrumb" aria-label="Localização">
+        <a href="../index.html">CTH.JP</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="../index.html#blog">Blog</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Backup com Backblaze B2 + Cloudflare</span>
+      </nav>
+      <article itemscope itemtype="https://schema.org/BlogPosting">
+        <header class="article-header">
+          <div class="article-header-tags">
+            <span class="card-tag">#rclone</span>
+            <span class="card-tag">#backup</span>
+            <span class="card-tag">#linux</span>
+            <span class="card-tag">#backblaze</span>
+            <span class="card-tag">#cloudflare</span>
+            <span class="card-tag">#cloud</span>
+          </div>
+          <h1 class="article-header-title" itemprop="headline">Backup turbo com rclone + Backblaze B2 + Cloudflare (sem egress!)</h1>
+          <div class="article-header-meta">
+            <span>✍️ Celso Takeshi Hamasaki</span>
+          </div>
+        </header>
+        <div class="article-body" itemprop="articleBody">
+
+          <p>pra vc q nem eu, vc ama o linux, ama o rclone, mas tá cansado de tentar fazer backup no google drive.</p>
+
+          <p>sabe como eh, ne? vc tenta subir aquele backup e o upload fica uma tartaruga... ou entao o seu rclone mount faz o dolphin ou o nautilus engasgarem so pra listar os arquivos? e pra piorar, vc descobre q o google tem um limite de operacoes de api q so deixa subir uns 2 ou 3 arquivos por segundo?</p>
+
+          <img src="../imagens/Pasted%20image%2020251120100015.png" alt="Gerenciador de arquivos travando com Google Drive">
+
+          <p>eh mto chato! sem falar no limite de upload de 750gb por dia! se vc tem 2tb pra subir, tem q ficar uns 3 dias controlando tudo.</p>
+
+          <p>mas... tem um jeito mto mais rapido, sem limite diario e q pode sair de graca pra baixar seus arquivos dnovo! apresentando os nossos herois: <strong>backblaze b2</strong> e <strong>cloudflare</strong>!</p>
+
+          <h2>Parte 1: O Vilão (Pq o Google Drive odeia o rclone?)</h2>
+
+          <p>(ele n odeia, ele só n foi feito pra isso!)</p>
+
+          <p>o problema eh simples: o google drive foi feito pra humanos (q clicam em 1 arquivo, esperam, dps clicam em outro). ele n foi feito pra máquinas (como o rclone) q pedem 1000 coisas ao msm tempo.</p>
+
+          <ul>
+            <li><strong>Limite de Ações:</strong> o google fica "bravo" (dá rate limit) e só aceita uns 2 ou 3 arquivos novos por segundo. eh por isso q subir 10 mil arquivos pequenos vai demorar uma eternidade.</li>
+            <li><strong>Limite Diário:</strong> o teto de 750 GB.</li>
+          </ul>
+
+          <p>o google drive eh ótimo pra guardar o trabalho da faculdade, mas eh péssimo, terrível, asqueroso pra um backup gigante do rclone.</p>
+
+          <h2>Parte 2: O Herói (Olá, Backblaze B2!)</h2>
+
+          <p>o Backblaze B2 (ou só "B2") eh um Object Storage. ele AMA pedidos rápidos! vamos comparar:</p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Característica</th>
+                  <th>Google Drive (o Vilão)</th>
+                  <th>Backblaze B2 (o Herói)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Limite de Ações</td>
+                  <td>2-3 por segundo</td>
+                  <td>500 por segundo!</td>
+                </tr>
+                <tr>
+                  <td>Limite Diário</td>
+                  <td>750 GB</td>
+                  <td>NÃO TEM!</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>vc viu isso? <strong>500 AÇÕES POR SEGUNDO!</strong> vc pode usar seu <code>rclone copy</code> com <code>--transfers 100</code> e ele vai voar!</p>
+
+          <p>"mas deve ser caro!" não! eh mto barato!</p>
+
+          <ul>
+            <li><strong>Pra Guardar:</strong> tipo $0.006 por GB. (seus 200 GB iam custar tipo $1.2 por mês!)</li>
+            <li><strong>Pra Subir (Upload):</strong> de graça!</li>
+          </ul>
+
+          <p>...só tem um porém...</p>
+
+          <h2>Parte 3: O "Porém" (O Custo de Baixar)</h2>
+
+          <p>o b2 (e a aws, e todos os outros) te cobra pra baixar os arquivos. (chama "egress"). eh barato (tipo $0.01 por GB), mas... se vc baixar seus arquivos de novo, precisa pagar.</p>
+
+          <p>eh justo.</p>
+
+          <p>mas... e se a gente fizesse ser de graça?</p>
+
+          <h2>Parte 4: O Truque! (B2 + Cloudflare = BFFs!)</h2>
+
+          <p>aqui tá o melhor segredo da internet! o Backblaze e o Cloudflare são tipo... melhores amigos!</p>
+
+          <p>eles têm um acordo oficial (o "Bandwidth Alliance") q diz:</p>
+
+          <blockquote>
+            <p>"qualquer transferência de dados entre nós dois eh 100% de graça!"</p>
+          </blockquote>
+
+          <p>e o Cloudflare (q eh um serviço de "escudo" pra sites) tbm te dá download ilimitado de graça!</p>
+
+          <p>vc entendeu a mágica?</p>
+
+          <ul>
+            <li>vc pede seu arquivo pro Cloudflare.</li>
+            <li>o Cloudflare busca seu arquivo no Backblaze.</li>
+            <li>o Backblaze entrega pro Cloudflare (de graça, pq são bffs).</li>
+            <li>o Cloudflare te entrega o arquivo (de graça, pq ele eh legal).</li>
+          </ul>
+
+          <p>Resultado: <strong>Custo de download = $0.00!</strong></p>
+
+          <div class="info-note">
+            <div class="info-label">NOTA</div>
+            <p>veja se a parceria ainda ta ativa antes de implementar: <a href="https://www.cloudflare.com/pt-br/partners/technology-partners/backblaze/" target="_blank" rel="noopener">cloudflare.com/partners/technology-partners/backblaze</a></p>
+          </div>
+
+          <h2>Parte 5: Guia (Como fazer o truque!)</h2>
+
+          <p>(vai demorar 10 minutinhos!)</p>
+
+          <p>O q vc precisa:</p>
+          <ul>
+            <li>Conta no Backblaze B2 (os 10 primeiros GB são de graça).</li>
+            <li>Conta no Cloudflare.</li>
+            <li>Um domínio (a única parte q custa dinheiro, tipo R$ 40 por ano).</li>
+          </ul>
+
+          <h3>Passo 1: No Backblaze B2</h3>
+
+          <ul>
+            <li>Cria um "Bucket" (uma pasta). dá um nome único pra ele (ex: <code>meu-backup</code>).</li>
+            <li>Importante: deixa o bucket <strong>Privado</strong>!</li>
+            <li>Vai em "Application Keys" e cria uma "App Key" nova.</li>
+            <li>Dá permissão só pra esse bucket q vc criou.</li>
+            <li>GUARDA ESSES 3:
+              <ol>
+                <li><code>keyID</code></li>
+                <li><code>applicationKey</code> (só aparece 1 vez!)</li>
+                <li>O "Friendly URL" do seu bucket (algo tipo <code>f005.backblazeb2.com</code>).</li>
+              </ol>
+            </li>
+          </ul>
+
+          <h3>Passo 2: No Cloudflare</h3>
+
+          <ul>
+            <li>Adiciona seu domínio no Cloudflare.</li>
+            <li>Vai na aba "DNS" → "Records".</li>
+            <li>Clica em "Add record" e faz assim:
+              <ul>
+                <li>Type: <code>CNAME</code></li>
+                <li>Name: <code>arquivos</code> (ou <code>b2</code>, <code>nuvem</code>...)</li>
+                <li>Target: o Friendly URL do Backblaze! (ex: <code>f005.backblazeb2.com</code>)</li>
+                <li>Proxy status: <strong>LIGADO</strong>! (o ícone da nuvem tem q estar LARANJA!).</li>
+              </ul>
+            </li>
+            <li>Salva!</li>
+          </ul>
+
+          <h3>Passo 3: No seu Linux (o Rclone!)</h3>
+
+          <p>No seu terminal, digita: <code>rclone config</code></p>
+
+          <img src="../imagens/rclone-config-b2.png" alt="Configuração de remote B2 no Rclone terminal">
+
+          <ul>
+            <li>Cria um "New remote" (tipo <code>b2-free</code>).</li>
+            <li>Escolhe a opção "Backblaze B2".</li>
+            <li>Põe o <code>keyID</code> e o <code>applicationKey</code> q vc guardou.</li>
+            <li>AQUI ESTÁ O SEGREDO:
+              <ul>
+                <li>o rclone vai te perguntar pelo endpoint</li>
+                <li>NÃO deixe em branco!</li>
+                <li>Coloca aqui o domínio q vc acabou de criar no Cloudflare! (ex: <code>arquivos.cth.jp</code>)</li>
+              </ul>
+            </li>
+            <li>Termina a configuração (pode dar enter pro resto).</li>
+          </ul>
+
+          <h2>Conclusão</h2>
+
+          <p>agora, o seu remote <code>b2-free</code> tá pronto!</p>
+
+          <p>Quando vc fizer:</p>
+
+          <pre><code>rclone copy ~/MinhaPastaGigante b2-free:MinhaPastaGigante --transfers 50 --checkers 100 --progress</code></pre>
+
+          <p>ele vai subir mto rápido! (sem limite de 2/s e sem limite de 750GB!)</p>
+
+          <pre><code>rclone mount b2-free:/ ~/Nuvem</code></pre>
+
+          <p>o rclone vai pedir os arquivos pro Cloudflare... q vai buscar no B2 de graça... e vc vai baixar tudo de graça!</p>
+
+          <p><strong>bem-vindo ao jeito certo de usar a nuvem no linux!</strong></p>
+
+        </div>
+      </article>
+      <a href="../index.html#blog" class="back-btn" style="margin-top:16px">← ver todos os artigos</a>
+    </main>
+  </div>
+</div>
+<footer class="site-footer">
+  <span class="footer-kawaii">✦ ♡ ✦</span>
+  <p><a href="../index.html">CTH.JP</a></p>
+
+</footer>
+</body>
+</html>

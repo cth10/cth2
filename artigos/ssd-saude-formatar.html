@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificando saúde de SSD antigo e formatando no Linux | CTH.JP</title>
+  <meta name="description" content="Como verificar a saúde de um SSD com smartmontools (smartctl), usar blkdiscard para wipe seguro em SSDs, criar partição GPT com fdisk e formatar em ext4.">
+  <meta name="keywords" content="linux, ssd, smartctl, smartmontools, blkdiscard, fdisk, mkfs.ext4, fedora, saúde disco, wipe ssd, TRIM">
+  <meta name="author" content="Celso Takeshi Hamasaki">
+  <link rel="canonical" href="https://cth.jp/artigos/ssd-saude-formatar.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Verificando saúde de SSD antigo e formatando no Linux | CTH.JP">
+  <meta property="og:description" content="Como verificar a saúde de um SSD com smartmontools (smartctl), usar blkdiscard para wipe seguro em SSDs, criar partição GPT com fdisk e formatar em ext4.">
+  <meta property="og:url" content="https://cth.jp/artigos/ssd-saude-formatar.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BlogPosting","headline":"Verificando saúde de SSD antigo e formatando no Linux","author":{"@type":"Person","name":"Celso Takeshi Hamasaki"},"datePublished":"2026-04-16","url":"https://cth.jp/artigos/ssd-saude-formatar.html"}
+  </script>
+  <link rel="stylesheet" href="../style.css">
+  <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-title">✦ CTH.JP ✦</div>
+  <div class="site-subtitle">Celso Takeshi Hamasaki · Dev Java &amp; Cloud</div>
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="../index.html">🏠 início</a>
+    <a href="../index.html#blog">📝 blog</a>
+    <a href="../index.html#sobre">👤 sobre</a>
+  </nav>
+</header>
+<div class="page-wrapper">
+  <div class="layout">
+    <aside class="sidebar-left" aria-label="Navegação do artigo">
+      <a href="../index.html#blog" class="back-btn">← voltar ao blog</a>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">♡</i> sobre o autor</div>
+        <div class="widget-body">
+          <div class="profile-name">CELSO TAKESHI</div>
+          <div class="profile-role">Dev Java &amp; Cloud ☕</div>
+          <div class="profile-status">● disponível pra oportunidades</div>
+          <ul class="profile-links">
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">✦</i> tags</div>
+        <div class="widget-body">
+          <div class="tags-cloud">
+            <span class="tag">#linux</span>
+            <span class="tag">#hardware</span>
+            <span class="tag">#ssd</span>
+            <span class="tag">#smartctl</span>
+            <span class="tag">#fedora</span>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">📋</i> outros artigos</div>
+        <div class="widget-body">
+          <ul class="latest-list">
+            <li class="latest-item"><a href="apocalipse-quantico-sndl.html">O Apocalipse Quântico e SNDL</a></li>
+            <li class="latest-item"><a href="cellebrite-devassa-digital.html">Devassa Digital + Cellebrite</a></li>
+            <li class="latest-item"><a href="backblaze-b2-cloudflare.html">Backup com Backblaze B2</a></li>
+            <li class="latest-item"><a href="nobara-gaming-linux.html">Nobara vs Windows 11</a></li>
+            <li class="latest-item"><a href="windows11-debloat.html">Windows 11 Debloat</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <nav class="breadcrumb" aria-label="Localização">
+        <a href="../index.html">CTH.JP</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="../index.html#blog">Blog</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Saúde de SSD e formatação no Linux</span>
+      </nav>
+      <article itemscope itemtype="https://schema.org/BlogPosting">
+        <header class="article-header">
+          <div class="article-header-tags">
+            <span class="card-tag">#linux</span>
+            <span class="card-tag">#hardware</span>
+            <span class="card-tag">#ssd</span>
+            <span class="card-tag">#smartctl</span>
+            <span class="card-tag">#fedora</span>
+          </div>
+          <h1 class="article-header-title" itemprop="headline">Verificando saúde de SSD antigo e formatando no Linux</h1>
+          <div class="article-header-meta">
+            <span>✍️ Celso Takeshi Hamasaki</span>
+          </div>
+        </header>
+        <div class="article-body" itemprop="articleBody">
+
+          <p>sabe aquele ssd antigo q ta ai parado? e quer saber se ele ta bem antes de usar?</p>
+
+          <p>hoje, a gente vai fazer o <em>full check-up</em> e depois o <em>full reset</em> nele usando o terminal do fedora!</p>
+
+          <h2>Verificando a Saúde com Smartmontools</h2>
+
+          <p>primeiro, vamo ver se o ssd ta saudavel ou se ele ta morrendo…</p>
+
+          <p>a gente usa um programa chamado <code>smartmontools</code>:</p>
+
+          <pre><code>sudo dnf install smartmontools</code></pre>
+
+          <p>agora, vc precisa saber o "nome" do seu disco. roda <code>lsblk</code> pra ver. o meu era <code>/dev/sda</code>.</p>
+
+          <img src="../imagens/lsblk-discos.png" alt="Listando discos com comando lsblk">
+
+          <p>com o nome, roda o teste de saude:</p>
+
+          <pre><code>sudo smartctl -a /dev/sda</code></pre>
+
+          <img src="../imagens/smartctl-scan.png" alt="Rodando teste smartctl no disco">
+
+          <p><strong>o q olhar no resultado?</strong>
+          o mais importante eh essa linha:</p>
+
+          <pre><code>SMART overall-health self-assessment test result: PASSED</code></pre>
+
+          <img src="../imagens/smartctl-passed.png" alt="Resultado PASSED no teste de saúde do disco">
+
+          <p>tambem eh legal olhar o <code>Reallocated_Sector_Ct</code> (ID 5). se o <code>RAW_VALUE</code> tiver <strong>0</strong> (zero), ta perfeito!</p>
+
+          <img src="../imagens/setores-realocados.png" alt="Verificando contagem de setores realocados">
+
+          <h2>Limpando o SSD com blkdiscard</h2>
+
+          <p>ok, o meu ssd tava <code>PASSED</code>.
+          mas ele era um disco <em>extra</em> (meu fedora tava em outro) e eu queria <strong>apagar tudo</strong> e deixar ele limpinho.</p>
+
+          <div class="info-warning">
+            <div class="info-label">AVISO IMPORTANTE</div>
+            <p>o comando abaixo vai apagar tudo no disco. nao tem volta. nao tem 'desfazer'. tenha certeza q eh o disco certo! (no meu caso, <code>/dev/sda</code>)</p>
+          </div>
+
+          <pre><code>sudo blkdiscard /dev/sda</code></pre>
+
+          <img src="../imagens/blkdiscard-resultado.png" alt="Resultado do comando blkdiscard">
+
+          <p>se funcionar, ele vai falar tipo:</p>
+
+          <pre><code>/dev/sda: Discarded 512110190592 bytes from the offset 0</code></pre>
+
+          <p>limpinho.</p>
+
+          <h2>"mas apagou <em>mesmo</em>? da pra recuperar?"</h2>
+
+          <p>e a resposta é: nao, nao da pra recuperar.</p>
+
+          <p>o <code>blkdiscard</code> usa o TRIM. ele eh diferente de formatar um hdd antigo.</p>
+
+          <ul>
+            <li>ele nao <em>escreve zeros</em> em cima dos dados, que nem feito na formatação segura de um hdd.</li>
+            <li>ele fala direto pro <em>controlador</em> (o chefe do ssd): "ei, pode jogar fora o 'mapa' q leva pra esses dados. nao preciso mais."</li>
+          </ul>
+
+          <p>o dado <em>fisico</em> (os elétrons) ate pode ficar la no chip por um tempinho, mas o controlador nao deixa mais ninguem ler! se qualquer programa tentar ler, o controlador so devolve zero.</p>
+
+          <p>entao, pra gente, o dado sumiu 100% no segundo q o <code>blkdiscard</code> rodou.</p>
+
+          <h2>Formatando</h2>
+
+          <p>agora o ssd ta limpo, mas ele nao tem "gavetas" (partições) pra guardar coisas.</p>
+
+          <p>pra criar a partição, a gente usa o <code>fdisk</code>:</p>
+
+          <pre><code>sudo fdisk /dev/sda</code></pre>
+
+          <p>la dentro do fdisk, vc so precisa apertar as teclas e dar enter (em ordem):</p>
+
+          <ul>
+            <li><code>g</code> (pra fazer uma tabela gpt nova)</li>
+            <li><code>n</code> (pra uma partição nova)</li>
+            <li><code>enter</code> (pra aceitar o numero da partição)</li>
+            <li><code>enter</code> (pra aceitar o primeiro setor)</li>
+            <li><code>enter</code> (pra aceitar o ultimo setor, usando o disco todo)</li>
+            <li><code>w</code> (pra salvar e sair)</li>
+          </ul>
+
+          <p><strong>formatar a partição</strong>: vamos usar o ext4 que é perfeito pra linux, eh o padrão e super estável.</p>
+
+          <div class="info-important">
+            <div class="info-label">ATENÇÃO</div>
+            <p>agora a gente usa <code>sda1</code> (a partição), nao mais <code>sda</code> (o disco)!</p>
+          </div>
+
+          <pre><code>sudo mkfs.ext4 /dev/sda1</code></pre>
+
+          <img src="../imagens/mkfs-ext4.png" alt="Formatando partição em ext4">
+
+          <p>pronto!</p>
+
+        </div>
+      </article>
+      <a href="../index.html#blog" class="back-btn" style="margin-top:16px">← ver todos os artigos</a>
+    </main>
+  </div>
+</div>
+<footer class="site-footer">
+  <span class="footer-kawaii">✦ ♡ ✦</span>
+  <p><a href="../index.html">CTH.JP</a></p>
+
+</footer>
+</body>
+</html>

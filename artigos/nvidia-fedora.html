@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instalar drivers Nvidia no Fedora é muito, muito fácil e posso provar | CTH.JP</title>
+  <meta name="description" content="Como instalar drivers proprietários da Nvidia no Fedora usando RPM Fusion e akmod-nvidia. Simples, rápido e o driver se reconstrói sozinho a cada atualização do kernel.">
+  <meta name="keywords" content="fedora, nvidia, linux, drivers, rpm fusion, akmod-nvidia, nvidia-smi, cuda, kernel">
+  <meta name="author" content="Celso Takeshi Hamasaki">
+  <link rel="canonical" href="https://cth.jp/artigos/nvidia-fedora.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Instalar drivers Nvidia no Fedora é muito, muito fácil e posso provar | CTH.JP">
+  <meta property="og:description" content="Como instalar drivers proprietários da Nvidia no Fedora usando RPM Fusion e akmod-nvidia. Simples, rápido e o driver se reconstrói sozinho a cada atualização do kernel.">
+  <meta property="og:url" content="https://cth.jp/artigos/nvidia-fedora.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BlogPosting","headline":"Instalar drivers Nvidia no Fedora é muito, muito fácil e posso provar","author":{"@type":"Person","name":"Celso Takeshi Hamasaki"},"datePublished":"2026-04-16","url":"https://cth.jp/artigos/nvidia-fedora.html"}
+  </script>
+  <link rel="stylesheet" href="../style.css">
+  <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-title">✦ CTH.JP ✦</div>
+  <div class="site-subtitle">Celso Takeshi Hamasaki · Dev Java &amp; Cloud</div>
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="../index.html">🏠 início</a>
+    <a href="../index.html#blog">📝 blog</a>
+    <a href="../index.html#sobre">👤 sobre</a>
+  </nav>
+</header>
+<div class="page-wrapper">
+  <div class="layout">
+    <aside class="sidebar-left" aria-label="Navegação do artigo">
+      <a href="../index.html#blog" class="back-btn">← voltar ao blog</a>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">♡</i> sobre o autor</div>
+        <div class="widget-body">
+          <div class="profile-name">CELSO TAKESHI</div>
+          <div class="profile-role">Dev Java &amp; Cloud ☕</div>
+          <div class="profile-status">● disponível pra oportunidades</div>
+          <ul class="profile-links">
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">✦</i> tags</div>
+        <div class="widget-body">
+          <div class="tags-cloud">
+            <span class="tag">#fedora</span>
+            <span class="tag">#nvidia</span>
+            <span class="tag">#linux</span>
+            <span class="tag">#drivers</span>
+            <span class="tag">#rpm-fusion</span>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">📋</i> outros artigos</div>
+        <div class="widget-body">
+          <ul class="latest-list">
+            <li class="latest-item"><a href="apocalipse-quantico-sndl.html">O Apocalipse Quântico e SNDL</a></li>
+            <li class="latest-item"><a href="cellebrite-devassa-digital.html">Devassa Digital + Cellebrite</a></li>
+            <li class="latest-item"><a href="backblaze-b2-cloudflare.html">Backup com Backblaze B2</a></li>
+            <li class="latest-item"><a href="nobara-gaming-linux.html">Nobara vs Windows 11</a></li>
+            <li class="latest-item"><a href="windows11-debloat.html">Windows 11 Debloat</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <nav class="breadcrumb" aria-label="Localização">
+        <a href="../index.html">CTH.JP</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="../index.html#blog">Blog</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Drivers Nvidia no Fedora</span>
+      </nav>
+      <article itemscope itemtype="https://schema.org/BlogPosting">
+        <header class="article-header">
+          <div class="article-header-tags">
+            <span class="card-tag">#fedora</span>
+            <span class="card-tag">#nvidia</span>
+            <span class="card-tag">#linux</span>
+            <span class="card-tag">#drivers</span>
+            <span class="card-tag">#rpm-fusion</span>
+          </div>
+          <h1 class="article-header-title" itemprop="headline">Instalar drivers Nvidia no Fedora é muito, muito fácil e posso provar</h1>
+          <div class="article-header-meta">
+            <span>✍️ Celso Takeshi Hamasaki</span>
+          </div>
+        </header>
+        <div class="article-body" itemprop="articleBody">
+
+          <p>vc ta ai feliz com seu fedora novinho, ai vc abre o terminal e digita <code>nvidia-smi</code> pra ver sua placa de video... e...</p>
+
+          <pre><code>bash: nvidia-smi: comando não encontrado...</code></pre>
+
+          <p>aaaaaah! (｡•́︿•̀｡) q desespero!</p>
+
+          <p>calma, calma! isso so quer dizer q vc ta usando o driver <em>nouveau</em> (q eh o driver basico q vem com o linux), e nao o driver oficial (proprietario) da nvidia q faz seus jogos e apps rodarem <em>lisinho</em>!</p>
+
+          <p>"mas nao tem um app pra clicar e instalar?"</p>
+
+          <p>no fedora, o jeito mais recomendado eh usar o terminal com o <strong>rpm fusion</strong>. parece dificil, mas eh super facil!</p>
+
+          <h2>1. Adicionando o RPM Fusion</h2>
+
+          <p>primeiro, a gente precisa falar pro fedora onde achar os drivers. o rpm fusion eh o lugar <em>safe</em> pra isso. Instale os repos free e o nonfree:</p>
+
+          <p><a href="https://rpmfusion.org/" target="_blank" rel="noopener">https://rpmfusion.org/</a></p>
+
+          <h2>2. Dando um update</h2>
+
+          <p>depois de adicionar, vamos dar um <code>update</code> pra ter certeza q o sistema leu os pacotes novos:</p>
+
+          <pre><code>sudo dnf update -y</code></pre>
+
+          <h2>3. Instalando o Driver!</h2>
+
+          <p>agora sim! esse comando vai instalar o driver <code>akmod</code>, q eh inteligente e se "constroi" sozinho toda vez q seu kernel atualizar (entao nunca quebra! acho!):</p>
+
+          <pre><code>sudo dnf install akmod-nvidia</code></pre>
+
+          <p>se vc joga ou usa apps q precisam de cuda, instala isso tbm:</p>
+
+          <pre><code>sudo dnf install xorg-x11-drv-nvidia-cuda</code></pre>
+
+          <h2>4. O PASSO MAIS IMPORTANTE: ESPERAR!</h2>
+
+          <div class="info-warning">
+            <div class="info-label">ATENÇÃO</div>
+            <p>eu sei q vc quer reiniciar o pc correndo, mas <strong>NAO REINICIA AINDA!</strong></p>
+            <p>o <code>akmod</code> ta trabalhando agora, construindo o driver. isso demora uns 2 a 5 minutos.</p>
+          </div>
+
+          <h2>5. Reboot e a Hora da Verdade!</h2>
+
+          <p>ok, esperou 5 minutinhos? agora sim!</p>
+
+          <p>manda um reboot no terminal.</p>
+
+          <p>quando seu pc ligar, abre o terminal e... tenta o comando de novo:</p>
+
+          <pre><code>nvidia-smi</code></pre>
+
+          <p>se tudo deu certo, vc vai ver uma tela linda tipo essa:</p>
+
+          <img src="../imagens/nvidia-smi-terminal.png" alt="Saída do comando nvidia-smi no terminal">
+
+        </div>
+      </article>
+      <a href="../index.html#blog" class="back-btn" style="margin-top:16px">← ver todos os artigos</a>
+    </main>
+  </div>
+</div>
+<footer class="site-footer">
+  <span class="footer-kawaii">✦ ♡ ✦</span>
+  <p><a href="../index.html">CTH.JP</a></p>
+
+</footer>
+</body>
+</html>

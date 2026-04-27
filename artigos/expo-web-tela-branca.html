@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tela branca no Expo Web: o bundle inteiro morria antes de executar | CTH.JP</title>
+  <meta name="description" content="Debug de tela branca no Expo SDK 54 + React Native Web. zustand v5 + Metro selecionando ESM com import.meta causando SyntaxError silencioso.">
+  <meta name="keywords" content="Expo, React Native Web, tela branca, Metro bundler, zustand v5, import.meta, SyntaxError, ESM, CJS, debug, Playwright">
+  <meta name="author" content="Celso Takeshi Hamasaki">
+  <link rel="canonical" href="https://cth.jp/artigos/expo-web-tela-branca.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Tela branca no Expo Web: o bundle inteiro morria antes de executar | CTH.JP">
+  <meta property="og:description" content="Debug de tela branca no Expo SDK 54 + React Native Web. zustand v5 + Metro selecionando ESM com import.meta causando SyntaxError silencioso.">
+  <meta property="og:url" content="https://cth.jp/artigos/expo-web-tela-branca.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BlogPosting","headline":"Tela branca no Expo Web: o bundle inteiro morria antes de executar","author":{"@type":"Person","name":"Celso Takeshi Hamasaki"},"datePublished":"2026-02-14","url":"https://cth.jp/artigos/expo-web-tela-branca.html"}
+  </script>
+  <link rel="stylesheet" href="../style.css">
+  <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-title">✦ CTH.JP ✦</div>
+  <div class="site-subtitle">Celso Takeshi Hamasaki · Dev Java &amp; Cloud</div>
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="../index.html">🏠 início</a>
+    <a href="../index.html#blog">📝 blog</a>
+    <a href="../index.html#sobre">👤 sobre</a>
+  </nav>
+</header>
+<div class="page-wrapper">
+  <div class="layout">
+    <aside class="sidebar-left" aria-label="Navegação do artigo">
+      <a href="../index.html#blog" class="back-btn">← voltar ao blog</a>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">♡</i> sobre o autor</div>
+        <div class="widget-body">
+          <div class="profile-name">CELSO TAKESHI</div>
+          <div class="profile-role">Dev Java &amp; Cloud ☕</div>
+          <div class="profile-status">● disponível pra oportunidades</div>
+          <ul class="profile-links">
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">✦</i> tags</div>
+        <div class="widget-body">
+          <div class="tags-cloud">
+            <span class="tag">#react-native</span>
+            <span class="tag">#expo</span>
+            <span class="tag">#web</span>
+            <span class="tag">#metro</span>
+            <span class="tag">#debug</span>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">📋</i> outros artigos</div>
+        <div class="widget-body">
+          <ul class="latest-list">
+            <li class="latest-item"><a href="apocalipse-quantico-sndl.html">O Apocalipse Quântico e SNDL</a></li>
+            <li class="latest-item"><a href="cellebrite-devassa-digital.html">Devassa Digital + Cellebrite</a></li>
+            <li class="latest-item"><a href="backblaze-b2-cloudflare.html">Backup com Backblaze B2</a></li>
+            <li class="latest-item"><a href="nobara-gaming-linux.html">Nobara vs Windows 11</a></li>
+            <li class="latest-item"><a href="mayinab-freeze.html">Mayinab travava do nada</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <nav class="breadcrumb" aria-label="Localização">
+        <a href="../index.html">CTH.JP</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="../index.html#blog">Blog</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Tela branca no Expo Web</span>
+      </nav>
+      <article itemscope itemtype="https://schema.org/BlogPosting">
+        <header class="article-header">
+          <div class="article-header-tags">
+            <span class="card-tag">#react-native</span>
+            <span class="card-tag">#expo</span>
+            <span class="card-tag">#web</span>
+            <span class="card-tag">#metro</span>
+            <span class="card-tag">#debug</span>
+          </div>
+          <h1 class="article-header-title" itemprop="headline">Tela branca no Expo Web: o bundle inteiro morria antes de executar</h1>
+          <div class="article-header-meta">
+            <span>📅 <time datetime="2026-02-14" itemprop="datePublished">14 de fevereiro de 2026</time></span>
+            <span>✍️ Celso Takeshi Hamasaki</span>
+          </div>
+        </header>
+        <div class="article-body" itemprop="articleBody">
+
+          <p>feliz valentine days 💀 passei ele brigando com uma tela branca.</p>
+
+          <p>o <strong>Lógica Viva</strong> (Expo SDK 54 + React Native Web) simplesmente abria uma pagina em branco no navegador. tipo, nada. zero. void. o HTML carregava certinho (titulo "Lógica Viva", div <code>#root</code> presente), o Metro servia o bundle JS... mas nenhum conteudo React aparecia. tela branca total. (╥_╥)</p>
+
+          <p>nao tinha <strong>nenhum erro visivel na pagina</strong>. so o branco absoluto te encarando.</p>
+
+          <h2>A Investigacao (com Playwright pq sim)</h2>
+
+          <p>como o VS Code nao tem acesso ao console do navegador, usei o <strong>Playwright</strong> (headless Chromium) pra capturar programaticamente o que tava acontecendo: conteudo do DOM, erros de console JS, tudo.</p>
+
+          <p>e la veio o erro:</p>
+
+          <pre><code>Cannot use 'import.meta' outside a module</code></pre>
+
+          <p>hmm. interessante. e terrivel.</p>
+
+          <h2>A Causa Raiz: zustand v5 + Metro = desastre silencioso</h2>
+
+          <p>o <strong>zustand v5.0.11</strong> distribui duas versoes do codigo:</p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Build</th>
+                  <th>Arquivo</th>
+                  <th>Variavel de ambiente</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>CJS (CommonJS)</td>
+                  <td><code>middleware.js</code></td>
+                  <td><code>process.env.NODE_ENV</code> ✅</td>
+                </tr>
+                <tr>
+                  <td>ESM (ES Modules)</td>
+                  <td><code>esm/middleware.mjs</code></td>
+                  <td><code>import.meta.env.MODE</code> ❌</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>o <code>package.json</code> do zustand tem exports condicionais. quando o Metro resolve modulos pra plataforma <strong>web</strong>, ele aplica a condicao <code>import</code>, selecionando os arquivos <code>.mjs</code> (ESM).</p>
+
+          <p>so que o Metro gera bundles no formato <strong>classic script</strong> (<code>&lt;script src="..."&gt;</code>), e <strong>nao</strong> <code>&lt;script type="module"&gt;</code>. nesse contexto, <code>import.meta</code> eh um <strong>SyntaxError</strong> que mata o <strong>parsing do bundle inteiro</strong> antes de qualquer codigo executar. QUALQUER codigo. o React nem chega a rodar. rip.</p>
+
+          <div class="info-warning">
+            <div class="info-label">⚠️ O MAIS DIABÓLICO</div>
+            <p>o Metro compilava sem erros. a pagina HTML retorna status 200. so que o JS tem um SyntaxError no parse que acontece <strong>silenciosamente</strong>. sem feedback visual nenhum. vc so ve o branco. (ꐦ°᷄д°᷅)</p>
+            <p>quando o bundle ta quebrado assim, o Metro na vdd retorna JSON com status 500 em vez de JavaScript. ai o navegador recusa executar pq o MIME type eh <code>application/json</code>. genial.</p>
+          </div>
+
+          <h2>A Correcao Principal: <code>metro.config.js</code></h2>
+
+          <p>criei um <code>metro.config.js</code> pra forcar a condicao de export <code>react-native</code> (que aponta pros builds CJS) e remover a condicao <code>import</code> (que selecionava os ESM com <code>import.meta</code>):</p>
+
+          <pre><code>const { getDefaultConfig } = require('@expo/metro-config');
+const config = getDefaultConfig(__dirname);
+
+// Prioriza 'react-native' (CJS) sobre 'import' (ESM)
+const conditions = config.resolver.unstable_conditionNames;
+if (!conditions.includes('react-native')) {
+  conditions.unshift('react-native');
+}
+// Remove 'import' pra que os .mjs nao sejam selecionados
+const importIndex = conditions.indexOf('import');
+if (importIndex !== -1) {
+  conditions.splice(importIndex, 1);
+}
+
+module.exports = config;</code></pre>
+
+          <p>resultado: o bundle passa a usar <code>process.env.NODE_ENV</code> (CJS) em vez de <code>import.meta.env</code> (ESM). sem mais SyntaxError. ✅</p>
+
+          <h2>Plot Twist: segundo erro</h2>
+
+          <p>achei q ia comemorar... mas nao. depois de matar o <code>import.meta</code>, apareceu:</p>
+
+          <pre><code>supabaseUrl is required.</code></pre>
+
+          <p>o <code>src/services/supabase.ts</code> chamava <code>createClient('', '')</code> quando as env vars <code>EXPO_PUBLIC_SUPABASE_URL</code> e <code>EXPO_PUBLIC_SUPABASE_ANON_KEY</code> nao tavam definidas. o <code>@supabase/supabase-js</code> lanca excecao com URL vazia, matando a avaliacao do modulo e impedindo a montagem do React. mais uma vez: tela branca sem explicacao. ¯\_(ツ)_/¯</p>
+
+          <p>fix: placeholder URL pra modo offline.</p>
+
+          <pre><code>export const supabase = createClient&lt;Database&gt;(
+  supabaseUrl || 'https://placeholder.supabase.co',
+  supabaseAnonKey || 'placeholder-key',
+  { ... }
+);</code></pre>
+
+          <p>nao funcional pra operacoes reais, mas o app inicializa e opera em modo offline.</p>
+
+          <h2>Todas as Correcoes</h2>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Arquivo</th>
+                  <th>O que fez</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>metro.config.js</code> (novo)</td>
+                  <td>Forca Metro a usar builds CJS em vez de ESM</td>
+                </tr>
+                <tr>
+                  <td><code>app.json</code></td>
+                  <td><code>"bundler": "metro"</code> na config web</td>
+                </tr>
+                <tr>
+                  <td><code>src/services/supabase.ts</code></td>
+                  <td>Placeholder URL/key quando env vars ausentes</td>
+                </tr>
+                <tr>
+                  <td><code>src/App.tsx</code></td>
+                  <td>ErrorBoundary + linking config + documentTitle</td>
+                </tr>
+                <tr>
+                  <td><code>src/services/notifications.ts</code></td>
+                  <td>Lazy-load condicional de modulos nativos</td>
+                </tr>
+                <tr>
+                  <td><code>src/hooks/useSync.ts</code></td>
+                  <td>Lazy-load de NetInfo + fallback <code>navigator.onLine</code></td>
+                </tr>
+                <tr>
+                  <td><code>package.json</code></td>
+                  <td><code>@expo/metro-config</code> como dependencia</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2>Verificacao</h2>
+
+          <p>rodei teste automatizado com Playwright headless e a tela principal renderizou completa:</p>
+
+          <pre><code>Children: 1
+Text: "⭐ 0 XP 🏅 Nv 1 🔥 0 dias 🔄 Daily Review
+       Conjuntos e Contagem ..."</code></pre>
+
+          <p>HomeScreen com TopBar (XP, nivel, streak), mapa de progresso e barra de navegacao inferior. tudo funcionando. 🎉</p>
+
+          <h2>Licao aprendida</h2>
+
+          <div class="info-important">
+            <div class="info-label">💡 MORAL DA HISTÓRIA</div>
+            <p>esse cenario eh uma armadilha brutal pq <strong>tudo parece ok</strong>: Metro compila sem erros, HTML carrega com status 200, a div <code>#root</code> existe... mas o JavaScript morre no parse antes de executar uma unica linha. e a pagina nao te da nenhum sinal.</p>
+            <p>a unica forma de detectar foi inspecionar o console do navegador (via headless browser). se eu tivesse ficado olhando a tela branca sem abrir o console, ia estar la ate agora.</p>
+          </div>
+
+          <p><strong>moral:</strong> se a tela ta branca e nao tem erro visivel, roda um headless browser e captura os erros de console. e desconfie dos exports condicionais dos pacotes npm, pq eles podem escolher o build errado pro seu bundler. (⌐■_■)</p>
+
+        </div>
+      </article>
+      <a href="../index.html#blog" class="back-btn" style="margin-top:16px">← ver todos os artigos</a>
+    </main>
+  </div>
+</div>
+<footer class="site-footer">
+  <span class="footer-kawaii">✦ ♡ ✦</span>
+  <p><a href="../index.html">CTH.JP</a></p>
+
+</footer>
+</body>
+</html>

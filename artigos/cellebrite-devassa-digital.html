@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Devassa Digital em Brasília, Banco Master e Cellebrite | CTH.JP</title>
+  <meta name="description" content="O que é o Cellebrite UFED e Premium, como funciona a Gaiola de Faraday, por que biometria é insegura, cold boot attack, e o Crypto-Wiper em C com AES-256 para wipe seguro.">
+  <meta name="keywords" content="cellebrite, devassa digital, privacidade, forense digital, linux, cibersegurança, AES-256, cold boot attack, gaiola de faraday">
+  <meta name="author" content="Celso Takeshi Hamasaki">
+  <link rel="canonical" href="https://cth.jp/artigos/cellebrite-devassa-digital.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="A Devassa Digital em Brasília, Banco Master e Cellebrite | CTH.JP">
+  <meta property="og:description" content="O que é o Cellebrite UFED e Premium, como funciona a Gaiola de Faraday, por que biometria é insegura, cold boot attack, e o Crypto-Wiper em C com AES-256 para wipe seguro.">
+  <meta property="og:url" content="https://cth.jp/artigos/cellebrite-devassa-digital.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BlogPosting","headline":"A Devassa Digital em Brasília, Banco Master e Cellebrite (+ Toolset Pessoal)","author":{"@type":"Person","name":"Celso Takeshi Hamasaki"},"datePublished":"2025-06-15","url":"https://cth.jp/artigos/cellebrite-devassa-digital.html"}
+  </script>
+  <link rel="stylesheet" href="../style.css">
+  <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-title">✦ CTH.JP ✦</div>
+  <div class="site-subtitle">Celso Takeshi Hamasaki · Dev Java &amp; Cloud</div>
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="../index.html">🏠 início</a>
+    <a href="../index.html#blog">📝 blog</a>
+    <a href="../index.html#sobre">👤 sobre</a>
+  </nav>
+</header>
+<div class="page-wrapper">
+  <div class="layout">
+    <aside class="sidebar-left" aria-label="Navegação do artigo">
+      <a href="../index.html#blog" class="back-btn">← voltar ao blog</a>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">♡</i> sobre o autor</div>
+        <div class="widget-body">
+          <div class="profile-name">CELSO TAKESHI</div>
+          <div class="profile-role">Dev Java &amp; Cloud ☕</div>
+          <div class="profile-status">● disponível pra oportunidades</div>
+          <ul class="profile-links">
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">✦</i> tags</div>
+        <div class="widget-body">
+          <div class="tags-cloud">
+            <span class="tag">#ciberseguranca</span>
+            <span class="tag">#cellebrite</span>
+            <span class="tag">#privacidade</span>
+            <span class="tag">#forense</span>
+            <span class="tag">#linux</span>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">📋</i> outros artigos</div>
+        <div class="widget-body">
+          <ul class="latest-list">
+            <li class="latest-item"><a href="apocalipse-quantico-sndl.html">O Apocalipse Quântico e SNDL</a></li>
+            <li class="latest-item"><a href="cellebrite-devassa-digital.html">Devassa Digital + Cellebrite</a></li>
+            <li class="latest-item"><a href="backblaze-b2-cloudflare.html">Backup com Backblaze B2</a></li>
+            <li class="latest-item"><a href="nobara-gaming-linux.html">Nobara vs Windows 11</a></li>
+            <li class="latest-item"><a href="windows11-debloat.html">Windows 11 Debloat</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <nav class="breadcrumb" aria-label="Localização">
+        <a href="../index.html">CTH.JP</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="../index.html#blog">Blog</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Devassa Digital + Cellebrite</span>
+      </nav>
+      <article itemscope itemtype="https://schema.org/BlogPosting">
+        <header class="article-header">
+          <div class="article-header-tags">
+            <span class="card-tag">#ciberseguranca</span>
+            <span class="card-tag">#cellebrite</span>
+            <span class="card-tag">#privacidade</span>
+            <span class="card-tag">#forense</span>
+            <span class="card-tag">#linux</span>
+          </div>
+          <h1 class="article-header-title" itemprop="headline">A Devassa Digital em Brasília, Banco Master e Cellebrite (+ Toolset Pessoal)</h1>
+          <div class="article-header-meta">
+            <span>📅 <time datetime="2025-06-15" itemprop="datePublished">15 de junho de 2025</time></span>
+            <span>✍️ Celso Takeshi Hamasaki</span>
+          </div>
+        </header>
+        <div class="article-body" itemprop="articleBody">
+
+          <p>ultimamente ta todo mundo em brasilia surtando com a tal "devassa digital" e o uso do <strong>Cellebrite Premium</strong>. mas sera q eh tudo isso mesmo? ou eh so <em>hype</em> pra assustar?</p>
+          <p>como desenvolvedor que trabalha com cloud e infraestrutura, segurança de dados é um tema do dia a dia: compliance, LGPD, proteção de dados sensíveis de clientes. resolvi escrever o que aprendi sobre como essa tecnologia funciona de verdade.</p>
+
+          <h2>O que eh o Cellebrite?</h2>
+          <p>a cellebrite eh uma empresa de israel q vende o <strong>UFED</strong> e o <strong>Premium</strong>. basicamente, eh um kit de hacking legalizado q a policia usa.</p>
+          <p>eles nao precisam da senha do usuario pra entrar. eles exploram falhas de segurança (<em>zero-days</em>) q nem a apple ou o google corrigiram ainda.</p>
+          <ul>
+            <li><strong>Foco:</strong> o forte deles eh <strong>MOBILE</strong>. eles conseguem extrair tudo: zap, fotos, localizacao e arquivos deletados.</li>
+            <li><strong>Custo:</strong> nao eh "por uso". a policia paga uma licença milionaria "unlimited". ou seja, eles podem plugar 100 celulares num dia e desbloquear todos sem pagar extra.</li>
+          </ul>
+
+          <h2>A lenda da "Gaiola quebra senha"</h2>
+          <p>a midia fala mto da <strong>Gaiola de Faraday</strong>, mas explicam tudo errado.</p>
+          <p>colocar o celular na gaiola <strong>NAO</strong> quebra a criptografia. a gaiola so bloqueia o sinal (4g/wifi). pra que serve entao?</p>
+          <ol>
+            <li><strong>Evitar o Remote Wipe:</strong> pro dono (ou comparsa) nao mandar um comando remoto pra apagar o celular.</li>
+            <li><strong>Evitar Bloqueio:</strong> alguns celulares bloqueiam certas portas de dados se conectarem na rede.</li>
+          </ol>
+          <p>entao a gaiola eh so pra segurar o celular "vivo" ate o cellebrite ser plugado.</p>
+
+          <h2>Senha vs Biometria (Rosto/Dedo)</h2>
+          <p>aqui ta o maior erro das pessoas: achar q face id eh mais seguro. <strong>nao eh!</strong></p>
+          <p>a biometria eh <em>conveniente</em>, mas eh insegura fisicamente. numa batida policial ou assalto, podem forçar seu dedo no sensor ou colocar o cel na sua cara.</p>
+
+          <div class="info-important">
+            <div class="info-label">⚠ A REGRA DE OURO</div>
+            <ul>
+              <li><strong>Biometria:</strong> facil de burlar com força fisica.</li>
+              <li><strong>Senha Alfanumerica:</strong> impossivel de forçar (vc pode "esquecer" ou se recusar a falar).</li>
+            </ul>
+          </div>
+
+          <div class="info-tip">
+            <div class="info-label">💡 DICA PRO: MODO PÂNICO</div>
+            <p>se achar q vai perder o cel, segure o <strong>power + volume</strong> (iphone) ou ative o <strong>lockdown mode</strong> (android). isso desativa a biometria na hora e so libera com a senha!</p>
+          </div>
+
+          <h2>A Ilusão da Nuvem (Google Drive não é cofre!)</h2>
+          <p>essa é clássica. "ah, mas meu google drive é criptografado".</p>
+          <p><strong>Errou feio.</strong> O Google (e Dropbox, OneDrive, iCloud padrão) usa criptografia <em>Server-Side</em>. Isso significa que eles embaralham seus arquivos, mas <strong>eles também guardam a chave para desembaralhar</strong>.</p>
+          <p>se um funcionário quiser, ou um invasor conseguir acesso, ele descriptografa e pega tudo. Seus dados estão "trancados", mas a chave tá na portaria do prédio, não no seu bolso.</p>
+
+          <div class="info-note">
+            <div class="info-label">ℹ O JEITO CERTO: CLIENT-SIDE ENCRYPTION</div>
+            <p>no meu setup (usando AWS S3 e outros object storages seguros), eu uso minha própria chave de criptografia. Se você não tem a chave privada (Client-Side), vc não tem segurança real.</p>
+          </div>
+
+          <h2>O "Fantasma" do Navegador (Cache)</h2>
+          <p>mta gente acha q fechar a aba resolve. burrice!</p>
+          <p>quando vc navega, o chrome/firefox baixa imagens, scripts e pedaços de paginas pro seu pc pra carregar mais rapido depois. isso eh o <strong>Cache</strong>.</p>
+          <p>a pericia forense ama isso. mesmo q vc nao tenha o historico salvo, eles podem reconstruir o q vc viu (imagens, videos, textos) so analisando a pasta de cache do sistema. ate thumbnails q vc viu no windows explorer ficam salvas num arquivo chamado <code>thumbs.db</code> ou <code>iconcache</code> pra sempre, mesmo se vc deletar o arquivo original!</p>
+
+          <h2>"Deletar" não é "Sumir"</h2>
+          <p>essa parte eh perigosa.</p>
+          <p>quando vc clica em "Deletar" e esvazia a lixeira, o windows/linux <strong>NAO apaga o arquivo</strong>. ele so vai na tabela de endereços do disco e marca aquele espaço como "livre pra escrever em cima".</p>
+          <p>mas os dados (os zeros e uns) continuam la intactos ate q vc grave outra coisa por cima. ferramentas simples recuperam isso em segundos.</p>
+
+          <h2>SSD vs HDD: Como limpar de verdade?</h2>
+          <p>pra se proteger disso, a tecnica muda dependendo do disco:</p>
+
+          <div class="info-note">
+            <div class="info-label">💾 NO HDD (Disco Rígido antigo)</div>
+            <p>a unica solucao eh <strong>sobrescrever</strong> (escrever zeros ou lixo por cima). ferramentas como <code>shred</code> no linux funcionam bem aqui.</p>
+          </div>
+
+          <div class="info-warning">
+            <div class="info-label">⚡ NO SSD (Discos modernos)</div>
+            <p><strong>NAO use shred comum!</strong> sobrescrever ssd estraga a vida util dele e nao garante q apagou (por causa do <em>wear leveling</em>). a solucao eh o comando <strong>TRIM / BLKDISCARD</strong> ou <strong>Crypto-Shredding</strong> (explicado abaixo).</p>
+          </div>
+
+          <h2>O ataque "Cold Boot" e a RAM</h2>
+          <p>por fim, se vc usa criptografia no pc (Bitlocker/LUKS), <strong>nunca deixe em suspender/sleep</strong>.</p>
+          <p>enquanto o pc ta ligado (mesmo com tela bloqueada), a chave da criptografia fica escrita na <strong>Memoria RAM</strong> em texto puro. a policia usa o <strong>Cold Boot Attack</strong>: jogam spray congelante na memoria RAM, arrancam ela e leem os dados em outro lugar antes da energia sumir.</p>
+
+          <div class="info-important">
+            <div class="info-label">🔴 REGRA ANTI-COLD BOOT</div>
+            <p>sempre use <strong>desligar completamente</strong> (shutdown), nunca sleep/hibernate, se o seu pc tiver dados sensíveis com criptografia ativa.</p>
+          </div>
+
+          <h2>Crypto-Shredding: o padrão da indústria para SSDs</h2>
+          <p>voltando ao problema do SSD: shred e sobrescrita não funcionam porque o firmware redireciona as escritas (wear leveling). a solução padrão da indústria, inclusive usada por AWS, GCP e Azure pra descarte de discos, é o <strong>Crypto-Shredding</strong>.</p>
+
+          <div class="info-tip">
+            <div class="info-label">💡 COMO FUNCIONA O CRYPTO-SHREDDING</div>
+            <p>em vez de apagar os dados diretamente, você encripta o volume inteiro com uma chave AES-256 gerada aleatoriamente, e depois descarta só a chave. o resultado? os dados continuam lá fisicamente, mas são matematicamente irrecuperáveis sem ela. é exatamente o que o comando <code>blkdiscard</code> com criptografia ativa (LUKS) faz no Linux.</p>
+          </div>
+
+          <p>esse modelo é documentado pelo <strong>NIST SP 800-88</strong> (Guidelines for Media Sanitization) como método aprovado de sanitização pra mídias de estado sólido. é o mesmo princípio por trás do "Erase All Content" do iPhone: o dispositivo não apaga os dados, ele descarta a chave de criptografia que protege o volume.</p>
+
+          <div class="info-note">
+            <div class="info-label">ℹ NO LINUX (LUKS)</div>
+            <p>se o volume estiver criptografado com LUKS desde o início, o "wipe seguro" se resume a: <code>cryptsetup erase /dev/sdX</code>. isso destrói o key slot e torna o volume inacessível de forma irrecuperável, sem precisar sobrescrever byte a byte.</p>
+          </div>
+
+          <div class="info-warning">
+            <div class="info-label">⚠ CONCLUSÃO PRÁTICA</div>
+            <p>a lição é: <strong>criptografe o disco desde o início</strong> (LUKS no Linux, BitLocker no Windows, FileVault no Mac). se você fizer isso, o "wipe" no fim da vida do disco é trivial e confiável. se não fizer, você vai ter dor de cabeça tentando garantir o descarte seguro depois.</p>
+          </div>
+
+        </div>
+      </article>
+      <a href="../index.html#blog" class="back-btn" style="margin-top:16px">← ver todos os artigos</a>
+    </main>
+  </div>
+</div>
+<footer class="site-footer">
+  <span class="footer-kawaii">✦ ♡ ✦</span>
+  <p><a href="../index.html">CTH.JP</a></p>
+
+</footer>
+</body>
+</html>

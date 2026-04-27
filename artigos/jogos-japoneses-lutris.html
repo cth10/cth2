@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rodando jogo japonês com fontes japonesas no Linux (Lutris + Wine) | CTH.JP</title>
+  <meta name="description" content="Como rodar jogos de Windows em japonês no Linux com Lutris. Configurar LANG=ja_JP.UTF-8, instalar fontes CJK, resolver tela preta com Winetricks (lavfilters, wmp10).">
+  <meta name="keywords" content="linux, wine, lutris, jogos japoneses, LANG ja_JP, fontes CJK, winetricks, lavfilters, wmp10, tela preta">
+  <meta name="author" content="Celso Takeshi Hamasaki">
+  <link rel="canonical" href="https://cth.jp/artigos/jogos-japoneses-lutris.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Rodando jogo japonês com fontes japonesas no Linux (Lutris + Wine) | CTH.JP">
+  <meta property="og:description" content="Como rodar jogos de Windows em japonês no Linux com Lutris. Configurar LANG=ja_JP.UTF-8, instalar fontes CJK, resolver tela preta com Winetricks (lavfilters, wmp10).">
+  <meta property="og:url" content="https://cth.jp/artigos/jogos-japoneses-lutris.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BlogPosting","headline":"Rodando jogo japonês com fontes japonesas no Linux (Lutris + Wine)","author":{"@type":"Person","name":"Celso Takeshi Hamasaki"},"datePublished":"2026-04-16","url":"https://cth.jp/artigos/jogos-japoneses-lutris.html"}
+  </script>
+  <link rel="stylesheet" href="../style.css">
+  <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-title">✦ CTH.JP ✦</div>
+  <div class="site-subtitle">Celso Takeshi Hamasaki · Dev Java &amp; Cloud</div>
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="../index.html">🏠 início</a>
+    <a href="../index.html#blog">📝 blog</a>
+    <a href="../index.html#sobre">👤 sobre</a>
+  </nav>
+</header>
+<div class="page-wrapper">
+  <div class="layout">
+    <aside class="sidebar-left" aria-label="Navegação do artigo">
+      <a href="../index.html#blog" class="back-btn">← voltar ao blog</a>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">♡</i> sobre o autor</div>
+        <div class="widget-body">
+          <div class="profile-name">CELSO TAKESHI</div>
+          <div class="profile-role">Dev Java &amp; Cloud ☕</div>
+          <div class="profile-status">● disponível pra oportunidades</div>
+          <ul class="profile-links">
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">✦</i> tags</div>
+        <div class="widget-body">
+          <div class="tags-cloud">
+            <span class="tag">#linux</span>
+            <span class="tag">#wine</span>
+            <span class="tag">#lutris</span>
+            <span class="tag">#jogos</span>
+            <span class="tag">#japones</span>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">📋</i> outros artigos</div>
+        <div class="widget-body">
+          <ul class="latest-list">
+            <li class="latest-item"><a href="apocalipse-quantico-sndl.html">O Apocalipse Quântico e SNDL</a></li>
+            <li class="latest-item"><a href="cellebrite-devassa-digital.html">Devassa Digital + Cellebrite</a></li>
+            <li class="latest-item"><a href="backblaze-b2-cloudflare.html">Backup com Backblaze B2</a></li>
+            <li class="latest-item"><a href="nobara-gaming-linux.html">Nobara vs Windows 11</a></li>
+            <li class="latest-item"><a href="windows11-debloat.html">Windows 11 Debloat</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <nav class="breadcrumb" aria-label="Localização">
+        <a href="../index.html">CTH.JP</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="../index.html#blog">Blog</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Jogos japoneses no Linux (Lutris + Wine)</span>
+      </nav>
+      <article itemscope itemtype="https://schema.org/BlogPosting">
+        <header class="article-header">
+          <div class="article-header-tags">
+            <span class="card-tag">#linux</span>
+            <span class="card-tag">#wine</span>
+            <span class="card-tag">#lutris</span>
+            <span class="card-tag">#jogos</span>
+            <span class="card-tag">#japones</span>
+          </div>
+          <h1 class="article-header-title" itemprop="headline">Rodando jogo japonês com fontes japonesas no Linux (Lutris + Wine)</h1>
+          <div class="article-header-meta">
+            <span>✍️ Celso Takeshi Hamasaki</span>
+          </div>
+        </header>
+        <div class="article-body" itemprop="articleBody">
+
+          <p>Comprei o jogo 魔棒少女みらくるくるん.</p>
+
+          <h2>Instalando no Lutris</h2>
+
+          <ol>
+            <li>
+              <p>instala o lutris (se vc nao tem ainda).</p>
+              <p><a href="https://lutris.net/downloads" target="_blank" rel="noopener">https://lutris.net/downloads</a></p>
+            </li>
+            <li>clica no <code>+</code> (la em cima) e "adicionar jogo instalado localmente".</li>
+          </ol>
+
+          <img src="../imagens/lutris-adicionar-jogo.png" alt="Botão adicionar jogo localmente no Lutris">
+
+          <ol start="3">
+            <li>preenche o nome e escolhe "wine" como "executor".</li>
+          </ol>
+
+          <img src="../imagens/lutris-config-wine.png" alt="Selecionando Wine como executor no Lutris">
+
+          <ol start="4">
+            <li>na aba "Opções do Jogo", vc aponta pra onde ta o arquivo <code>.exe</code> q vc baixou.</li>
+          </ol>
+
+          <img src="../imagens/lutris-opcoes-jogo.png" alt="Selecionando executável do jogo no Lutris">
+
+          <ol start="5">
+            <li><strong>essa eh a parte importante:</strong> vai na aba "<strong>Opções do Sistema</strong>".</li>
+            <li>la em baixo, vai ter "Variáveis de Ambiente".</li>
+            <li>clica em "adicionar" e coloca isso:
+              <ul>
+                <li><strong>Chave:</strong> <code>LANG</code></li>
+                <li><strong>Valor:</strong> <code>ja_JP.UTF-8</code></li>
+              </ul>
+            </li>
+          </ol>
+
+          <img src="../imagens/lutris-lang-ja.png" alt="Configurando variável LANG ja_JP no Lutris">
+
+          <p>pronto! qnd vc abrir o jogo pelo lutris, ele vai "fingir" q seu pc ta em japones <em>so praquele jogo</em>!</p>
+
+          <p>se vc nao for usar o lutris, vc pode fazer isso pelo terminal tbm:</p>
+
+          <pre><code>LANG=ja_JP.UTF-8 wine /caminho/para/seu/jogo.exe</code></pre>
+
+          <h2>2. Instalar as Fontes Japonesas (pro seu Linux)</h2>
+
+          <p>alem disso, seu <em>linux</em> precisa ter as <strong>fontes</strong> (letras) japonesas! senao, mesmo q o wine faca certo, o sistema nao sabe "desenhar" os kanjis e hiraganas.</p>
+
+          <ul>
+            <li><strong>se vc usa ubuntu, mint ou debian:</strong> <code>sudo apt install fonts-noto-cjk</code></li>
+            <li><strong>se vc usa arch ou manjaro:</strong> <code>sudo pacman -S noto-fonts-cjk</code></li>
+            <li><strong>se vc usa fedora:</strong> <code>sudo dnf install google-noto-cjk-fonts</code></li>
+          </ul>
+
+          <h2>Solução: Instalar Codecs (Winetricks)</h2>
+
+          <p>no meu caso, deu "tela preta + musica tocando". eh o sintoma mais <em>classico</em> do mundo de <strong>falta de codecs de video</strong>! (¬‿¬)</p>
+
+          <p>o lutris deixa isso facil!</p>
+
+          <ol>
+            <li>no lutris, acha seu jogo na lista.</li>
+            <li>clica nele com o <strong>botao direito</strong> &gt; <code>Winetricks</code>.</li>
+            <li>uma janelinha vai abrir. escolhe <code>Select the default wineprefix</code> (ja deve ta marcado) &gt; <code>OK</code>.</li>
+          </ol>
+
+          <img src="../imagens/winetricks-menu.png" alt="Menu principal do Winetricks">
+
+          <ol start="4">
+            <li>na proxima janela, escolhe <code>Install a Windows DLL or component</code> &gt; <code>OK</code>.</li>
+          </ol>
+
+          <img src="../imagens/winetricks-instalar-dll.png" alt="Instalando DLL ou componente Windows">
+
+          <ol start="5">
+            <li>agora vai abrir uma lista gigante.</li>
+            <li>a gente precisa instalar os codecs de video. procura e marca esses (vc talvez tenha q instalar um de cada vez):
+              <ul>
+                <li><code>lavfilters</code> (esse eh mto bom, eh moderno!)</li>
+                <li><code>k-lite_codec_pack</code> (esse eh um pacotao classico, deve ter oq precisa)</li>
+                <li><code>wmp10</code> (ou <code>wmp9</code>) (instala o windows media player, muitos jogos japoneses antigos usam isso)</li>
+                <li>(aproveita e instala tbm <code>d3dx9</code> e <code>d3dcompiler_43</code>, eh sempre bom pra jogos assim)</li>
+              </ul>
+            </li>
+          </ol>
+
+          <p>depois de instalar, fecha tudo e tenta abrir o jogo de novo!</p>
+
+          <img src="../imagens/jogo-japones-lutris.png" alt="Jogo japonês rodando no Linux com Lutris">
+
+        </div>
+      </article>
+      <a href="../index.html#blog" class="back-btn" style="margin-top:16px">← ver todos os artigos</a>
+    </main>
+  </div>
+</div>
+<footer class="site-footer">
+  <span class="footer-kawaii">✦ ♡ ✦</span>
+  <p><a href="../index.html">CTH.JP</a></p>
+
+</footer>
+</body>
+</html>

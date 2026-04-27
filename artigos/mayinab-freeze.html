@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mayinab travava do nada ao navegar entre subtopics (7 tentativas até achar) | CTH.JP</title>
+  <meta name="description" content="Debug de freeze intermitente no Flutter. ChatScrollObserver do pacote scrollview_observer causando loop infinito de addPostFrameCallback. 7 tentativas até a solução.">
+  <meta name="keywords" content="Flutter, debug, freeze, scrollview_observer, ChatScrollObserver, addPostFrameCallback, loop infinito, mobile, Mayinab">
+  <meta name="author" content="Celso Takeshi Hamasaki">
+  <link rel="canonical" href="https://cth.jp/artigos/mayinab-freeze.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Mayinab travava do nada ao navegar entre subtopics (7 tentativas até achar) | CTH.JP">
+  <meta property="og:description" content="Debug de freeze intermitente no Flutter. ChatScrollObserver do pacote scrollview_observer causando loop infinito de addPostFrameCallback. 7 tentativas até a solução.">
+  <meta property="og:url" content="https://cth.jp/artigos/mayinab-freeze.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BlogPosting","headline":"Mayinab travava do nada ao navegar entre subtopics (7 tentativas até achar)","author":{"@type":"Person","name":"Celso Takeshi Hamasaki"},"datePublished":"2026-02-12","url":"https://cth.jp/artigos/mayinab-freeze.html"}
+  </script>
+  <link rel="stylesheet" href="../style.css">
+  <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-title">✦ CTH.JP ✦</div>
+  <div class="site-subtitle">Celso Takeshi Hamasaki · Dev Java &amp; Cloud</div>
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="../index.html">🏠 início</a>
+    <a href="../index.html#blog">📝 blog</a>
+    <a href="../index.html#sobre">👤 sobre</a>
+  </nav>
+</header>
+<div class="page-wrapper">
+  <div class="layout">
+    <aside class="sidebar-left" aria-label="Navegação do artigo">
+      <a href="../index.html#blog" class="back-btn">← voltar ao blog</a>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">♡</i> sobre o autor</div>
+        <div class="widget-body">
+          <div class="profile-name">CELSO TAKESHI</div>
+          <div class="profile-role">Dev Java &amp; Cloud ☕</div>
+          <div class="profile-status">● disponível pra oportunidades</div>
+          <ul class="profile-links">
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">✦</i> tags</div>
+        <div class="widget-body">
+          <div class="tags-cloud">
+            <span class="tag">#flutter</span>
+            <span class="tag">#debug</span>
+            <span class="tag">#mobile</span>
+            <span class="tag">#scrollview</span>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">📋</i> outros artigos</div>
+        <div class="widget-body">
+          <ul class="latest-list">
+            <li class="latest-item"><a href="apocalipse-quantico-sndl.html">O Apocalipse Quântico e SNDL</a></li>
+            <li class="latest-item"><a href="expo-web-tela-branca.html">Tela branca no Expo Web</a></li>
+            <li class="latest-item"><a href="cellebrite-devassa-digital.html">Devassa Digital + Cellebrite</a></li>
+            <li class="latest-item"><a href="backblaze-b2-cloudflare.html">Backup com Backblaze B2</a></li>
+            <li class="latest-item"><a href="nobara-gaming-linux.html">Nobara vs Windows 11</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <nav class="breadcrumb" aria-label="Localização">
+        <a href="../index.html">CTH.JP</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="../index.html#blog">Blog</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Mayinab freeze: 7 tentativas</span>
+      </nav>
+      <article itemscope itemtype="https://schema.org/BlogPosting">
+        <header class="article-header">
+          <div class="article-header-tags">
+            <span class="card-tag">#flutter</span>
+            <span class="card-tag">#debug</span>
+            <span class="card-tag">#mobile</span>
+            <span class="card-tag">#scrollview</span>
+          </div>
+          <h1 class="article-header-title" itemprop="headline">Mayinab travava do nada ao navegar entre subtopics (7 tentativas até achar)</h1>
+          <div class="article-header-meta">
+            <span>📅 <time datetime="2026-02-12" itemprop="datePublished">12 de fevereiro de 2026</time></span>
+            <span>✍️ Celso Takeshi Hamasaki</span>
+          </div>
+        </header>
+        <div class="article-body" itemprop="articleBody">
+
+          <p>esse foi o bug mais teimoso que ja enfrentei no <strong>Mayinab</strong>.</p>
+
+          <p>o sintoma: ao navegar rapido entre subjects e subtopics, o app <strong>congelava permanentemente</strong>. nao era lag. era freeze. tinha q matar o processo e reabrir. (ꐦ°᷄д°᷅)</p>
+
+          <p>e o bug era <strong>intermitente</strong>. funcionava de boa por um tempo, ai do nada travava. impossivel de reproduzir consistentemente, a nao ser com stress test de cliques rapidos.</p>
+
+          <h2>As 6 Tentativas que Falharam</h2>
+
+          <p>eu passei DIAS achando q era o <code>GptMarkdown</code> / <code>flutter_math_fork</code> (pq ja tinham me dado dor de cabeça antes com o bug do LaTeX). tentei de tudo:</p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>O que tentei</th>
+                  <th>Funcionou?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Substituir <code>GptMarkdown</code> por <code>AppMarkdown</code> nos flashcards</td>
+                  <td>❌</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Remover <code>IntrinsicWidth</code> dos flashcards e checklists</td>
+                  <td>❌</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Remover <code>IntrinsicWidth</code> de TODOS os tipos de nota</td>
+                  <td>❌</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>Debounce no callback do <code>ChatScrollObserver</code></td>
+                  <td>❌</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td><code>RepaintBoundary</code> em cada nota e cada markdown</td>
+                  <td>❌</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>Remover <code>toRebuildScrollViewCallback</code> completamente</td>
+                  <td>❌</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>a tentativa 4 foi a mais frustrante. o debounce so atrasava o loop pra ~30Hz em vez de eliminar. cada 32ms um <code>setState</code> rodava, a lista reconstruia com tamanhos levemente diferentes, o observer flipava de novo... loop infinito mais lento, mas ainda infinito. ¯\_(ツ)_/¯</p>
+
+          <h2>A Causa Raiz: ChatScrollObserver</h2>
+
+          <p>depois de 6 fracassos eu finalmente parei de culpar o markdown e fui ler o <strong>codigo fonte</strong> do <code>ChatScrollObserver</code> do pacote <code>scrollview_observer</code>. e la tava o monstro.</p>
+
+          <p>tres mecanismos interligados causavam o freeze:</p>
+
+          <h3>1. Cadeia perpetua de <code>addPostFrameCallback</code></h3>
+
+          <p>o construtor do <code>ChatScrollObserver</code> agenda <code>observeSwitchShrinkWrap()</code>. esse metodo, internamente, agenda <strong>outro</strong> <code>addPostFrameCallback</code>. o <code>reattach()</code> chama <code>innerReattachCallBack</code> que dispara <code>_setupSliverController()</code>, que agenda <strong>mais um</strong> callback. resultado: loop infinito de callbacks que nunca para. eh um trem desgovernado.</p>
+
+          <pre><code>// o construtor ja comeca agendando o caos
+ChatScrollObserver(this.observerController) {
+  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    observeSwitchShrinkWrap(); // ← agenda OUTRO callback interno
+  });
+}</code></pre>
+
+          <h3>2. <code>standby()</code> força re-layout sem correcao de posicao</h3>
+
+          <p>o <code>standby()</code> chama <code>viewport.markNeedsLayout()</code> pra forcar re-layout, mas sem <code>ChatObserverClampingScrollPhysics</code> (que eu nunca configurei no <code>ListView</code>), a correcao de posicao nunca eh executada. o <code>markNeedsLayout()</code> so causa trabalho desnecessario que alimenta o loop de observacao.</p>
+
+          <h3>3. Mismatch de <code>shrinkWrap</code></h3>
+
+          <p><code>ChatScrollObserver</code> comeca com <code>innerIsShrinkWrap = true</code>, mas meu <code>ListView.builder</code> tinha <code>shrinkWrap: false</code> hardcoded. o <code>observeSwitchShrinkWrap</code> detecta a diferenca, flipa pra <code>false</code>, chama <code>reattach()</code>, que agenda novos callbacks... e o ciclo se repete pra sempre. (╥_╥)</p>
+
+          <h2>A Solucao (Tentativa 7)</h2>
+
+          <p>removi o <code>ChatScrollObserver</code> <strong>inteiramente</strong>. sem meias medidas.</p>
+
+          <pre><code>// ANTES (bugado):
+_chatScrollObserver = ChatScrollObserver(_observerController)
+  ..fixedPositionOffset = 5;
+
+// DEPOIS (funcional):
+// nada. removido. bye bye.</code></pre>
+
+          <p>mantive o <code>ListObserverController</code> + <code>ListViewObserver</code> puros (pq esses sao usados pra <code>jumpTo</code>, <code>animateTo</code> e paginacao via <code>onObserve</code>). eles nao tem os side effects malucos do wrapper de chat.</p>
+
+          <h2>Bonus: Bugs que achei no caminho</h2>
+
+          <p>enquanto investigava o freeze, achei mais 3 bugs escondidos q contribuiam pro caos:</p>
+
+          <div class="info-warning">
+            <div class="info-label">🐛 LEAK DE FOCUSNODE</div>
+            <p>era criado inline dentro do <code>build()</code> a cada rebuild, nunca era <code>dispose()</code>d. cada rebuild = novo <code>FocusNode</code> orfao. movido pra campo da classe com <code>dispose()</code> correto.</p>
+          </div>
+
+          <div class="info-warning">
+            <div class="info-label">🐛 LEAK DE STREAM SUBSCRIPTION</div>
+            <p>o <code>_watchChanges()</code> no <code>PaginatedNotesNotifier</code> criava nova subscription sem cancelar a anterior quando os parametros mudavam. adicionei <code>_changeSubscription?.cancel()</code> antes de criar nova.</p>
+          </div>
+
+          <div class="info-note">
+            <div class="info-label">🔄 REBUILDS REDUNDANTES</div>
+            <p>o <code>_refreshLoaded()</code> substituia toda a <code>state</code> com nova lista mesmo quando o conteudo era identico (mesmos IDs, mesmos <code>updatedAt</code>). adicionei deep equality check pra pular quando nada mudou de verdade.</p>
+          </div>
+
+          <h2>Resultado</h2>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Metrica</th>
+                  <th>Antes</th>
+                  <th>Depois</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Freeze intermitente</td>
+                  <td>sim</td>
+                  <td><strong>nao</strong></td>
+                </tr>
+                <tr>
+                  <td><code>dart analyze lib/</code></td>
+                  <td>0 erros</td>
+                  <td><strong>0 erros</strong></td>
+                </tr>
+                <tr>
+                  <td><code>flutter test</code></td>
+                  <td>—</td>
+                  <td><strong>720 passed</strong></td>
+                </tr>
+                <tr>
+                  <td>Tentativas</td>
+                  <td>6 falhas</td>
+                  <td><strong>1 sucesso</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2>Licao aprendida</h2>
+
+          <div class="info-important">
+            <div class="info-label">💡 LEIA O CÓDIGO FONTE</div>
+            <p><strong>leia o codigo fonte dos pacotes que vc usa.</strong> eu perdi dias achando q era o <code>GptMarkdown</code>, o <code>IntrinsicWidth</code>, o layout... quando o problema era um pacote de scroll que eu nunca tinha aberto o source. se eu tivesse lido o construtor do <code>ChatScrollObserver</code> no dia 1, teria economizado 6 tentativas.</p>
+            <p>e desconfie de qualquer coisa que agenda <code>addPostFrameCallback</code> dentro de outro <code>addPostFrameCallback</code>. isso eh receita pra loop infinito. (⌐■_■)</p>
+          </div>
+
+        </div>
+      </article>
+      <a href="../index.html#blog" class="back-btn" style="margin-top:16px">← ver todos os artigos</a>
+    </main>
+  </div>
+</div>
+<footer class="site-footer">
+  <span class="footer-kawaii">✦ ♡ ✦</span>
+  <p><a href="../index.html">CTH.JP</a></p>
+
+</footer>
+</body>
+</html>
