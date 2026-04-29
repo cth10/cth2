@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mayinab: arquitetura, segurança, privacidade e os bugs que quase me mataram | CTH.JP</title>
+  <meta name="description" content="Como construí o mayinab, app de estudos com Flutter, SQLite/Drift, SM-2, criptografia AES-256-GCM no backup e suporte Android/Linux/Windows. 2 mil downloads sem gastar 1 centavo.">
+  <meta name="keywords" content="Flutter, Dart, Drift, SQLite, SM-2, AES-256-GCM, PBKDF2, Riverpod, Android, Linux, Windows, mayinab, app de estudos, flashcards, privacidade, segurança">
+  <meta name="author" content="Celso Takeshi Hamasaki">
+  <link rel="canonical" href="https://cth.jp/artigos/mayinab-arquitetura.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="mayinab: arquitetura, segurança, privacidade e os bugs que quase me mataram | CTH.JP">
+  <meta property="og:description" content="Como construí o mayinab, app de estudos com Flutter, SQLite/Drift, SM-2, criptografia AES-256-GCM no backup e suporte Android/Linux/Windows. 2 mil downloads sem gastar 1 centavo.">
+  <meta property="og:url" content="https://cth.jp/artigos/mayinab-arquitetura.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BlogPosting","headline":"mayinab: como eu construí um app de estudos completo: arquitetura, segurança, privacidade e os bugs que quase me mataram","author":{"@type":"Person","name":"Celso Takeshi Hamasaki"},"datePublished":"2026-04-29","url":"https://cth.jp/artigos/mayinab-arquitetura.html"}
+  </script>
+  <link rel="stylesheet" href="../style.css">
+  <script>(function(){var t=localStorage.getItem("cth-theme");if(t)document.documentElement.setAttribute("data-theme",t);})();</script>
+  <link rel="stylesheet" href="../highlight-cth.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="site-title">✦ CTH.JP ✦</div>
+  <div class="site-subtitle">Celso Takeshi Hamasaki · Dev Java &amp; Cloud</div>
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="../index.html">🏠 início</a>
+    <a href="../index.html#blog">📝 blog</a>
+    <a href="../index.html#sobre">👤 sobre</a>
+  </nav>
+</header>
+<div class="page-wrapper">
+  <div class="layout">
+    <aside class="sidebar-left" aria-label="Navegação do artigo">
+      <a href="../index.html#blog" class="back-btn">← voltar ao blog</a>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">♡</i> sobre o autor</div>
+        <div class="widget-body">
+          <div class="profile-name">CELSO TAKESHI</div>
+          <div class="profile-role">Dev Java &amp; Cloud ☕</div>
+          <div class="profile-status">● disponível pra oportunidades</div>
+          <ul class="profile-links">
+            <li><a href="https://www.linkedin.com/in/celso-hamasaki" target="_blank" rel="noopener noreferrer">💼 LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">✦</i> tags</div>
+        <div class="widget-body">
+          <div class="tags-cloud">
+            <span class="tag">#flutter</span>
+            <span class="tag">#android</span>
+            <span class="tag">#linux</span>
+            <span class="tag">#windows</span>
+            <span class="tag">#arquitetura</span>
+            <span class="tag">#privacidade</span>
+            <span class="tag">#segurança</span>
+            <span class="tag">#opensource</span>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-title"><i class="wt-icon">📋</i> outros artigos</div>
+        <div class="widget-body">
+          <ul class="latest-list">
+            <li class="latest-item"><a href="mayinab-freeze.html">Mayinab freeze: 7 tentativas</a></li>
+            <li class="latest-item"><a href="flutter-latex-flutter338.html">Flutter 3.38 quebrou o LaTeX</a></li>
+            <li class="latest-item"><a href="ia-vibe-coder.html">Google Translate não te deixa fluente</a></li>
+            <li class="latest-item"><a href="icloud-nao-cofre.html">iCloud não é cofre</a></li>
+            <li class="latest-item"><a href="apocalipse-quantico-sndl.html">O Apocalipse Quântico e SNDL</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <nav class="breadcrumb" aria-label="Localização">
+        <a href="../index.html">CTH.JP</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="../index.html#blog">Blog</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>mayinab: arquitetura e bugs</span>
+      </nav>
+      <article itemscope itemtype="https://schema.org/BlogPosting">
+        <header class="article-header">
+          <div class="article-header-tags">
+            <span class="card-tag">#flutter</span>
+            <span class="card-tag">#android</span>
+            <span class="card-tag">#linux</span>
+            <span class="card-tag">#windows</span>
+            <span class="card-tag">#arquitetura</span>
+            <span class="card-tag">#privacidade</span>
+            <span class="card-tag">#segurança</span>
+          </div>
+          <h1 class="article-header-title" itemprop="headline">mayinab: como eu construí um app de estudos completo (arquitetura, segurança, privacidade e os bugs que quase me mataram)</h1>
+          <div class="article-header-meta">
+            <span>📅 <time datetime="2026-04-29" itemprop="datePublished">29 de abril de 2026</time></span>
+            <span>✍️ Celso Takeshi Hamasaki</span>
+          </div>
+        </header>
+        <div class="article-body" itemprop="articleBody">
+
+          <p>em 2022, eu tava estudando pra um concurso. precisava de um jeito de guardar notas, criar flashcards e revisar conteúdo, mas sem precisar abrir dez abas diferentes e sem configurar nada por 30 minutos só pra começar.</p>
+
+          <p>fui testar o que existia.</p>
+
+          <p><strong>notion</strong>: poderoso, mas a curva de aprendizagem é absurda. você precisa entender páginas, databases, views, relations... antes de escrever a primeira anotação.</p>
+
+          <p><strong>obsidian</strong>: mesma coisa, você passa mais tempo configurando plugins do que estudando.</p>
+
+          <p><strong>anki</strong>: visual de 2003, onboarding obrigatório e chato antes de criar o primeiro card.</p>
+
+          <p><strong>discord</strong>: é uma das ferramentas mais populares de comunicação informal, mas manda tudo pro servidor deles sem qualquer controle seu.</p>
+
+          <p><strong>whatsapp</strong>: extremamente limitado pra anotações, sem formatação decente, sem organização.</p>
+
+          <p>eu usava o <strong>telegram</strong> pra guardar notas mesmo, mandava mensagem pra mim mesmo... funcionava, mas claramente não era o ideal.</p>
+
+          <p>todos esses apps tinham alguma coisa errada: eram complexos demais, exigiam conta, tinham onboarding obrigatório e chato, ou falhavam em privacidade. nenhum combinava a simplicidade de um chat com os recursos que um estudante realmente precisa.</p>
+
+          <p>então eu decidi fazer o meu. (ꐦ°᷄д°᷅)</p>
+
+          <p>hoje, o <strong>mayinab</strong> tem 2 mil downloads na play store, sem gastar 1 centavo com divulgação. também tem versões pra linux e windows. e nesse artigo vou abrir o capô e mostrar como tudo funciona por dentro: arquitetura, banco de dados, criptografia do backup, algoritmo de revisão espaçada, decisões de privacidade, boas práticas, bugs que me enlouqueceram, e os desafios que ainda enfrentarei.</p>
+
+          <hr>
+
+          <h2>arquitetura geral</h2>
+
+          <p>o mayinab é um app flutter com suporte a android, linux e windows. a stack principal é:</p>
+
+          <ul>
+            <li><strong>flutter + dart:</strong> UI e lógica de negócio</li>
+            <li><strong>drift (sqlite):</strong> banco de dados local, gerado via code generation</li>
+            <li><strong>riverpod:</strong> gerenciamento de estado reativo</li>
+            <li><strong>go_router:</strong> navegação declarativa</li>
+            <li><strong>supabase:</strong> backend opcional pra sync e vault (backup na nuvem)</li>
+            <li><strong>revenuecat:</strong> gerenciamento de assinaturas no android</li>
+            <li><strong>stripe:</strong> pagamentos no linux/windows</li>
+          </ul>
+
+          <p>a decisão mais importante que tomei no início foi: <strong>tudo funciona 100% offline, sem conta, sem servidor</strong>. o supabase, revenuecat e stripe são opcionais, só entram em cena se o usuário quiser sincronizar o backup na nuvem ou ativar um plano premium. o app abre, você cria suas notas e estuda. ponto.</p>
+
+          <p>isso resolve o problema de onboarding na raiz. não tem tela de "crie sua conta" antes de usar. não tem tutorial obrigatório. não tem permissão de rede obrigatória. você baixa e começa.</p>
+
+          <h3>organização de código</h3>
+
+          <p>o projeto segue uma estrutura de features:</p>
+
+          <pre><code>lib/
+  core/          → utilitários, tema, logger, config
+  database/      → drift tables, DAOs, migrations
+  features/      → telas e widgets por feature
+    chat/        → thread de notas estilo chat
+    home/        → lista de matérias
+    topic/       → árvore de tópicos
+    search/      → command palette
+    explore/     → content packs
+    subscription/
+    settings/
+  models/        → DTOs e extensões sobre os tipos do drift
+  providers/     → riverpod providers
+  services/      → lógica de negócio (backup, SRS, mídia, etc.)
+  shared/        → widgets reutilizáveis</code></pre>
+
+          <p>cada feature tem seus próprios widgets, e os providers ficam separados por domínio. nada de um arquivo gigante de providers. nada de god class. (pelo menos em teoria; na prática alguns providers ficaram gordos demais e precisam de refactor. honestidade acima de tudo.)</p>
+
+          <h3>performance e isolates</h3>
+
+          <p>o dart executa o código em uma thread principal por padrão. se você tentar compactar um backup de 500mb ou comprimir imagens grandes diretamente nela, a interface congela e o usuário não consegue interagir com o app.</p>
+
+          <p>pra manter o app rodando sem travar, precisei implementar background isolates. operações que exigem muito processamento, tipo a compressão de imagens no desktop, a criação do arquivo zip de backup e a varredura do storage, rodam em processos paralelos. assim, a interface continua respondendo instantaneamente enquanto o processamento pesado acontece em segundo plano.</p>
+
+          <p>também criei um lru cache próprio (<code>lib/core/lru_cache.dart</code>) pra salvar dados que o app acessa o tempo todo, como thumbnails de vídeos e previews de links. isso evita queries repetidas no banco de dados, reduzindo o uso de cpu e poupando bateria.</p>
+
+          <hr>
+
+          <h2>banco de dados: drift + sqlite</h2>
+
+          <p>o banco é sqlite gerenciado pelo <a href="https://drift.simonbinder.eu/" target="_blank" rel="noopener noreferrer">drift</a>, que gera o código boilerplate via build_runner. você define as tabelas como classes dart e ele gera os tipos, queries typesafe e DAOs.</p>
+
+          <p>a hierarquia de dados é:</p>
+
+          <pre><code>SubjectFolder (pasta)
+  └── Subject (matéria)
+        └── Topic (tópico, aninhável infinitamente)
+              └── Note (nota)
+                    └── NoteTag (tag)</code></pre>
+
+          <p>os tópicos suportam aninhamento infinito via <code>parent_id</code>. você pode ter <code>Química → Orgânica → Aromáticos → Benzeno → Mecanismo de Nitração</code> e o app aguenta. a sidebar de tópicos renderiza isso como uma árvore navegável.</p>
+
+          <p>as notas têm 7 tipos: texto, flashcard, imagem, vídeo, áudio, arquivo e checklist. cada tipo usa colunas diferentes da tabela <code>notes</code>, sem tabelas separadas por tipo; tudo vai na mesma, com colunas nullable pra cada caso.</p>
+
+          <h3>busca full-text</h3>
+
+          <p>pra busca, uso FTS5 do sqlite, uma tabela virtual criada no <code>onCreate</code>:</p>
+
+          <pre><code>CREATE VIRTUAL TABLE IF NOT EXISTS notes_fts
+USING fts5(content, answer, content='notes', content_rowid='id')</code></pre>
+
+          <p>com triggers pra manter o índice sincronizado em insert, update e delete. funciona 100% offline, sem elasticsearch, sem API externa. a velocidade é surpreendente mesmo com milhares de notas.</p>
+
+          <h3>migrations</h3>
+
+          <p>o esquema já foi por 16 versões. cada migração usa um padrão de <code>ALTER TABLE ADD COLUMN</code> idempotente, porque o sqlite não tem <code>ADD COLUMN IF NOT EXISTS</code>, e se o processo morrer entre a adição da coluna e o write do <code>user_version</code>, o app trava na próxima abertura com "duplicate column name".</p>
+
+          <p>a solução que adotei: envolver cada <code>ALTER TABLE</code> em try/catch, e silenciar apenas erros de "duplicate column". qualquer outro erro (tabela inexistente, disco cheio, lock) é relançado. parece gambiarra mas é a solução padrão no sqlite.</p>
+
+          <pre><code>Future&lt;void&gt; _addColumn(String sql) async {
+  try {
+    await customStatement(sql);
+  } catch (e) {
+    if (e.toString().toLowerCase().contains('duplicate column')) return;
+    rethrow;
+  }
+}</code></pre>
+
+          <hr>
+
+          <h2>repetição espaçada: SM-2 de verdade</h2>
+
+          <p>o algoritmo de flashcards é o <strong>SM-2</strong> clássico, o mesmo que o anki usa, e o mesmo que a pesquisa de Wozniak dos anos 80 fundamentou. nada de reinventar a roda.</p>
+
+          <p>o usuário avalia a resposta numa escala de 0 a 5:</p>
+
+          <ul>
+            <li>0-2 → falhou, reinicia o intervalo</li>
+            <li>3 → difícil, mas passou</li>
+            <li>4 → bom</li>
+            <li>5 → fácil</li>
+          </ul>
+
+          <p>o ease factor (fator de facilidade) começa em 2.5 e é ajustado a cada revisão:</p>
+
+          <pre><code>easeFactor = easeFactor + (0.1 - (5 - rating) * (0.08 + (5 - rating) * 0.02));
+if (easeFactor &lt; 1.3) easeFactor = 1.3; // mínimo</code></pre>
+
+          <p>o próximo intervalo é calculado assim:</p>
+
+          <ul>
+            <li>1ª revisão → 1 dia</li>
+            <li>2ª revisão → 6 dias</li>
+            <li>revisões seguintes → intervalo anterior × ease factor</li>
+          </ul>
+
+          <p>o <code>SrsService</code> é puro: sem efeitos colaterais, sem estado, sem dependências de UI. ele recebe uma nota e um rating, e retorna um record com os novos parâmetros. isso facilita muito os testes.</p>
+
+          <hr>
+
+          <h2>segurança e criptografia do vault</h2>
+
+          <div class="info-note">
+            <div class="info-label">📢 SITUAÇÃO ATUAL</div>
+            <p>os cadastros no supabase e na minha cloud própria estão desativados temporariamente, talvez definitivamente. o backup continua funcionando normalmente: você pode exportar pra um arquivo local ou sincronizar com o google drive, de graça, sem precisar de conta nenhuma.</p>
+          </div>
+
+          <p>o backup local exporta um snapshot ZIP de todos os dados e mídias. o vault (backup na nuvem) criptografa esse snapshot antes de enviar pro supabase storage.</p>
+
+          <p>a criptografia usa <strong>PBKDF2-HMAC-SHA256</strong> pra derivação de chave + <strong>AES-256-GCM</strong> pra criptografia. o GCM é criptografia autenticada: se alguém adulterar o arquivo ou a senha estiver errada, o decrypt lança exceção em vez de retornar silenciosamente lixo.</p>
+
+          <p>parâmetros:</p>
+
+          <ul>
+            <li>salt: 16 bytes aleatórios (por backup)</li>
+            <li>IV: 12 bytes aleatórios (por chunk)</li>
+            <li>PBKDF2 iterations: 100.000</li>
+            <li>chave derivada: 256 bits</li>
+          </ul>
+
+          <h3>formato chunked (v2)</h3>
+
+          <p>o formato original (v1) carregava o arquivo inteiro na memória antes de criptografar; um backup grande de 500MB causava pico de ~1.5GB de RAM. o v2 processa em chunks de 1MB:</p>
+
+          <pre><code>[MAGIC "BKC1" (4 B)] [salt (16 B)] [num_chunks (4 B BE)]
+{ [cipher_len (4 B BE)] [IV (12 B)] [ciphertext + GCM tag] } × N</code></pre>
+
+          <p>cada chunk tem seu próprio IV. o pico de memória cai pra aproximadamente <code>input + 1MB</code>. backups maiores que seu upload de memória param de crashar o app. (╥_╥)</p>
+
+          <p>o formato v1 ainda é suportado na leitura pra retrocompatibilidade, o código detecta o magic header "BKC1" pra distinguir os formatos.</p>
+
+          <h3>legado: por que tinha AES-CBC antes</h3>
+
+          <p>a primeira versão usava <code>SHA-256(senha)</code> como chave diretamente (sem PBKDF2) + AES-CBC. isso é inseguro por dois motivos: sem KDF, a força da chave é limitada pela entropia da senha humana; CBC não fornece autenticação, então bytes corrompidos ou adulterados geram plaintext inválido silenciosamente. migrei tudo pra PBKDF2 + GCM.</p>
+
+          <hr>
+
+          <h2>privacidade e ética</h2>
+
+          <p>privacidade não é feature, é pré-requisito. o app foi desenhado em torno dela:</p>
+
+          <ul>
+            <li><strong>sem conta obrigatória:</strong> os dados ficam no dispositivo. o supabase só entra se você explicitamente ativar o vault</li>
+            <li><strong>sem telemetria:</strong> não envio analytics de uso, não rastreio o que você estuda, não mando nada pra nenhum servidor sem consentimento</li>
+            <li><strong>sem ads:</strong> nunca. o backup é gratuito via google drive ou arquivo local</li>
+            <li><strong>zero-knowledge backup:</strong> o vault criptografa os dados localmente antes de enviar. o servidor recebe bytes criptografados, nem eu consigo ler o que você salvou</li>
+            <li><strong>delete account funciona de verdade:</strong> tem um script SQL dedicado (<code>supabase_delete_account.sql</code>) que apaga tudo: dados, arquivos, conta. sem lixo residual</li>
+          </ul>
+
+          <p>a comparação com concorrentes é honesta. o discord é conveniente mas os dados vão pros servidores deles sem criptografia de ponta a ponta. o whatsapp tem E2E no chat mas os backups no google drive ficam sem criptografia por padrão (mudou parcialmente em versões recentes). o notion guarda tudo no servidor deles, sem opção de self-host fácil.</p>
+
+          <p>não estou dizendo que esses apps são ruins, são ótimos pra seus casos de uso. mas pra guardar anotações de estudo, especialmente conteúdo sensível como materiais de concurso, questões militares ou de saúde, privacidade importa.</p>
+
+          <hr>
+
+          <h2>bugs e desafios reais</h2>
+
+          <p>vou ser honesto: o desenvolvimento teve momentos ruins. muitos. aqui vão os maiores:</p>
+
+          <h3>o freeze de navegação (7 tentativas)</h3>
+
+          <p>o bug mais tenaz que já enfrentei. ao navegar rapidamente entre subjects e subtopics, o app congelava permanentemente. não era lag, era freeze total, tinha que matar o processo.</p>
+
+          <p>tentei 6 coisas que não funcionaram (substituir o <code>GptMarkdown</code>, remover <code>IntrinsicWidth</code>, adicionar debounce, adicionar <code>RepaintBoundary</code>...) até finalmente ler o código fonte do <code>ChatScrollObserver</code> do pacote <code>scrollview_observer</code>. o construtor do pacote agendava um <code>addPostFrameCallback</code> que agendava outro internamente, criando um loop infinito de callbacks. a solução foi remover o <code>ChatScrollObserver</code> inteiramente. <a href="mayinab-freeze.html">escrevi um artigo inteiro sobre esse bug.</a></p>
+
+          <h3>flutter 3.38 quebrou o latex</h3>
+
+          <p>o <code>flutter_math_fork</code> v0.7.4 usa uma classe <code>RenderLine</code> que não implementa <code>computeDryBaseline</code>, método que virou obrigatório no flutter 3.38. resultado: 733 erros por frame. o app não abria.</p>
+
+          <p>a solução foi um workaround que renderiza latex como texto monospace itálico em vez de equação formatada. feio, mas funcional. os pacotes são unmaintained então não tem como esperar um fix. <a href="flutter-latex-flutter338.html">detalhei isso aqui.</a></p>
+
+          <h3>certificados SSL no windows</h3>
+
+          <p>o dart no windows não confia automaticamente no cert store do sistema, causando <code>CERTIFICATE_VERIFY_FAILED</code> ao conectar no supabase. a tentação é usar <code>badCertificateCallback = (cert, host, port) =&gt; true</code>, que aceita qualquer certificado, inclusive de atacantes. a microsoft store rejeita isso também.</p>
+
+          <p>a solução foi um allowlist explícito de hosts conhecidos:</p>
+
+          <pre><code>static const _trustedHosts = [
+  'supabase.co', 'supabase.com',
+  'googleapis.com', 'google.com',
+  'cloudflare.com', 'stripe.com',
+  'revenuecat.com', 'api.revenuecat.com',
+];
+
+client.badCertificateCallback = (cert, host, port) {
+  return _trustedHosts.any(
+    (trusted) =&gt; host == trusted || host.endsWith('.$trusted'),
+  );
+};</code></pre>
+
+          <p>aceita falhas de verificação apenas nos hosts conhecidos, rejeitando tudo mais. passou na revisão da microsoft store.</p>
+
+          <h3>migration race condition</h3>
+
+          <p>durante uma migration, se o processo morrer no intervalo entre o <code>ALTER TABLE</code> ser executado e o drift escrever o novo <code>user_version</code>, o usuário fica com o banco num estado inconsistente. na próxima abertura, o drift tenta rodar a migration de novo e explode com "duplicate column name".</p>
+
+          <p>o workaround do <code>_addColumn</code> idempotente já cobre 99% dos casos, mas há um edge case pior: o banco pode estar na versão 12 mas sem a coluna que deveria ter sido adicionada na v12; isso acontece se o processo morreu antes do ALTER TABLE mas depois do user_version write. pra isso, adicionei um <code>beforeOpen</code> que tenta adicionar a coluna novamente (silenciando "duplicate column").</p>
+
+          <h3>suporte a múltiplas plataformas</h3>
+
+          <p>o flutter promete "write once, run anywhere", mas na prática cada plataforma tem suas peculiaridades:</p>
+
+          <ul>
+            <li>linux: sem suporte a <code>flutter_inappwebview</code>, precisei criar um stub local (<code>tool/flutter_inappwebview_linux_stub</code>) pra não travar o build</li>
+            <li>windows: problemas com SSL, window manager, e o MSIX pra microsoft store tem um processo de assinatura próprio</li>
+            <li>android: permissão <code>SCHEDULE_EXACT_ALARM</code> foi removida porque não é necessária e aumentava o escrutínio na play store</li>
+            <li>google drive no desktop: o fluxo OAuth é diferente do mobile, desktop abre browser externo, mobile usa webview nativo. precisou de serviços separados (<code>google_drive_service.dart</code> e <code>google_drive_service_desktop.dart</code>)</li>
+          </ul>
+
+          <hr>
+
+          <h2>boas práticas que adotei</h2>
+
+          <h3>interface sobre implementação concreta</h3>
+
+          <p>os serviços principais (backup, storage, mídia, subscription) implementam interfaces (<code>ISnapshotService</code>, <code>IStorageService</code>, etc.). isso permite:</p>
+
+          <ul>
+            <li>testes unitários com fakes sem depender de disco ou rede</li>
+            <li>troca de implementação por plataforma (ex: google drive mobile vs desktop) sem mudar os providers</li>
+            <li>mocking limpo nos testes</li>
+          </ul>
+
+          <h3>result type em vez de exceções no fluxo normal</h3>
+
+          <p>operações que podem falhar de forma esperada (ex: backup falhou, sem rede) usam um tipo <code>Result&lt;T&gt;</code> próprio em vez de jogar exceções pra cima. exceções ficam pra erros realmente inesperados.</p>
+
+          <h3>serviços puros</h3>
+
+          <p>o <code>SrsService</code> e o <code>VaultCrypto</code> são pure: sem estado mutável, sem dependências de UI, sem side effects. fáceis de testar, fáceis de raciocinar.</p>
+
+          <h3>lru cache</h3>
+
+          <p>tem um <code>LruCache</code> próprio (<code>lib/core/lru_cache.dart</code>) pra cachear resultados de queries pesadas: previews de link, thumbnails de vídeo, e resultados de busca. evita re-query desnecessário no banco.</p>
+
+          <h3>zero snapshots de estado global</h3>
+
+          <p>cada provider riverpod é reativo e granular. não tem um grande AppState centralizado. cada feature lê apenas os providers que precisa, e é invalidada apenas quando esses providers mudam.</p>
+
+          <hr>
+
+          <h2>features principais</h2>
+
+          <ul>
+            <li><strong>7 tipos de nota:</strong> texto (markdown + latex), flashcard (com mídia rica: imagem, vídeo local, youtube), imagem, vídeo, áudio, arquivo e checklist</li>
+            <li><strong>hierarquia infinita de tópicos:</strong> matéria → tópico → subtópico → subsubtópico... sem limite de profundidade</li>
+            <li><strong>slash commands:</strong> <code>/flashcard</code>, <code>/checklist</code>, <code>/image</code>, etc., inspirado no notion, mas mais rápido</li>
+            <li><strong>busca full-text:</strong> FTS5, 100% offline</li>
+            <li><strong>wiki links:</strong> <code>[[nome do tópico]]</code> cria links entre tópicos, como no obsidian, mas sem precisar configurar nada</li>
+            <li><strong>scribble pad:</strong> quadro de desenho à mão livre, útil pra diagramas e equações manuscritas</li>
+            <li><strong>OCR:</strong> escaneamento de documentos com extração de texto via google mlkit</li>
+            <li><strong>estatísticas e streaks:</strong> dias de estudo consecutivos, cards revisados, progresso por matéria</li>
+            <li><strong>pomodoro timer:</strong> configurável, integrado ao app</li>
+            <li><strong>notificações de revisão:</strong> lembra quando tem flashcards pra revisar</li>
+            <li><strong>temas customizados:</strong> light, dark e system, com editor de cores</li>
+            <li><strong>split view redimensionável:</strong> sidebar de tópicos + chat de notas lado a lado, com divisor arrastável</li>
+            <li><strong>command palette:</strong> ctrl+k abre busca global estilo vscode</li>
+            <li><strong>content packs:</strong> conteúdo pré-pronto importável (ex: pacote AWS SAA-C03 com 187 notas e 142 flashcards)</li>
+            <li><strong>lixeira com auto-purge:</strong> notas deletadas ficam 30 dias na lixeira antes de sumir definitivamente</li>
+            <li><strong>i18n:</strong> português e inglês</li>
+          </ul>
+
+          <hr>
+
+          <h2>o que tenho de testes</h2>
+
+          <p>o projeto tem testes unitários e de integração cobrindo:</p>
+
+          <ul>
+            <li>SRS service (cálculo de intervalos SM-2)</li>
+            <li>importação de flashcards</li>
+            <li>content pack service</li>
+            <li>providers de nota, busca e SRS</li>
+            <li>fluxo de criação de nota (DAO)</li>
+            <li>wiki links</li>
+            <li>utilitários</li>
+          </ul>
+
+          <p>o banco em memória (<code>AppDatabase.forTesting()</code>) garante que os testes de DAO rodam sem disco e sem estado compartilhado entre testes.</p>
+
+          <hr>
+
+          <h2>distribuição: android, linux e windows</h2>
+
+          <p>o app foi publicado na <strong>play store</strong> em 2026, após alguns meses de testes internos. também tem:</p>
+
+          <ul>
+            <li><strong>AppImage para linux:</strong> arquivo único, roda em qualquer distro sem instalar dependências</li>
+            <li><strong>MSIX para windows:</strong> build pra microsoft store, com assinatura e todas as cerimônias que a microsoft exige</li>
+            <li><strong>instalador windows (inno setup):</strong> pra quem prefere instalar sem a store</li>
+          </ul>
+
+          <p>o CI/CD é github actions: build, test, e empacotamento pra cada plataforma. o pipeline do windows em particular foi um sofrimento: o <code>flutter clean</code> antes do rebuild é obrigatório pra evitar cache de <code>dart-defines</code> que fazia o build usar credenciais antigas.</p>
+
+          <p>2 mil downloads em produção sem gastar 1 centavo com ads. crescimento orgânico, boca a boca, e alguns posts em fóruns de estudo.</p>
+
+          <hr>
+
+          <h2>desafios que ainda tenho pela frente</h2>
+
+          <p>honestidade primeiro:</p>
+
+          <ul>
+            <li><strong>ios:</strong> a estrutura xcode já está no repositório, mas publicar na app store custa $99/ano e exige um mac físico no pipeline de CI. não é agora.</li>
+            <li><strong>sync multi-dispositivo em tempo real:</strong> hoje o vault é backup manual. sync em tempo real (tipo notion ou obsidian sync) exigiria um sistema de conflict resolution que é consideravelmente mais complexo</li>
+            <li><strong>pacotes unmaintained:</strong> tanto o <code>flutter_math_fork</code> quanto alguns outros têm manutenção irregular. cada atualização do flutter é uma roleta</li>
+            <li><strong>performance com muitas notas:</strong> o lazy loading funciona bem até uns poucos milhares de notas. com dezenas de milhares, provavelmente precisaria de virtual scrolling mais agressivo</li>
+            <li><strong>acessibilidade:</strong> tem semantics básicos mas está longe de ser completo</li>
+          </ul>
+
+          <hr>
+
+          <h2>conclusão</h2>
+
+          <p>construir o mayinab foi, e continua sendo, um projeto pessoal que nasceu de uma necessidade real. comecei porque as ferramentas disponíveis eram ou complexas demais, ou descuidadas com privacidade, ou simplesmente feias.</p>
+
+          <p>aprendi muito no processo: que suporte multiplataforma em flutter é muito mais trabalho do que o marketing promete, que criptografia feita por conta própria tem armadilhas reais, que bugs intermitentes são os piores da história, e que 2 mil pessoas baixando algo que você construiu do zero bate diferente. 💀</p>
+
+          <p>o app ainda tem defeitos. tem código que eu olho hoje e fico com vergonha. mas está em produção, está sendo usado, e está melhorando a cada versão.</p>
+
+          <p>se você quer um app de estudos que abre em 0 segundos de configuração, funciona offline, não te rastreia e tem criptografia real no backup: <a href="https://play.google.com/store/apps/details?id=com.hamasaki.mayinab" target="_blank" rel="noopener noreferrer">baixa o mayinab</a>.</p>
+
+          <p>e se você é dev e quiser discutir arquitetura, bugs ou flutter em geral, me manda mensagem.</p>
+
+          <p>✦ ♡ ✦</p>
+
+        </div>
+      </article>
+      <a href="../index.html#blog" class="back-btn" style="margin-top:16px">← ver todos os artigos</a>
+    </main>
+  </div>
+</div>
+<footer class="site-footer">
+  <span class="footer-kawaii">✦ ♡ ✦</span>
+  <p><a href="../index.html">CTH.JP</a></p>
+</footer>
+<script src="../js/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body>
+</html>
