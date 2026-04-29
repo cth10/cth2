@@ -121,6 +121,13 @@
 
           <p>hoje, o <strong>mayinab</strong> tem 2 mil downloads na play store, sem gastar 1 centavo com divulgação. também tem versões pra linux e windows. e nesse artigo vou abrir o capô e mostrar como tudo funciona por dentro: arquitetura, banco de dados, criptografia do backup, algoritmo de revisão espaçada, decisões de privacidade, boas práticas, bugs que me enlouqueceram, e os desafios que ainda enfrentarei.</p>
 
+          <figure>
+            <picture>
+              <img src="../imagens/mayinab-pc-01.webp" alt="Mayinab versão desktop: split view com sidebar de matérias, árvore de tópicos e chat de notas" loading="lazy" decoding="async" width="1220" height="844">
+            </picture>
+            <figcaption>versão desktop: split view com sidebar de matérias, árvore de tópicos e chat de notas</figcaption>
+          </figure>
+
           <hr>
 
           <h2>arquitetura geral</h2>
@@ -188,6 +195,21 @@
           <p>os tópicos suportam aninhamento infinito via <code>parent_id</code>. você pode ter <code>Química → Orgânica → Aromáticos → Benzeno → Mecanismo de Nitração</code> e o app aguenta. a sidebar de tópicos renderiza isso como uma árvore navegável.</p>
 
           <p>as notas têm 7 tipos: texto, flashcard, imagem, vídeo, áudio, arquivo e checklist. cada tipo usa colunas diferentes da tabela <code>notes</code>, sem tabelas separadas por tipo; tudo vai na mesma, com colunas nullable pra cada caso.</p>
+
+          <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:16px 0;">
+            <figure style="margin:0;flex:0 0 auto;">
+              <picture>
+                <img src="../imagens/mayinab-mobile-2.jpeg" alt="Tela home do Mayinab com lista de matérias organizadas em pastas" loading="lazy" decoding="async" width="494" height="1057" style="max-width:240px;height:auto;">
+              </picture>
+              <figcaption>home: pastas e matérias com badges de revisão</figcaption>
+            </figure>
+            <figure style="margin:0;flex:0 0 auto;">
+              <picture>
+                <img src="../imagens/mayinab-mobile-1.jpeg" alt="Thread de notas do Mayinab com fórmulas LaTeX e flashcard pendente de revisão" loading="lazy" decoding="async" width="720" height="1600" style="max-width:240px;height:auto;">
+              </picture>
+              <figcaption>chat de notas: LaTeX renderizado + flashcard pendente</figcaption>
+            </figure>
+          </div>
 
           <h3>busca full-text</h3>
 
